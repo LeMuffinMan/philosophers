@@ -29,7 +29,7 @@ RESET = \033[0m
 all: $(NAME)
 
 $(NAME): $(OBJ) Makefile include/philo.h src/philo.c #ajouter ici 
-	$(CC) $(FLAGS) $(OBJ) -I $(INC) -o $(NAME)
+	$(CC) $(FLAGS) $(OBJ) -I $(INC) -o bin/$(NAME)
 	@echo 
 	@echo "$(GREEN)compilation successful ✅ $(NAME)$(RESET)"
 	@echo 
