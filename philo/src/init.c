@@ -12,8 +12,9 @@
 
 #include "philo.h"
 #include <stdlib.h>
+#include <stdbool.h>
 
-int init(t_data *data, char **av)
+int init_args(t_data *data, char **av)
 {
   data = malloc(sizeof(t_data));
   if (!data)
