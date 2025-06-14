@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:26:45 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/14 18:19:14 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/14 18:26:06 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,17 @@ int start_simulation(t_data *data)
   }
   if (pthread_create(&data->monitor, NULL, monitor_routine, &data) != 0)
     return (destroy_mutex_free_exit(data, data->fork_mutex, data->nb_philo, THREAD_ERROR));
-  data->time_start = gettimeofday(&tv, NULL);
-  pthread_mutex_unlock(&data->mutex_start);
+  gettimeofday(&tv, NULL);
+  data->time_start = tv.tv_sec;
   printf("start time = %d\n", data->time_start);
+  pthread_mutex_unlock(&data->mutex_start);
+  while (1)
+  {
+    pthread_mutex_lock(&data->mutex_end);
+    if (data->end == 1)
+      break ;
+    pthread_mutex_unlock(&data->mutex_end);
+  }
   return (0);
 }
 
