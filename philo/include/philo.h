@@ -13,9 +13,25 @@
 #ifndef PHILO_H
 # define PHILO_H
 
+#include <stdbool.h>
+#include <pthread.h>
+
+typedef struct s_philosopher
+{
+  int id;
+  int last_meal;
+  int nb_meals_eaten;
+  pthread_t thread; 
+} t_philosopher;
+
 typedef struct s_data
 {
-
+  int nb_philo;
+  int time_to_die;
+  int time_to_eat;
+  int time_to_sleep;
+  int number_of_times_each_philosopher_must_eat;
+  bool *forks;
 } t_data;
 
 typedef enum e_type
@@ -28,7 +44,7 @@ typedef enum e_type
 } t_type;
 
 //init.c
-int init(t_data *data, char **av);
+int init_args(t_data *data, char **av);
 
 //prints
 int print_update(int time_elapsed, int philo, t_type type);
