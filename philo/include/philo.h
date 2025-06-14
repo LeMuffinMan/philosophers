@@ -16,6 +16,9 @@
 #include <stdbool.h>
 #include <pthread.h>
 
+# define MALLOC_ERROR -1
+# define MUTEX_ERROR -2
+
 typedef struct s_philosopher
 {
   int id;
@@ -32,7 +35,10 @@ typedef struct s_data
   int time_to_sleep;
   int number_of_times_each_philosopher_must_eat;
   bool *forks;
+  phtread_mutex_t *fork_mutex;
+  pthread_t *philosophers;
 } t_data;
+
 
 typedef enum e_type
 {
