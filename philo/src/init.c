@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:56:22 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/01 18:56:38 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/14 18:17:13 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-int init_args(t_data *data, char **av)
+//renommer init_data
+int init_data(t_data *data, char **av)
 {
   data = malloc(sizeof(t_data));
   if (!data)
@@ -41,5 +42,46 @@ int init_args(t_data *data, char **av)
   }
   else 
     data->number_of_times_each_philosopher_must_eat = -1; // -1 signifie : pas renseigne a l'init !
+  data->end = false;
   return (0);
 }
+
+int init_mutex(t_data *data)
+{
+  bool forks[data->nb_philo];
+  pthread_mutex_t fork_mutex[data->nb_philo];
+  int i;
+  // un mutex pour le print ?
+
+  data->forks = forks;
+  i = 0;
+  if (pthread_mutex_init(&data->mutex_start, NULL) != 0)
+    return (destroy_mutex_free_exit(data, &data->mutex_start, -1, MUTEX_ERROR));
+  while (i < data->nb_philo)
+  {
+    if (pthread_mutex_init(&fork_mutex[i], NULL) != 0)
+      return (destroy_mutex_free_exit(data, fork_mutex, i, MUTEX_ERROR));
+    i++;
+  }
+  data->forks = forks;
+  return (0);
+}
+
+int init_threads(t_data *data)
+{
+  t_philosopher philosophers[data->nb_philo];
+  int i;
+
+  i = 0;
+  while (i < data->nb_philo)
+  {
+    philosophers->id = i + 1;
+    philosophers->last_meal = -1; // -1 ?
+    philosophers->nb_meals_eaten = 0;
+    philosophers->mutex_start = &data->mutex_start;
+    i++;
+  }
+  data->philosophers = philosophers;
+  return (0);
+}
+

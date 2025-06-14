@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:26:45 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/01 18:57:44 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/14 18:19:14 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,66 +14,27 @@
 #include "philo.h"
 #include <stdio.h>
 #include <pthread.h>
-
-int destroy_mutex_exit(pthread_mutex_t *fork_mutex, int i)
-{
-  int j;
-
-  j = 0;
-  while (j < i)
-  {
-    pthread_mutex_destroy(fork_mutex[j]);
-    j++;
-  }
-  return (MUTEX_ERROR);
-}
-
-int init_mutex(t_data *data)
-{
-  bool forks[data->nb_philo];
-  pthread_mutex_t fork_mutex[data->nb_philo];
-  int i;
-  // un mutex pour le print ?
-
-  data->forks = forks;
-  i = 0;
-  while (i < data->nb_philo)
-  {
-    if (pthread_mutex_init(&fork_mutex[i], NULL) != 0)
-      return (destroy_mutex(fork_mutex, i));
-    i++;
-  }
-  data->forks = forks;
-  return (0);
-}
-
-int init_threads(t_data *data)
-{
-  pthread_t philosophers[data->nb_philo];
-  int i;
-
-  i = 0;
-  while (i < data->nb_philo)
-  {
-    philosophers.id = i + 1;
-    philosophers.last_meal = -1; // -1 ?
-    philosophers.nb_meals_eaten = 0;
-    i++;
-  }
-  data->philosophers = philosophers;
-  return (0);
-}
+#include <stdlib.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 int start_simulation(t_data *data)
 {
   int i;
+  struct timeval tv; // je peux declarer cette structure a differents endroits sans foutre le zbeul sur le temps ?
 
+  pthread_mutex_lock(&data->mutex_start);
   i = 0;
   while (i < data->nb_philo)
   {
-    if (pthread_create(data->philosophers[i]->thread, NULL, routine, data->philosphers[i]) != 0)
-      return (-1);
+    if (pthread_create(&data->philosophers[i].thread, NULL, philo_routine, &data->philosophers[i]) != 0)
+      return (destroy_mutex_free_exit(data, data->fork_mutex, data->nb_philo, THREAD_ERROR));
   }
+  if (pthread_create(&data->monitor, NULL, monitor_routine, &data) != 0)
+    return (destroy_mutex_free_exit(data, data->fork_mutex, data->nb_philo, THREAD_ERROR));
+  data->time_start = gettimeofday(&tv, NULL);
+  pthread_mutex_unlock(&data->mutex_start);
+  printf("start time = %d\n", data->time_start);
   return (0);
 }
 
@@ -89,7 +50,7 @@ int main (int ac, char **av)
     //est-ce que le dernier argument doit forcement etre entre corchets ?
     return (1);
   }
-  exit_code = init_args(&data, av);
+  exit_code = init_data(&data, av);
   if (exit_code != 0)
     return (exit_code);
   exit_code = init_mutex(&data);
@@ -101,6 +62,5 @@ int main (int ac, char **av)
   exit_code = start_simulation(&data);
   if (exit_code != 0)
     return (exit_code);
-
   return (exit_code); 
 }

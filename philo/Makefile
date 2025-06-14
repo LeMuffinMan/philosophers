@@ -13,7 +13,10 @@
 SRC = src/philo.c \
 			src/init.c \
 			src/utils/prints.c \
-			src/utils/str_utils.c 
+			src/utils/str_utils.c \
+			src/utils/free_fcts.c \
+			src/routines/monitor_routine.c \
+			src/routines/philosophers_routine.c
 
 CC = cc
 FLAGS = -Wall -Werror -Wextra -g3 
@@ -29,6 +32,7 @@ RESET = \033[0m
 all: $(NAME)
 
 $(NAME): $(OBJ) Makefile include/philo.h src/philo.c #ajouter ici 
+	mkdir -p bin
 	$(CC) $(FLAGS) $(OBJ) -I $(INC) -o bin/$(NAME)
 	@echo 
 	@echo "$(GREEN)compilation successful ✅ $(NAME)$(RESET)"
@@ -46,7 +50,7 @@ clean:
 fclean: clean
 	rm -rf $(NAME)
 
-re : flcean all
+re : fclean all
 
-#FORCE:
+# FORCE:
 .PHONY: all re clean fclean #bonus
