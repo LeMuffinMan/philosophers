@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:56:22 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/18 17:58:56 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/18 17:57:49 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,16 @@ int init_data(t_data **data, char **av)
   }
   else 
     (*data)->meals_limit = -1; // set a -1 si pas renseigne par user 
+  return (0);
+}
+
+int destroy_forks_mutex(t_data **data, int last_mutex)
+{
+  while (last_mutex >= 0)
+  {
+    pthread_mutex_destroy(&((*data)->forks_mutex[last_mutex]));
+    last_mutex--;
+  }
   return (0);
 }
 

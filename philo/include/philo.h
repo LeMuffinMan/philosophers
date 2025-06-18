@@ -68,6 +68,13 @@ int init_mutex(t_data **data);
 // int init_forks(t_data *data);
 // int init_threads(t_data *data);
 
+//init_mutex_utils
+int init_mutex_start_mutex(t_data **data);
+int init_mutex_end_mutex(t_data **data);
+int init_mutex_write_mutex(t_data **data);
+int init_mutex_meals_limit_mutex(t_data **data);
+int destroy_forks_mutex(t_data **data, int last_mutex);
+
 //utils 
   //prints
 int print_error_and_free(char *msg, int exit_code, t_data **data);
