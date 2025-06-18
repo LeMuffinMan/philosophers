@@ -61,7 +61,7 @@ typedef enum e_type
 } t_type;
 
 //init.c
-int init_data(t_data *data, char **av);
+int init_data(t_data **data, char **av);
 int init_mutex(t_data *data);
 int init_threads(t_data *data);
 

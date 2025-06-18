@@ -48,9 +48,10 @@ int start_simulation(t_data *data)
 
 int main (int ac, char **av)
 {
-  t_data data;
+  t_data *data;
   int exit_code;
 
+  data = NULL;
   exit_code = 0;
   if (ac < 4 || ac > 5)
   {
@@ -61,14 +62,15 @@ int main (int ac, char **av)
   exit_code = init_data(&data, av);
   if (exit_code != 0)
     return (exit_code);
-  exit_code = init_mutex(&data);
-  if (exit_code != 0)
-    return (exit_code);
-  exit_code = init_threads(&data);
-  if (exit_code != 0)
-    return (exit_code);
-  exit_code = start_simulation(&data);
-  if (exit_code != 0)
-    return (exit_code);
+  /* exit_code = init_mutex(&data); */
+  /* if (exit_code != 0) */
+  /*   return (exit_code); */
+  /* exit_code = init_threads(&data); */
+  /* if (exit_code != 0) */
+  /*   return (exit_code); */
+  /* exit_code = start_simulation(&data); */
+  /* if (exit_code != 0) */
+  /*   return (exit_code); */
+  free(data);
   return (exit_code); 
 }
