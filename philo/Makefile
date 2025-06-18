@@ -11,7 +11,8 @@
 # **************************************************************************** #
 
 SRC = src/philo.c \
-			src/init.c \
+			src/init/init_mutex_utils.c \
+			src/init/init.c \
 			src/utils/prints.c \
 			src/utils/str_utils.c \
 			src/utils/free_fcts.c \
