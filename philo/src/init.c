@@ -21,25 +21,20 @@ int init_data(t_data **data, char **av)
   *data = malloc(sizeof(t_data));
   if (!*data)
     return (print_error_and_free("Data struct mem_alloc failed\n", MALLOC_ERROR, data));
-  //on peut lancer 0 philo ?
   (*data)->nb_philo = ft_atoi(av[1]); // overflow ?
   if ((*data)->nb_philo <= 0)
     return (print_error_and_free("Incorrect number_of_philosophers\n", INVALID_ARG, data));
-  //un time to die de 0 ? 
   (*data)->time_to_die = ft_atoi(av[2]); // overflow ?
   if ((*data)->time_to_die <= 0)
     return (print_error_and_free("Incorrect time_to_die\n", INVALID_ARG, data));
-  //un time to eat de 0 ? 
   (*data)->time_to_eat = ft_atoi(av[3]); // overflow ?
   if ((*data)->time_to_eat <= 0)
     return (print_error_and_free("Incorrect time_to_eat\n", INVALID_ARG, data));
-  //un time to sleep de 0 ? 
   (*data)->time_to_sleep = ft_atoi(av[4]); // overflow ?
   if ((*data)->time_to_sleep <= 0)
     return (print_error_and_free("Incorrect time_to_sleep\n", INVALID_ARG, data));
   if (av[5])
   {
-    //un min de 0 ? 
     (*data)->meals_limit = ft_atoi(av[5]);
     if ((*data)->meals_limit <= 0)
       return (print_error_and_free("Incorrect number_of_times_each_philosopher_must_eat", INVALID_ARG, data));
@@ -59,7 +54,7 @@ static int destroy_forks_mutex(t_data **data, int last_mutex)
   return (0);
 }
 
-int init_mutex(t_data **data)
+static int init_mutex_forks_bool(t_data **data)
 {
   int i;
 
@@ -72,6 +67,13 @@ int init_mutex(t_data **data)
     (*data)->forks[i] = false;
     i++;
   }
+  return (0);
+}
+
+static int init_mutex_forks_mutex(t_data **data)
+{
+  int i;
+
   (*data)->forks_mutex = malloc(sizeof(pthread_mutex_t) * (*data)->nb_philo);
   if (!(*data)->forks_mutex)
     return (print_error_and_free("forks mem_alloc failed\n", MALLOC_ERROR, data));
@@ -85,17 +87,32 @@ int init_mutex(t_data **data)
     }
     i++;
   }
+  return (0);
+}
+
+static int init_mutex_start_mutex(t_data **data)
+{
   if (pthread_mutex_init(&(*data)->start_mutex, NULL) != 0)
   {
     destroy_forks_mutex(data, (*data)->nb_philo - 1);
     return (print_error_and_free("Start mutex init failed\n", MUTEX_ERROR, data));
   }
+  return (0);
+}
+
+static int init_mutex_end_mutex(t_data **data)
+{
   if (pthread_mutex_init(&(*data)->end_mutex, NULL) != 0)
   {
     destroy_forks_mutex(data, (*data)->nb_philo - 1);
     pthread_mutex_destroy(&(*data)->start_mutex);
     return (print_error_and_free("End mutex init failed\n", MUTEX_ERROR, data));
   }
+  return (0);
+}
+
+static int init_mutex_write_mutex(t_data **data)
+{
   if (pthread_mutex_init(&(*data)->write_mutex, NULL) != 0)
   {
     destroy_forks_mutex(data, (*data)->nb_philo - 1);
@@ -103,6 +120,11 @@ int init_mutex(t_data **data)
     pthread_mutex_destroy(&(*data)->end_mutex);
     return (print_error_and_free("Write mutex init failed\n", MUTEX_ERROR, data));
   }
+  return (0);
+}
+
+static int init_mutex_meals_limit_mutex(t_data **data)
+{
   if (pthread_mutex_init(&(*data)->meals_limit_mutex, NULL) != 0)
   {
     destroy_forks_mutex(data, (*data)->nb_philo -1);
@@ -111,6 +133,32 @@ int init_mutex(t_data **data)
     pthread_mutex_destroy(&(*data)->end_mutex);
     return (print_error_and_free("meals_limit mutex init failed\n", MUTEX_ERROR, data));
   }
+  return (0);
+}
+
+int init_mutex(t_data **data)
+{
+  int i;
+  int exit_code;
+
+  exit_code = init_mutex_forks_bool(data);
+  if (exit_code != 0)
+    return (exit_code);
+  exit_code = init_mutex_forks_mutex(data);
+  if (exit_code != 0)
+    return (exit_code);
+  exit_code = init_mutex_start_mutex(data);
+  if (exit_code != 0)
+    return (exit_code);
+  exit_code = init_mutex_end_mutex(data);
+  if (exit_code != 0)
+    return (exit_code);
+  exit_code = init_mutex_write_mutex(data);
+  if (exit_code != 0)
+    return (exit_code);
+  exit_code = init_mutex_meals_limit_mutex(data);
+  if (exit_code != 0)
+    return (exit_code);
   return (0);
 }
 
