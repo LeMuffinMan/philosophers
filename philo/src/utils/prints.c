@@ -15,11 +15,10 @@
 #include <unistd.h>
 #include <stdio.h>
 
-int print_error_and_free(char *msg, int exit_code, t_data *data)
+int print_error_and_free(char *msg, int exit_code, t_data **data)
 {
   printf("%s", msg);
-  if (data)
-    free(data);
+  free_allocated_memory(data);
   return (exit_code);
 }
 

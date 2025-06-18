@@ -13,6 +13,18 @@
 #include "philo.h"
 #include <stdlib.h>
 
+int free_allocated_memory(t_data **data)
+{
+  if (!*data)
+    return (0);
+  if ((*data)->forks)
+    free((*data)->forks);
+  if ((*data)->forks_mutex)
+    free((*data)->forks_mutex);
+  free(*data);
+  return (0);
+}
+
 /* int destroy_mutex_free_exit(t_data *data, pthread_mutex_t *fork_mutex, int i, int exit_code) */
 /* { */
 /*   int j; */

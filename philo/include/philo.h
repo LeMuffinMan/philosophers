@@ -38,17 +38,18 @@ typedef struct s_data
   int time_to_die;
   int time_to_eat;
   int time_to_sleep;
-  int number_of_times_each_philosopher_must_eat;
   bool *forks;
-  pthread_mutex_t *fork_mutex;
+  pthread_mutex_t *forks_mutex;
+  pthread_mutex_t start_mutex;
+  pthread_mutex_t end_mutex;
+  bool end; // pour le deces
+  pthread_mutex_t write_mutex;
+  pthread_mutex_t meals_limit_mutex;
+  int meals_limit;
   // t_philosopher *philosophers;
   // pthread_t monitor;
-  // pthread_mutex_t mutex_start;
   // int time_start;
   // pthread_mutex_t mutex_end;
-  // bool end;
-  //death mutex
-  //write_mutex
 } t_data;
 
 
@@ -63,12 +64,13 @@ typedef enum e_type
 
 //init.c
 int init_data(t_data **data, char **av);
+int init_mutex(t_data **data);
 // int init_forks(t_data *data);
 // int init_threads(t_data *data);
 
 //utils 
   //prints
-int print_error_and_free(char *msg, int exit_code, t_data *data);
+int print_error_and_free(char *msg, int exit_code, t_data **data);
 // int print_update(int time_elapsed, int philo, t_type type);
 // int print_error(char *input, char *arg_type, t_data *data);
 // int print_update(int time_elapsed, int philo, t_type type);
@@ -83,6 +85,7 @@ int ft_atoi(const char *nptr);
 // int ft_atoi(char *str);
 
   //free_fcts.c
+int free_allocated_memory(t_data **data);
 // int destroy_mutex_free_exit(t_data *data, pthread_mutex_t *fork_mutex, int i, int exit_code);
 
 //routines

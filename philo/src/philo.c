@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:26:45 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/14 18:26:06 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/18 16:34:07 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,18 @@
 /*   return (0); */
 /* } */
 
+int print_data(t_data *data)
+{
+  printf("nb_philo = %d\n", data->nb_philo);
+  printf("time_to_die = %d\n", data->time_to_die);
+  printf("time_to_eat = %d\n", data->time_to_eat);
+  printf("time_to_sleep = %d\n", data->time_to_sleep);
+  printf("time_to_sleep = %d\n", data->time_to_sleep);
+  if (data->meals_limit)
+    printf("meals_limit = %d\n", data->meals_limit);
+  return (0);
+}
+
 int main (int ac, char **av)
 {
   t_data *data;
@@ -65,6 +77,10 @@ int main (int ac, char **av)
   exit_code = init_data(&data, av);
   if (exit_code != 0)
     return (exit_code);
+  print_data(data);
+  exit_code = init_mutex(&data);
+  if (exit_code != 0)
+    return (exit_code);
   /* exit_code = init_forks(&data); */
   /* if (exit_code != 0) */
   /*   return (exit_code); */
@@ -74,6 +90,6 @@ int main (int ac, char **av)
   /* exit_code = start_simulation(&data); */
   /* if (exit_code != 0) */
   /*   return (exit_code); */
-  free(data);
+  free_allocated_memory(&data);
   return (exit_code); 
 }
