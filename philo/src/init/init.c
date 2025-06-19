@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:56:22 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/18 17:57:49 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/19 20:03:19 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,24 @@ int init_data(t_data **data, char **av)
 {
   *data = malloc(sizeof(t_data));
   if (!*data)
-    return (print_error_and_free("Data struct mem_alloc failed\n", MALLOC_ERROR, data));
+    return (init_data_print_error_and_free("Data struct mem_alloc failed\n", MALLOC_ERROR, data));
   (*data)->nb_philo = ft_atoi(av[1]); // overflow ?
   if ((*data)->nb_philo <= 0)
-    return (print_error_and_free("Incorrect number_of_philosophers\n", INVALID_ARG, data));
+    return (init_data_print_error_and_free("Incorrect number_of_philosophers\n", INVALID_ARG, data));
   (*data)->time_to_die = ft_atoi(av[2]); // overflow ?
   if ((*data)->time_to_die <= 0)
-    return (print_error_and_free("Incorrect time_to_die\n", INVALID_ARG, data));
+    return (init_data_print_error_and_free("Incorrect time_to_die\n", INVALID_ARG, data));
   (*data)->time_to_eat = ft_atoi(av[3]); // overflow ?
   if ((*data)->time_to_eat <= 0)
-    return (print_error_and_free("Incorrect time_to_eat\n", INVALID_ARG, data));
+    return (init_data_print_error_and_free("Incorrect time_to_eat\n", INVALID_ARG, data));
   (*data)->time_to_sleep = ft_atoi(av[4]); // overflow ?
   if ((*data)->time_to_sleep <= 0)
-    return (print_error_and_free("Incorrect time_to_sleep\n", INVALID_ARG, data));
+    return (init_data_print_error_and_free("Incorrect time_to_sleep\n", INVALID_ARG, data));
   if (av[5])
   {
     (*data)->meals_limit = ft_atoi(av[5]);
     if ((*data)->meals_limit <= 0)
-      return (print_error_and_free("Incorrect number_of_times_each_philosopher_must_eat", INVALID_ARG, data));
+      return (init_data_print_error_and_free("Incorrect number_of_times_each_philosopher_must_eat\n", INVALID_ARG, data));
   }
   else 
     (*data)->meals_limit = -1; // set a -1 si pas renseigne par user 
