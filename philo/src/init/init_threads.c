@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:01:21 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/19 17:36:46 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/19 19:01:01 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ int init_philo_struct(t_data **data, int i)
   (*data)->philosophers[i].last_meal = -1;
   (*data)->philosophers[i].nb_meals_eaten = 0;
   (*data)->philosophers[i].start = &((*data)->start);
-  (*data)->philosophers[i].mutex_start = &((*data)->start_mutex);
-  (*data)->philosophers[i].mutex_end = &((*data)->end_mutex);
+  (*data)->philosophers[i].start_mutex = &((*data)->start_mutex);
+  (*data)->philosophers[i].end_mutex = &((*data)->end_mutex);
   (*data)->philosophers[i].threads = (*data)->threads;
   return (init_philo_struct_mutex(data, i));
 }
@@ -106,7 +106,7 @@ int init_threads(t_data **data)
     }
     i++;
   }
-  if (pthread_create(&(*data)->monitor, NULL, monitor_routine, &data) != 0)
+  if (pthread_create(&(*data)->monitor, NULL, monitor_routine, *data) != 0)
   {
     join_threads(data, i);
     destroy_all_philo_mutex(data, i);

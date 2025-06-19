@@ -30,9 +30,9 @@ typedef struct s_philosopher
   pthread_mutex_t nb_meals_eaten_mutex;
   int nb_meals_eaten;
   pthread_t *threads;
-  pthread_mutex_t *mutex_start;
+  pthread_mutex_t *start_mutex;
   bool *start;
-  pthread_mutex_t *mutex_end;
+  pthread_mutex_t *end_mutex;
 } t_philosopher;
 
 typedef struct s_data

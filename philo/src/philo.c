@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:26:45 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/19 17:20:00 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/19 18:49:41 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int main (int ac, char **av)
   exit_code = init_data(&data, av);
   if (exit_code != 0)
     return (exit_code);
-  print_data(data);
+  /* print_data(data); */
   exit_code = init_mutex(&data);
   if (exit_code != 0)
     return (exit_code);
