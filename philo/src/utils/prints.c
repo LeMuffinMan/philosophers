@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:56:03 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/01 19:42:01 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/19 19:47:33 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,23 @@ int print_error_and_free(char *msg, int exit_code, t_data **data)
   printf("%s", msg);
   free_allocated_memory(data);
   return (exit_code);
+}
+
+int print_log(pthread_mutex_t *write_mutex, int time, int id, t_type action)
+{
+  pthread_mutex_lock(write_mutex);
+  if (action == FORK)
+    printf("%d : %d has taken a fork\n", time, id);
+  else if (action == EAT)
+    printf("%d : %d is eating\n", time, id);
+  else if (action == SLEEP)
+    printf("%d : %d is sleeping\n", time, id);
+  else if (action == THINK)
+    printf("%d : %d is thinking\n", time, id);
+  else if (action == DIE)
+    printf("%d : %d died\n", time, id);
+  pthread_mutex_unlock(write_mutex);
+  return (0);
 }
 
 /* int print_update(int time_elapsed, int philo, t_type type) */

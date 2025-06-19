@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:01:21 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/19 19:01:01 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/19 19:48:02 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ int init_philo_struct(t_data **data, int i)
   (*data)->philosophers[i].start_mutex = &((*data)->start_mutex);
   (*data)->philosophers[i].end_mutex = &((*data)->end_mutex);
   (*data)->philosophers[i].threads = (*data)->threads;
+  (*data)->philosophers[i].write_mutex = &(*data)->write_mutex;
   return (init_philo_struct_mutex(data, i));
 }
 

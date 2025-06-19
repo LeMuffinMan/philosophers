@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   str_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:56:03 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/01 18:56:05 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/19 20:02:23 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <limits.h>
 #include <stdbool.h>
 #include "philo.h"
+#include <stdio.h>
 
 int ft_atoi(const char *nptr)
 {
@@ -57,7 +58,10 @@ int are_valids_args(char **av)
       !is_only_digits(av[3]) || av[3][0] == '-' ||
       !is_only_digits(av[4]) || av[4][0] == '-' ||
       (av[5] && (!is_only_digits(av[5]) || av[5][0] == '-')))
-    return (print_error_and_free("Invalid(s) argument(s)\n", INVALID_ARG, NULL));
+  {
+    printf("Invalid(s) argument(s)\n");
+    return (INVALID_ARG);
+  }
   return (0);
 }
 

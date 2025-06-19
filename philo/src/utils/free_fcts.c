@@ -6,12 +6,22 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:10:44 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/19 18:46:55 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/19 20:00:44 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdlib.h>
+#include <stdio.h>
+
+int init_data_print_error_and_free(char *msg, int exit_code, t_data **data)
+{
+  if (!*data)
+    return (0);
+  printf("%s", msg);
+  free(*data);
+  return (exit_code);
+}
 
 int free_allocated_memory(t_data **data)
 {

@@ -33,6 +33,7 @@ typedef struct s_philosopher
   pthread_mutex_t *start_mutex;
   bool *start;
   pthread_mutex_t *end_mutex;
+  pthread_mutex_t *write_mutex;
 } t_philosopher;
 
 typedef struct s_data
@@ -102,6 +103,7 @@ int					free_allocated_memory(t_data **data);
 int simulation_end_destroy_and_free(t_data **data);
 int join_threads(t_data **data, int i);
 int destroy_all_philo_mutex(t_data **data, int i);
+int init_data_print_error_and_free(char *msg, int exit_code, t_data **data);
 // int destroy_mutex_free_exit(t_data *data, pthread_mutex_t *fork_mutex, int i, int exit_code);
 
 // routines
