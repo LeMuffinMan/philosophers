@@ -6,12 +6,13 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:12:24 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/19 18:41:43 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/19 19:03:46 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <unistd.h>
+#include <stdio.h>
 
 /* static int is_a_philo_dead(t_data *data) */
 /* { */
@@ -38,9 +39,15 @@
 /**/
 void *monitor_routine(void *arg)
 {
-  /* t_data *data; */
+  t_data *data;
   /**/
-  /* data = (t_data *)arg; */
+  data = (t_data *)arg;
+  pthread_mutex_lock(&data->start_mutex); //soit je me sert que de l'etat du mutex, soit je check la valeur de start 
+  if (data->start == true)
+    pthread_mutex_unlock(&data->start_mutex); 
+  else
+    return (NULL); // gestion d'erreur ? on peut ajouter un arg dans le create pour recuperer la valeur de retour 
+  printf("monitor started\n");
   /* while (1) */
   /* { */
   /*   if (is_a_philo_dead(data) || did_philo_ate_enough(data)) // besoin du mutex ? */
@@ -53,4 +60,5 @@ void *monitor_routine(void *arg)
   /* return (0); */
   //on check si un philo est mort
   //on check le nombre de repas si on a un nombre de repas a faire
+  return (NULL);
 }
