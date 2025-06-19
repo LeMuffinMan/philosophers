@@ -12,6 +12,7 @@
 
 SRC = src/philo.c \
 			src/init/init_mutex_utils.c \
+			src/init/init_threads.c \
 			src/init/init.c \
 			src/utils/prints.c \
 			src/utils/str_utils.c \
@@ -32,7 +33,7 @@ RESET = \033[0m
 
 all: $(NAME)
 
-$(NAME): $(OBJ) Makefile include/philo.h src/philo.c #ajouter ici 
+$(NAME): $(OBJ) Makefile include/philo.h src/philo.c #ajouter ici  !!
 	mkdir -p bin
 	$(CC) $(FLAGS) $(OBJ) -I $(INC) -o bin/$(NAME)
 	@echo 

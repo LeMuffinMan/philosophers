@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:12:24 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/14 18:27:00 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/19 18:41:43 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,21 @@
 /*   return (0); */
 /* } */
 /**/
-/* void *monitor_routine(void *arg) */
-/* { */
-/*   t_data *data; */
-/**/
-/*   data = (t_data *)arg; */
-/*   while (1) */
-/*   { */
-/*     if (is_a_philo_dead(data) || did_philo_ate_enough(data)) // besoin du mutex ? */
-/*       break ; */
-/*     usleep(1000); */
-/*   } */
-/*   pthread_mutex_lock(&data->mutex_end); */
-/*   data->end = 1; */
-/*   pthread_mutex_unlock(&data->mutex_end); */
-/*   return (0); */
-/*   //on check si un philo est mort */
-/*   //on check le nombre de repas si on a un nombre de repas a faire */
-/* } */
+void *monitor_routine(void *arg)
+{
+  /* t_data *data; */
+  /**/
+  /* data = (t_data *)arg; */
+  /* while (1) */
+  /* { */
+  /*   if (is_a_philo_dead(data) || did_philo_ate_enough(data)) // besoin du mutex ? */
+  /*     break ; */
+  /*   usleep(1000); */
+  /* } */
+  /* pthread_mutex_lock(&data->mutex_end); */
+  /* data->end = 1; */
+  /* pthread_mutex_unlock(&data->mutex_end); */
+  /* return (0); */
+  //on check si un philo est mort
+  //on check le nombre de repas si on a un nombre de repas a faire
+}

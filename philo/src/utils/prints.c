@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
+//a deplacer dans un init utils
 int print_error_and_free(char *msg, int exit_code, t_data **data)
 {
   printf("%s", msg);

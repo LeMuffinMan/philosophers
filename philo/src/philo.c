@@ -6,14 +6,13 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:26:45 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/18 16:34:07 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/19 17:20:00 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 /* #include <threads.h> */
 #include "philo.h"
 #include <stdio.h>
-/* #include <pthread.h> */
 #include <stdlib.h>
 /* #include <sys/time.h> */
 /* #include <unistd.h> */
@@ -81,15 +80,8 @@ int main (int ac, char **av)
   exit_code = init_mutex(&data);
   if (exit_code != 0)
     return (exit_code);
-  /* exit_code = init_forks(&data); */
-  /* if (exit_code != 0) */
-  /*   return (exit_code); */
-  /* exit_code = init_threads(&data); */
-  /* if (exit_code != 0) */
-  /*   return (exit_code); */
-  /* exit_code = start_simulation(&data); */
-  /* if (exit_code != 0) */
-  /*   return (exit_code); */
-  free_allocated_memory(&data);
-  return (exit_code); 
+  exit_code = init_threads(&data);
+  if (exit_code != 0)
+    return (exit_code);
+  return (simulation_end_destroy_and_free(&data));
 }
