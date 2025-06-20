@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:12:24 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/19 19:03:46 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 17:40:20 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,13 @@ void *monitor_routine(void *arg)
   /**/
   data = (t_data *)arg;
   pthread_mutex_lock(&data->start_mutex); //soit je me sert que de l'etat du mutex, soit je check la valeur de start 
-  if (data->start == true)
+  if (data->start_time != -1)
     pthread_mutex_unlock(&data->start_mutex); 
   else
     return (NULL); // gestion d'erreur ? on peut ajouter un arg dans le create pour recuperer la valeur de retour 
-  printf("monitor started\n");
+  pthread_mutex_lock(&data->write_mutex);
+  printf("monitor started at %ld\n", get_time() - data->start_time);
+  pthread_mutex_unlock(&data->write_mutex);
   /* while (1) */
   /* { */
   /*   if (is_a_philo_dead(data) || did_philo_ate_enough(data)) // besoin du mutex ? */
