@@ -6,13 +6,14 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 16:01:21 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/19 19:48:02 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/20 17:40:37 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pthread.h>
 #include <stdlib.h>
 #include "philo.h"
+#include <stdio.h>
 
 int destroy_all_data_mutex_and_free(t_data **data)
 {
@@ -74,7 +75,7 @@ int init_philo_struct(t_data **data, int i)
   (*data)->philosophers[i].id = i; // attention au 0 !
   (*data)->philosophers[i].last_meal = -1;
   (*data)->philosophers[i].nb_meals_eaten = 0;
-  (*data)->philosophers[i].start = &((*data)->start);
+  (*data)->philosophers[i].start_time = &((*data)->start_time);
   (*data)->philosophers[i].start_mutex = &((*data)->start_mutex);
   (*data)->philosophers[i].end_mutex = &((*data)->end_mutex);
   (*data)->philosophers[i].threads = (*data)->threads;
@@ -93,7 +94,6 @@ int init_threads(t_data **data)
   if (!(*data)->philosophers)
     return (destroy_all_data_mutex_and_free(data));
   pthread_mutex_lock(&(*data)->start_mutex);
-  (*data)->start = false;
   i = 0;
   while (i < (*data)->nb_philo)
   {
@@ -113,7 +113,8 @@ int init_threads(t_data **data)
     destroy_all_philo_mutex(data, i);
     return (destroy_all_data_mutex_and_free(data));
   }
-  (*data)->start = true;
+  (*data)->start_time = get_time();
+  printf("init time = %ld\n", (*data)->start_time);
   pthread_mutex_unlock(&(*data)->start_mutex);
   //ici un while (1) ? 
   return (0);

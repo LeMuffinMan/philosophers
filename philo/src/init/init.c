@@ -41,6 +41,8 @@ int init_data(t_data **data, char **av)
   }
   else 
     (*data)->meals_limit = -1; // set a -1 si pas renseigne par user 
+  (*data)->end = false;
+  (*data)->start_time = -1;
   return (0);
 }
 
