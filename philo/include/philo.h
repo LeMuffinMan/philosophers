@@ -108,8 +108,11 @@ int					simulation_end_destroy_and_free(t_data **data);
 int					init_data_print_error_and_free(char *msg, int exit_code,
 						t_data **data);
 
-// getters
+// time.c
 long int			get_time(void);
+bool is_simulation_over(t_philosopher *philosopher);
+bool is_time_started(t_philosopher *philosopher);
+int accurate_sleep(int time_to_sleep);
 
 // prints
 int					print_error_and_free(char *msg, int exit_code,
@@ -123,5 +126,10 @@ int					ft_atoi(const char *nptr);
 // --------------------------------------- src/ -------------------------------------//
 void				*philosophers_routine(void *arg);
 int main_thread_monitoring(t_data **data);
+
+//forks.c 
+bool take_one_fork(t_philosopher *philosopher, int i);
+bool take_two_forks(t_philosopher *philosopher);
+int release_forks(t_philosopher *philosopher);
 
 #endif
