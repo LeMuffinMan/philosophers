@@ -46,53 +46,11 @@
 /*   return (0); */
 /* } */
 
-bool are_philo_fed(t_data **data)
-{
-  int i;
-
-  i = 0;
-  while (i < (*data)->nb_philo)
-  {
-    pthread_mutex_lock(&(*data)->philosophers[i].fed_mutex);
-    if ((*data)->philosophers[i].fed == false)
-    {
-      pthread_mutex_unlock(&(*data)->philosophers[i].fed_mutex);
-      return (false);
-    }
-    pthread_mutex_unlock(&(*data)->philosophers[i].fed_mutex);
-    i++;
-  }
-  return (true);
-}
-
-int main_thread_monitoring(t_data **data)
-{
-  pthread_mutex_lock(&(*data)->write_mutex);
-  printf("monitor started at %ld\n", get_time() - (*data)->start_time);
-  pthread_mutex_unlock(&(*data)->write_mutex);
-  while (1)
-  {
-    if (are_philo_fed(data))
-    {
-      pthread_mutex_lock(&(*data)->end_mutex);
-      (*data)->end = true;
-      pthread_mutex_unlock(&(*data)->end_mutex);
-      return (1);
-      /* pthread_mutex_lock(&(*data)->write_mutex); */
-      /* printf("DONE !\n"); */
-      /* pthread_mutex_unlock(&(*data)->write_mutex); */
-    }
-    usleep (1000);
-  }
-  return (0);
-}
-
 int print_data(t_data *data)
 {
   printf("nb_philo = %d\n", data->nb_philo);
   printf("time_to_die = %d\n", data->time_to_die);
   printf("time_to_eat = %d\n", data->time_to_eat);
-  printf("time_to_sleep = %d\n", data->time_to_sleep);
   printf("time_to_sleep = %d\n", data->time_to_sleep);
   if (data->meals_limit)
     printf("meals_limit = %d\n", data->meals_limit);
