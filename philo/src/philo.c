@@ -49,7 +49,7 @@
 int main_thread_monitoring(t_data **data)
 {
   pthread_mutex_lock(&(*data)->write_mutex);
-  printf("monitor started at %ld\n", get_time() - (*data)->start_time);
+  /* printf("monitor started at %ld\n", get_time() - (*data)->start_time); */
   pthread_mutex_unlock(&(*data)->write_mutex);
   return (0);
 }
