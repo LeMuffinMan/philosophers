@@ -17,9 +17,7 @@ long int get_time(void)
 {
   struct timeval tv;
   
-  /* pthread_mutex_lock(write_mutex); */
   gettimeofday(&tv, NULL);
   //gerer l'erreur du gettimeofday ? 
-  /* pthread_mutex_unlock(write_mutex); */
-  return (tv.tv_usec); 
+  return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000)); 
 }

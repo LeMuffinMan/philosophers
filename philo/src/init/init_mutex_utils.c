@@ -12,9 +12,9 @@
 
 #include "philo.h"
 
-int init_mutex_start_mutex(t_data **data)
+int init_mutex_time_mutex(t_data **data)
 {
-  if (pthread_mutex_init(&(*data)->start_mutex, NULL) != 0)
+  if (pthread_mutex_init(&(*data)->time_mutex, NULL) != 0)
   {
     destroy_forks_mutex(data, (*data)->nb_philo - 1);
     return (print_error_and_free("Start mutex init failed\n", MUTEX_ERROR, data));
@@ -27,7 +27,7 @@ int init_mutex_end_mutex(t_data **data)
   if (pthread_mutex_init(&(*data)->end_mutex, NULL) != 0)
   {
     destroy_forks_mutex(data, (*data)->nb_philo - 1);
-    pthread_mutex_destroy(&(*data)->start_mutex);
+    pthread_mutex_destroy(&(*data)->time_mutex);
     return (print_error_and_free("End mutex init failed\n", MUTEX_ERROR, data));
   }
   return (0);
@@ -38,7 +38,7 @@ int init_mutex_write_mutex(t_data **data)
   if (pthread_mutex_init(&(*data)->write_mutex, NULL) != 0)
   {
     destroy_forks_mutex(data, (*data)->nb_philo - 1);
-    pthread_mutex_destroy(&(*data)->start_mutex);
+    pthread_mutex_destroy(&(*data)->time_mutex);
     pthread_mutex_destroy(&(*data)->end_mutex);
     return (print_error_and_free("Write mutex init failed\n", MUTEX_ERROR, data));
   }
@@ -51,7 +51,7 @@ int init_mutex_meals_limit_mutex(t_data **data)
   {
     destroy_forks_mutex(data, (*data)->nb_philo -1);
     pthread_mutex_destroy(&(*data)->write_mutex);
-    pthread_mutex_destroy(&(*data)->start_mutex);
+    pthread_mutex_destroy(&(*data)->time_mutex);
     pthread_mutex_destroy(&(*data)->end_mutex);
     return (print_error_and_free("meals_limit mutex init failed\n", MUTEX_ERROR, data));
   }

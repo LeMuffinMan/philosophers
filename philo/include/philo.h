@@ -21,19 +21,9 @@
 # define MUTEX_ERROR -2
 # define THREAD_ERROR -3
 
-typedef struct s_philosopher
-{
-	int				id;
-	pthread_mutex_t	last_meal_mutex;
-	int				last_meal;
-	pthread_mutex_t	nb_meals_eaten_mutex;
-	int				nb_meals_eaten;
-	pthread_t		*threads;
-	pthread_mutex_t	*start_mutex;
-	long int		*start_time;
-	pthread_mutex_t	*end_mutex;
-	pthread_mutex_t	*write_mutex;
-}					t_philosopher;
+struct s_philosopher;
+typedef struct s_philosopher t_philosopher;
+
 
 typedef struct s_data
 {
@@ -43,7 +33,7 @@ typedef struct s_data
 	int				time_to_sleep;
 	pthread_mutex_t	*forks_mutex;
 	bool			*forks;
-	pthread_mutex_t	start_mutex;
+	pthread_mutex_t	time_mutex;
 	long int		start_time;
 	pthread_mutex_t	end_mutex;
 	bool			end;
@@ -55,9 +45,29 @@ typedef struct s_data
 	t_philosopher	*philosophers;
 }					t_data;
 
+typedef struct s_philosopher
+{
+	int				nb_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				id;
+	pthread_mutex_t	last_meal_mutex;
+	int				last_meal;
+	pthread_mutex_t	nb_meals_eaten_mutex;
+	int				nb_meals_eaten;
+	t_data *data;
+	// pthread_t		*threads;
+	// pthread_mutex_t	*time_mutex;
+	// long int		*start_time;
+	// pthread_mutex_t	*end_mutex;
+	// pthread_mutex_t	*write_mutex;
+}					t_philosopher;
+
 typedef enum e_type
 {
-	FORK,
+	TAKE_FORK,
+	// RELEASE_FORK,
 	EAT,
 	SLEEP,
 	THINK,
@@ -77,7 +87,7 @@ int					init_mutex_forks_bool(t_data **data);
 int					init_mutex_forks_mutex(t_data **data);
 
 // init_mutex_utils.c
-int					init_mutex_start_mutex(t_data **data);
+int					init_mutex_time_mutex(t_data **data);
 int					init_mutex_end_mutex(t_data **data);
 int					init_mutex_write_mutex(t_data **data);
 int					init_mutex_meals_limit_mutex(t_data **data);
@@ -98,11 +108,11 @@ int					init_data_print_error_and_free(char *msg, int exit_code,
 
 // getters
 long int			get_time(void);
+
 // prints
 int					print_error_and_free(char *msg, int exit_code,
 						t_data **data);
-int					print_log(pthread_mutex_t *write_mutex, int time, int id,
-						t_type action);
+int					print_log(t_philosopher *philosopher, t_type action);
 
 // str_utils
 int					are_valids_args(char **av);

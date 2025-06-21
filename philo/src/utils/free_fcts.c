@@ -45,7 +45,7 @@ int simulation_end_destroy_and_free(t_data **data)
   destroy_all_philo_mutex(data, (*data)->nb_philo - 1);
   destroy_forks_mutex(data, (*data)->nb_philo - 1);
   pthread_mutex_destroy(&(*data)->write_mutex);
-  pthread_mutex_destroy(&(*data)->start_mutex);
+  pthread_mutex_destroy(&(*data)->time_mutex);
   pthread_mutex_destroy(&(*data)->end_mutex);
   pthread_mutex_destroy(&(*data)->meals_limit_mutex);
   free_allocated_memory(data);
