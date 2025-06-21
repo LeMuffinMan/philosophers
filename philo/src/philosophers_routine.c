@@ -26,6 +26,12 @@ int eating(t_philosopher *philosopher)
 {
   print_log(philosopher, EAT);
   usleep(philosopher->time_to_eat * 1000);
+  pthread_mutex_lock(&philosopher->last_meal_mutex);
+  philosopher->last_meal = get_time();
+  pthread_mutex_unlock(&philosopher->last_meal_mutex);
+  pthread_mutex_lock(&philosopher->nb_meals_eaten_mutex);
+  philosopher->nb_meals_eaten = get_time();
+  pthread_mutex_unlock(&philosopher->nb_meals_eaten_mutex);
   return (0);
 }
 
@@ -35,53 +41,6 @@ int sleeping(t_philosopher *philosopher)
   usleep(philosopher->time_to_sleep * 1000);
   return (0);
 }
-
-//revoir la logique ici pour quoie le chiffre le plus petit en prio ?
-/* int take_forks(t_philosopher *philosopher) */
-/* { */
-/*   if (philosopher->id < (philosopher->id + 1) % philosopher->data->nb_philo) */
-/*   { */
-/*     pthread_mutex_lock(&philosopher->data->forks_mutex[philosopher->id]); */
-/*     philosopher->data->forks[philosopher->id] = false; */
-/*     print_log(philosopher, take_fork); */
-/*     pthread_mutex_lock(&philosopher->data->forks_mutex[(philosopher->id + 1) % philosopher->nb_philo]); */
-/*     philosopher->data->forks[(philosopher->id + 1) % philosopher->nb_philo] = false; */
-/*     print_log(philosopher, take_fork); */
-/*   } */
-/*   else */
-/*   { */
-/*     pthread_mutex_lock(&philosopher->data->forks_mutex[(philosopher->id) % philosopher->nb_philo]); */
-/*     philosopher->data->forks[(philosopher->id + 1) % philosopher->nb_philo] = false; */
-/*     print_log(philosopher, take_fork); */
-/*     pthread_mutex_lock(&philosopher->data->forks_mutex[philosopher->id]); */
-/*     philosopher->data->forks[philosopher->id] = false; */
-/*     print_log(philosopher, take_fork); */
-/*   } */
-/*   return (0); */
-/* } */
-/**/
-/* int release_forks(t_philosopher *philosopher) */
-/* { */
-/*   if (philosopher->id < (philosopher->id + 1) % philosopher->data->nb_philo) */
-/*   { */
-/*     pthread_mutex_unlock(&philosopher->data->forks_mutex[(philosopher->id + 1) % 2]); */
-/*     philosopher->data->forks[(philosopher->id + 1) % 2] = true; */
-/*     print_log(philosopher, release_fork); */
-/*     pthread_mutex_unlock(&philosopher->data->forks_mutex[philosopher->id]); */
-/*     philosopher->data->forks[philosopher->id] = true; */
-/*     print_log(philosopher, release_fork); */
-/*   } */
-/*   else */
-/*   { */
-/*     pthread_mutex_unlock(&philosopher->data->forks_mutex[philosopher->id]); */
-/*     philosopher->data->forks[philosopher->id] = true; */
-/*     print_log(philosopher, release_fork); */
-/*     pthread_mutex_unlock(&philosopher->data->forks_mutex[(philosopher->id) % 2]); */
-/*     philosopher->data->forks[(philosopher->id + 1) % 2] = true; */
-/*     print_log(philosopher, release_fork); */
-/*   } */
-/*   return (0); */
-/* } */
 
 int take_forks(t_philosopher *philosopher)
 {
