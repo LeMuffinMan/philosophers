@@ -51,11 +51,13 @@ typedef struct s_philosopher
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
+	int 			meals_limit;
 	int				id;
 	pthread_mutex_t	last_meal_mutex;
 	int				last_meal;
-	pthread_mutex_t	nb_meals_eaten_mutex;
 	int				nb_meals_eaten;
+	pthread_mutex_t	fed_mutex;
+	bool fed;
 	t_data *data;
 	// pthread_t		*threads;
 	// pthread_mutex_t	*time_mutex;
@@ -80,7 +82,6 @@ int					init_data(t_data **data, char **av);
 int					init_mutex(t_data **data);
 int					init_threads(t_data **data);
 int					init_philo_struct(t_data **data, int i);
-int					join_threads(t_data **data, int i);
 
 // init_forks.c
 int					init_mutex_forks_bool(t_data **data);
@@ -92,6 +93,7 @@ int					init_mutex_end_mutex(t_data **data);
 int					init_mutex_write_mutex(t_data **data);
 int					init_mutex_meals_limit_mutex(t_data **data);
 int					init_philo_struct_mutex(t_data **data, int i);
+int					join_threads_backward(t_data **data, int i);
 
 // --------------------------------------- UTILS -------------------------------------//
 

@@ -82,6 +82,8 @@ int init_philo_struct(t_data **data, int i)
   (*data)->philosophers[i].last_meal = -1;
   (*data)->philosophers[i].nb_meals_eaten = 0;
   (*data)->philosophers[i].data = *data;
+  (*data)->philosophers[i].fed = false;
+  (*data)->philosophers[i].meals_limit = (*data)->meals_limit;
   /* (*data)->philosophers[i].start_time = &((*data)->start_time); */
   /* (*data)->philosophers[i].time_mutex = &((*data)->time_mutex); */
   /* (*data)->philosophers[i].end_mutex = &((*data)->end_mutex); */
@@ -90,15 +92,6 @@ int init_philo_struct(t_data **data, int i)
   return (init_philo_struct_mutex(data, i));
 }
 
-int join_threads(t_data **data, int i)
-{
-  while (i >= 0)
-  {
-    pthread_join((*data)->threads[i], NULL);
-    i--;
-  }
-  return (0);
-}
 
 int init_threads(t_data **data)
 {
@@ -118,7 +111,7 @@ int init_threads(t_data **data)
     if (pthread_create(&(*data)->threads[i], NULL, philosophers_routine, &(*data)->philosophers[i]) != 0)
     {
       if (i > 0)
-        join_threads(data, i);
+        join_threads_backward(data, i);
       destroy_all_philo_mutex(data, i);
       return (destroy_all_data_mutex_and_free(data));
     }

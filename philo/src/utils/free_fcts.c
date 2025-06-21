@@ -41,7 +41,14 @@ int free_allocated_memory(t_data **data)
 
 int simulation_end_destroy_and_free(t_data **data)
 {
-  join_threads(data, (*data)->nb_philo - 1);
+  int i;
+
+  i = 0;
+  while (i < (*data)->nb_philo)
+  {
+    pthread_join((*data)->threads[i], NULL);
+    i++;
+  }
   destroy_all_philo_mutex(data, (*data)->nb_philo - 1);
   destroy_forks_mutex(data, (*data)->nb_philo - 1);
   pthread_mutex_destroy(&(*data)->write_mutex);

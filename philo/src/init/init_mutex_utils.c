@@ -58,23 +58,33 @@ int init_mutex_meals_limit_mutex(t_data **data)
   return (0);
 }
 
+int join_threads_backward(t_data **data, int i)
+{
+  while (i >= 0)
+  {
+    pthread_join((*data)->threads[i], NULL);
+    i--;
+  }
+  return (0);
+}
+
 int init_philo_struct_mutex(t_data **data, int i)
 {
   if (pthread_mutex_init(&(*data)->philosophers[i].last_meal_mutex, NULL) != 0)
   {
     if (i > 0)
     {
-      join_threads(data, i);
+      join_threads_backward(data, i);
       destroy_all_philo_mutex(data, i - 1);
     }
     return (destroy_all_data_mutex_and_free(data));
   }
-  if (pthread_mutex_init(&(*data)->philosophers[i].nb_meals_eaten_mutex, NULL) != 0)
+  if (pthread_mutex_init(&(*data)->philosophers[i].fed_mutex, NULL) != 0)
   {
     pthread_mutex_destroy(&(*data)->philosophers[i].last_meal_mutex);
     if (i > 0)
     {
-      join_threads(data, i);
+      join_threads_backward(data, i);
       destroy_all_philo_mutex(data, i - 1);
     }
     return (destroy_all_data_mutex_and_free(data));

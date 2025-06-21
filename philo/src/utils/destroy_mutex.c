@@ -38,7 +38,7 @@ int destroy_all_philo_mutex(t_data **data, int i)
   while (i >= 0)
   {
     pthread_mutex_destroy(&(*data)->philosophers[i].last_meal_mutex);
-    pthread_mutex_destroy(&(*data)->philosophers[i].nb_meals_eaten_mutex);
+    pthread_mutex_destroy(&(*data)->philosophers[i].fed_mutex);
     i--;
   }
   return (0);
