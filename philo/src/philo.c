@@ -77,7 +77,7 @@ int main_thread_monitoring(t_data **data)
       pthread_mutex_lock(&(*data)->end_mutex);
       (*data)->end = true;
       pthread_mutex_unlock(&(*data)->end_mutex);
-      break ;
+      return (1);
       /* pthread_mutex_lock(&(*data)->write_mutex); */
       /* printf("DONE !\n"); */
       /* pthread_mutex_unlock(&(*data)->write_mutex); */
@@ -125,8 +125,6 @@ int main (int ac, char **av)
   if (exit_code != 0)
     return (exit_code);
   exit_code = main_thread_monitoring(&data);
-  /* pthread_mutex_lock(&data->write_mutex); */
-  /* printf("ici\n"); */
-  /* pthread_mutex_unlock(&data->write_mutex); */
+  /* printf("DONE\n"); */
   return (simulation_end_destroy_and_free(&data));
 }

@@ -22,7 +22,7 @@ SRC = src/philo.c \
 			src/philosophers_routine.c
 
 CC = cc
-FLAGS = -Wall -Werror -Wextra -g3 -pthread
+FLAGS = -Wall -Werror -Wextra -g3 -pthread #-fsanitize=thread
 NAME = philo
 INC = include
 

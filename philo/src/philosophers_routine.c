@@ -54,25 +54,58 @@ int sleeping(t_philosopher *philosopher)
 
 int take_forks(t_philosopher *philosopher)
 {
-    int left = philosopher->id;
-    int right = (philosopher->id + 1) % philosopher->nb_philo;
-    
-    if (philosopher->id % 2 == 0) {
-        pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
-        philosopher->data->forks[left] = false;
-        print_log(philosopher, TAKE_FORK);
-        pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
-        philosopher->data->forks[right] = false;
-        print_log(philosopher, TAKE_FORK);
-    } else {
-        pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
-        philosopher->data->forks[right] = false;
-        print_log(philosopher, TAKE_FORK);
-        pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
-        philosopher->data->forks[left] = false;
-        print_log(philosopher, TAKE_FORK);
+  int left = philosopher->id;
+  int right = (philosopher->id + 1) % philosopher->nb_philo;
+  
+  if (philosopher->id % 2 == 0)
+  {
+    /* printf("la : %d\n", philosopher->id); */
+    pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
+    while (philosopher->data->forks[left] == false) 
+    {
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[left]);
+      usleep(50);
+      pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
     }
-    return (0);
+    philosopher->data->forks[left] = false;
+    pthread_mutex_unlock(&philosopher->data->forks_mutex[left]);
+    print_log(philosopher, TAKE_FORK);
+    pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
+    while (philosopher->data->forks[right] == false)
+    {
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
+      usleep(50);
+      pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
+    }
+    philosopher->data->forks[right] = false;
+    pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
+    print_log(philosopher, TAKE_FORK);
+  }
+  else
+  {
+    /* printf("la : %d\n", philosopher->id); */
+    pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
+    while (philosopher->data->forks[left] == false) 
+    {
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
+      usleep(50);
+      pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
+    }
+    philosopher->data->forks[right] = false;
+    pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
+    print_log(philosopher, TAKE_FORK);
+    pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
+    while (philosopher->data->forks[left] == false) 
+    {
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[left]);
+      usleep(50);
+      pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
+    }
+    philosopher->data->forks[left] = false;
+    pthread_mutex_unlock(&philosopher->data->forks_mutex[left]);
+    print_log(philosopher, TAKE_FORK);
+  }
+  return (0);
 }
 
 int release_forks(t_philosopher *philosopher)
@@ -80,12 +113,28 @@ int release_forks(t_philosopher *philosopher)
     int left = philosopher->id;
     int right = (philosopher->id + 1) % philosopher->nb_philo;
     
-    pthread_mutex_unlock(&philosopher->data->forks_mutex[left]);
-    philosopher->data->forks[left] = true;
-    /* print_log(philosopher, RELEASE_FORK); */
-    pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
-    philosopher->data->forks[right] = true;
-    /* print_log(philosopher, RELEASE_FORK); */
+    if (philosopher->id % 2 == 0)
+    {
+      pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
+      philosopher->data->forks[right] = true;
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
+      /* print_log(philosopher, RELEASE_FORK); */
+      pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
+      philosopher->data->forks[left] = true;
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[left]);
+      /* print_log(philosopher, RELEASE_FORK); */
+    }
+    else
+    {
+      pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
+      philosopher->data->forks[left] = true;
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[left]);
+      /* print_log(philosopher, RELEASE_FORK); */
+      pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
+      philosopher->data->forks[right] = true;
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
+      /* print_log(philosopher, RELEASE_FORK); */
+    }
     return (0);
 }
 
@@ -113,11 +162,14 @@ void *philosophers_routine(void *arg)
     return (NULL); // gestion d'erreur ? on peut ajouter un arg dans le create pour recuperer la valeur de retour 
   while (!is_simulation_over(philosopher))
   {
-    thinking(philosopher);
     take_forks(philosopher);
     eating(philosopher);
     release_forks(philosopher);
     sleeping(philosopher);
+    thinking(philosopher);
   }
+  pthread_mutex_lock(&philosopher->data->write_mutex); // le write mutex doit etre prio sur le time mutex
+  printf("ici : %d\n", philosopher->id);
+  pthread_mutex_unlock(&philosopher->data->write_mutex); // le write mutex doit etre prio sur le time mutex
   return (NULL);
 }
