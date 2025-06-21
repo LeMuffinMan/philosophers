@@ -105,9 +105,6 @@ int destroy_all_philo_mutex(t_data **data, int i);
 int init_data_print_error_and_free(char *msg, int exit_code, t_data **data);
 // int destroy_mutex_free_exit(t_data *data, pthread_mutex_t *fork_mutex, int i, int exit_code);
 
-// routines
-// monitor_routine
-void *monitor_routine(void *arg);
 // philosophers_routine
 void *philosophers_routine(void *arg);
 

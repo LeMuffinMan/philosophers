@@ -107,15 +107,8 @@ int init_threads(t_data **data)
     }
     i++;
   }
-  if (pthread_create(&(*data)->monitor, NULL, monitor_routine, *data) != 0)
-  {
-    join_threads(data, i);
-    destroy_all_philo_mutex(data, i);
-    return (destroy_all_data_mutex_and_free(data));
-  }
   (*data)->start_time = get_time();
   printf("init time = %ld\n", (*data)->start_time);
   pthread_mutex_unlock(&(*data)->start_mutex);
-  //ici un while (1) ? 
   return (0);
 }
