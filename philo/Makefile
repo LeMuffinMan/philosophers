@@ -18,8 +18,10 @@ SRC = src/philo.c \
 			src/utils/destroy_mutex.c \
 			src/utils/str_utils.c \
 			src/utils/free_fcts.c \
-			src/utils/getters.c \
-			src/philosophers_routine.c
+			src/utils/time.c \
+			src/philosophers_routine.c \
+			src/forks.c \
+			src/monitor_routine.c
 
 CC = cc
 FLAGS = -Wall -Werror -Wextra -g3 -pthread #-fsanitize=thread
