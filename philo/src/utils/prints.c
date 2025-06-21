@@ -42,8 +42,8 @@ int print_log(t_philosopher *philosopher, t_type action)
     printf("%ld %d is thinking\n", time, philosopher->id);
   else if (action == DIE)
     printf("%ld %d died\n", time, philosopher->id);
-  pthread_mutex_unlock(&philosopher->data->write_mutex);
   pthread_mutex_unlock(&philosopher->data->time_mutex);
+  pthread_mutex_unlock(&philosopher->data->write_mutex);
   return (0);
 }
 

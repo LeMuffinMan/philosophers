@@ -24,7 +24,7 @@ int init_mutex_forks_bool(t_data **data)
   i = 0;
   while (i < (*data)->nb_philo)
   {
-    (*data)->forks[i] = false;
+    (*data)->forks[i] = true;
     i++;
   }
   return (0);
