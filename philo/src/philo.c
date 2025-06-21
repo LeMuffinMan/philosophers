@@ -46,6 +46,14 @@
 /*   return (0); */
 /* } */
 
+int main_thread_monitoring(t_data **data)
+{
+  pthread_mutex_lock(&(*data)->write_mutex);
+  printf("monitor started at %ld\n", get_time() - (*data)->start_time);
+  pthread_mutex_unlock(&(*data)->write_mutex);
+  return (0);
+}
+
 int print_data(t_data *data)
 {
   printf("nb_philo = %d\n", data->nb_philo);
@@ -83,5 +91,6 @@ int main (int ac, char **av)
   exit_code = init_threads(&data);
   if (exit_code != 0)
     return (exit_code);
+  exit_code = main_thread_monitoring(&data);
   return (simulation_end_destroy_and_free(&data));
 }

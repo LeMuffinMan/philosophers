@@ -18,8 +18,7 @@ SRC = src/philo.c \
 			src/utils/str_utils.c \
 			src/utils/free_fcts.c \
 			src/utils/getters.c \
-			src/routines/monitor_routine.c \
-			src/routines/philosophers_routine.c
+			src/philosophers_routine.c
 
 CC = cc
 FLAGS = -Wall -Werror -Wextra -g3 -pthread
