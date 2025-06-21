@@ -23,18 +23,17 @@
 
 typedef struct s_philosopher
 {
-  int id;
-  // int *time_start;
-  pthread_mutex_t last_meal_mutex;
-  int last_meal;
-  pthread_mutex_t nb_meals_eaten_mutex;
-  int nb_meals_eaten;
-  pthread_t *threads;
-  pthread_mutex_t *start_mutex;
-  long int *start_time;
-  pthread_mutex_t *end_mutex;
-  pthread_mutex_t *write_mutex;
-} t_philosopher;
+	int				id;
+	pthread_mutex_t	last_meal_mutex;
+	int				last_meal;
+	pthread_mutex_t	nb_meals_eaten_mutex;
+	int				nb_meals_eaten;
+	pthread_t		*threads;
+	pthread_mutex_t	*start_mutex;
+	long int		*start_time;
+	pthread_mutex_t	*end_mutex;
+	pthread_mutex_t	*write_mutex;
+}					t_philosopher;
 
 typedef struct s_data
 {
@@ -45,15 +44,15 @@ typedef struct s_data
 	pthread_mutex_t	*forks_mutex;
 	bool			*forks;
 	pthread_mutex_t	start_mutex;
-	long int			start_time;
+	long int		start_time;
 	pthread_mutex_t	end_mutex;
 	bool			end;
 	pthread_mutex_t	meals_limit_mutex;
 	int				meals_limit;
 	pthread_t		*threads;
-	pthread_t monitor;
+	pthread_t		monitor;
 	pthread_mutex_t	write_mutex;
-	t_philosopher *philosophers;
+	t_philosopher	*philosophers;
 }					t_data;
 
 typedef enum e_type
@@ -65,47 +64,51 @@ typedef enum e_type
 	DIE
 }					t_type;
 
+// --------------------------------------- INIT -------------------------------------//
 // init.c
 int					init_data(t_data **data, char **av);
 int					init_mutex(t_data **data);
-int init_threads(t_data **data);
-// int init_forks(t_data *data);
+int					init_threads(t_data **data);
+int					init_philo_struct(t_data **data, int i);
+int					join_threads(t_data **data, int i);
 
-// init_mutex_utils
+// init_forks.c
+int					init_mutex_forks_bool(t_data **data);
+int					init_mutex_forks_mutex(t_data **data);
+
+// init_mutex_utils.c
 int					init_mutex_start_mutex(t_data **data);
 int					init_mutex_end_mutex(t_data **data);
 int					init_mutex_write_mutex(t_data **data);
 int					init_mutex_meals_limit_mutex(t_data **data);
+int					init_philo_struct_mutex(t_data **data, int i);
+
+// --------------------------------------- UTILS -------------------------------------//
+
+// destroy_mutex.c
+int					destroy_all_data_mutex_and_free(t_data **data);
+int					destroy_all_philo_mutex(t_data **data, int i);
 int					destroy_forks_mutex(t_data **data, int last_mutex);
 
-// utils
+// free_fcts.c
+int					free_allocated_memory(t_data **data);
+int					simulation_end_destroy_and_free(t_data **data);
+int					init_data_print_error_and_free(char *msg, int exit_code,
+						t_data **data);
+
 // getters
-long int get_time(void);
+long int			get_time(void);
 // prints
 int					print_error_and_free(char *msg, int exit_code,
 						t_data **data);
-// int print_update(int time_elapsed, int philo, t_type type);
-// int print_error(char *input, char *arg_type, t_data *data);
-// int print_update(int time_elapsed, int philo, t_type type);
+int					print_log(pthread_mutex_t *write_mutex, int time, int id,
+						t_type action);
 
 // str_utils
 int					are_valids_args(char **av);
 int					ft_atoi(const char *nptr);
-// char *ft_itoa(int n);
-// int ft_strlen(char *str);
-// int copy_chars(char **dest, char *src, int dest_i, int src_i);
-// char *ft_strjoin3(char *time_elapsed, char *philo, char *action);
-// int ft_atoi(char *str);
 
-// free_fcts.c
-int					free_allocated_memory(t_data **data);
-int simulation_end_destroy_and_free(t_data **data);
-int join_threads(t_data **data, int i);
-int destroy_all_philo_mutex(t_data **data, int i);
-int init_data_print_error_and_free(char *msg, int exit_code, t_data **data);
-// int destroy_mutex_free_exit(t_data *data, pthread_mutex_t *fork_mutex, int i, int exit_code);
-
-// philosophers_routine
-void *philosophers_routine(void *arg);
+// --------------------------------------- src/ -------------------------------------//
+void				*philosophers_routine(void *arg);
 
 #endif
