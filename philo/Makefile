@@ -12,9 +12,10 @@
 
 SRC = src/philo.c \
 			src/init/init_mutex_utils.c \
-			src/init/init_threads.c \
+			src/init/init_forks.c \
 			src/init/init.c \
 			src/utils/prints.c \
+			src/utils/destroy_mutex.c \
 			src/utils/str_utils.c \
 			src/utils/free_fcts.c \
 			src/utils/getters.c \

@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 17:57:02 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/18 17:59:32 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/21 12:24:13 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,30 @@ int init_mutex_meals_limit_mutex(t_data **data)
     pthread_mutex_destroy(&(*data)->start_mutex);
     pthread_mutex_destroy(&(*data)->end_mutex);
     return (print_error_and_free("meals_limit mutex init failed\n", MUTEX_ERROR, data));
+  }
+  return (0);
+}
+
+int init_philo_struct_mutex(t_data **data, int i)
+{
+  if (pthread_mutex_init(&(*data)->philosophers[i].last_meal_mutex, NULL) != 0)
+  {
+    if (i > 0)
+    {
+      join_threads(data, i);
+      destroy_all_philo_mutex(data, i - 1);
+    }
+    return (destroy_all_data_mutex_and_free(data));
+  }
+  if (pthread_mutex_init(&(*data)->philosophers[i].nb_meals_eaten_mutex, NULL) != 0)
+  {
+    pthread_mutex_destroy(&(*data)->philosophers[i].last_meal_mutex);
+    if (i > 0)
+    {
+      join_threads(data, i);
+      destroy_all_philo_mutex(data, i - 1);
+    }
+    return (destroy_all_data_mutex_and_free(data));
   }
   return (0);
 }
