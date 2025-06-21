@@ -18,34 +18,6 @@
 /* #include <unistd.h> */
 /* #include <limits.h> */
 
-/* int start_simulation(t_data *data) */
-/* { */
-/*   int i; */
-/*   struct timeval tv; // je peux declarer cette structure a differents endroits sans foutre le zbeul sur le temps ? */
-/**/
-/*   pthread_mutex_lock(&data->mutex_start); */
-/*   i = 0; */
-/*   while (i < data->nb_philo) */
-/*   { */
-/*     if (pthread_create(&data->philosophers[i].thread, NULL, philo_routine, &data->philosophers[i]) != 0) */
-/*       return (destroy_mutex_free_exit(data, data->fork_mutex, data->nb_philo, THREAD_ERROR)); */
-/*   } */
-/*   if (pthread_create(&data->monitor, NULL, monitor_routine, &data) != 0) */
-/*     return (destroy_mutex_free_exit(data, data->fork_mutex, data->nb_philo, THREAD_ERROR)); */
-/*   gettimeofday(&tv, NULL); */
-/*   data->time_start = tv.tv_sec; */
-/*   printf("start time = %d\n", data->time_start); */
-/*   pthread_mutex_unlock(&data->mutex_start); */
-/*   while (1) */
-/*   { */
-/*     pthread_mutex_lock(&data->mutex_end); */
-/*     if (data->end == 1) */
-/*       break ; */
-/*     pthread_mutex_unlock(&data->mutex_end); */
-/*   } */
-/*   return (0); */
-/* } */
-
 int print_data(t_data *data)
 {
   printf("nb_philo = %d\n", data->nb_philo);
