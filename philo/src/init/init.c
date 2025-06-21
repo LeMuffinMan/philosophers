@@ -118,7 +118,7 @@ int init_threads(t_data **data)
     i++;
   }
   (*data)->start_time = get_time();
-  printf("init time = %ld\n", (*data)->start_time);
+  /* printf("init time = %ld\n", (*data)->start_time); */
   pthread_mutex_unlock(&(*data)->time_mutex);
   return (0);
 }
