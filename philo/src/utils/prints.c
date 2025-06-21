@@ -29,7 +29,7 @@ int print_log(t_philosopher *philosopher, t_type action)
 
   pthread_mutex_lock(&philosopher->data->write_mutex); // le write mutex doit etre prio sur le time mutex
   pthread_mutex_lock(&philosopher->data->time_mutex);
-  time = get_time();
+  time = get_time() - philosopher->data->start_time;
   if (action == TAKE_FORK)
     printf("%ld %d has taken a fork\n", time, philosopher->id);
   /* else if (action == RELEASE_FORK) */

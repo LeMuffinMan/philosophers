@@ -122,5 +122,6 @@ int					ft_atoi(const char *nptr);
 
 // --------------------------------------- src/ -------------------------------------//
 void				*philosophers_routine(void *arg);
+int main_thread_monitoring(t_data **data);
 
 #endif
