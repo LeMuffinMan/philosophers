@@ -85,6 +85,8 @@ int release_forks(t_philosopher *philosopher)
 
   left = philosopher->id;
   right = (philosopher->id + 1) % philosopher->nb_philo;
+  /* if (is_simulation_over(philosopher)) */
+  /*   return (1); */
   if (left > right)
   {
     set_fork(philosopher, left, true);
@@ -95,5 +97,7 @@ int release_forks(t_philosopher *philosopher)
     set_fork(philosopher, right, true);
     set_fork(philosopher, left, true);
   }
+  /* if (is_simulation_over(philosopher)) */
+  /*   return (1); */
   return (0);
 }

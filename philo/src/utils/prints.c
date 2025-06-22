@@ -27,6 +27,8 @@ int print_log(t_philosopher *philosopher, char *msg)
 {
   pthread_mutex_lock(&philosopher->data->write_mutex);
   pthread_mutex_lock(&philosopher->data->time_mutex);
+  if (is_simulation_over(philosopher))
+    return (1);
   printf("%ld %d %s\n", get_time() - philosopher->data->start_time, philosopher->id, msg);
   pthread_mutex_unlock(&philosopher->data->write_mutex);
   pthread_mutex_unlock(&philosopher->data->time_mutex);

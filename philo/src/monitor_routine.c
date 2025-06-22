@@ -71,9 +71,9 @@ int are_philo_starving(t_data **data)
     pthread_mutex_unlock(&(*data)->time_mutex);
     if (last_meal_time >= 0 && time_elapsed > (*data)->time_to_die && !is_philo_eating(data, i))
     {
-      /* pthread_mutex_lock(&(*data)->write_mutex); */
-      /* printf("id : %d | last_meal_time = %ld | time elapsed = %ld\n", (*data)->philosophers[i].id, last_meal_time, time_elapsed); */
-      /* pthread_mutex_unlock(&(*data)->write_mutex); */
+      pthread_mutex_lock(&(*data)->write_mutex);
+      printf("id : %d | last_meal_time = %ld | time elapsed = %ld\n", (*data)->philosophers[i].id, last_meal_time, time_elapsed);
+      pthread_mutex_unlock(&(*data)->write_mutex);
       print_log(&(*data)->philosophers[i], "died");
       set_end(data, &(*data)->end_mutex);
       return (true);
@@ -96,17 +96,17 @@ int main_thread_monitoring(t_data **data) // a bouger !
     exit_code = are_philo_fed(data);
     if (exit_code)
     {
-      /* pthread_mutex_lock(&(*data)->write_mutex); */
-      /* printf("fed exit_code = %d\n", exit_code); */
-      /* pthread_mutex_unlock(&(*data)->write_mutex); */
+      pthread_mutex_lock(&(*data)->write_mutex);
+      printf("fed exit_code = %d\n", exit_code);
+      pthread_mutex_unlock(&(*data)->write_mutex);
       return (exit_code);
     }
     exit_code = are_philo_starving(data);
     if (exit_code)
     {
-      /* pthread_mutex_lock(&(*data)->write_mutex); */
-      /* printf("starve exit_code = %d\n", exit_code); */
-      /* pthread_mutex_unlock(&(*data)->write_mutex); */
+      pthread_mutex_lock(&(*data)->write_mutex);
+      printf("starve exit_code = %d\n", exit_code);
+      pthread_mutex_unlock(&(*data)->write_mutex);
       return (exit_code);
     }
     accurate_sleep (5);
