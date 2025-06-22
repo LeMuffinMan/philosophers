@@ -54,7 +54,7 @@ typedef struct s_philosopher
 	int 			meals_limit;
 	int				id;
 	pthread_mutex_t	last_meal_mutex;
-	int				last_meal;
+	long int				last_meal;
 	int				nb_meals_eaten;
 	pthread_mutex_t	fed_mutex;
 	bool fed;
