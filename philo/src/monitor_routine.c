@@ -65,7 +65,7 @@ int are_philo_starving(t_data **data)
     if (last_meal_time >= 0 && time_elapsed > (*data)->time_to_die)
     {
       pthread_mutex_lock(&(*data)->write_mutex);
-      printf("last_meal_time = %d | time elapsed = %d\n", last_meal_time, time_elapsed);
+      printf("last_meal_time = %ld | time elapsed = %ld\n", last_meal_time, time_elapsed);
       pthread_mutex_unlock(&(*data)->write_mutex);
       print_log(&(*data)->philosophers[i], DIE);
       set_end(data, &(*data)->end_mutex);
