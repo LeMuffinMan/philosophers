@@ -26,16 +26,16 @@ bool is_simulation_over(t_philosopher *philosopher)
   return (false);
 }
 
-bool is_time_started(t_philosopher *philosopher)
+long int is_time_started(t_philosopher *philosopher)
 {
-  bool exit_code;
+  long int start_time;
 
-  exit_code = false;
+  start_time = false;
   pthread_mutex_lock(&philosopher->data->time_mutex); 
   if (philosopher->data->start_time != -1)
-    exit_code = true;
+    start_time = philosopher->data->start_time;
   pthread_mutex_unlock(&philosopher->data->time_mutex); 
-  return (exit_code);
+  return (start_time);
 }
 
 int accurate_sleep(int time_to_sleep)

@@ -46,6 +46,16 @@ bool are_philo_fed(t_data **data)
   return (true);
 }
 
+bool is_philo_eating(t_data **data, int id)
+{
+  if (id == (id + 1) % (*data)->nb_philo)
+    return (false);
+  if (!get_fork_state(&(*data)->philosophers[id], id) && !get_fork_state(&(*data)->philosophers[id], (id + 1) % (*data)->nb_philo))
+    return (true);
+  else
+    return (false);
+}
+
 int are_philo_starving(t_data **data)
 {
   int i;
@@ -59,15 +69,12 @@ int are_philo_starving(t_data **data)
     pthread_mutex_lock(&(*data)->time_mutex);
     time_elapsed = get_time() - (*data)->start_time - last_meal_time;
     pthread_mutex_unlock(&(*data)->time_mutex);
-    /* pthread_mutex_lock(&(*data)->write_mutex); */
-    /* printf("time elapsed : %ld\n", time_elapsed); */
-    /* pthread_mutex_unlock(&(*data)->write_mutex); */
-    if (last_meal_time >= 0 && time_elapsed > (*data)->time_to_die)
+    if (last_meal_time >= 0 && time_elapsed > (*data)->time_to_die && !is_philo_eating(data, i))
     {
-      pthread_mutex_lock(&(*data)->write_mutex);
-      printf("last_meal_time = %ld | time elapsed = %ld\n", last_meal_time, time_elapsed);
-      pthread_mutex_unlock(&(*data)->write_mutex);
-      print_log(&(*data)->philosophers[i], DIE);
+      /* pthread_mutex_lock(&(*data)->write_mutex); */
+      /* printf("id : %d | last_meal_time = %ld | time elapsed = %ld\n", (*data)->philosophers[i].id, last_meal_time, time_elapsed); */
+      /* pthread_mutex_unlock(&(*data)->write_mutex); */
+      print_log(&(*data)->philosophers[i], "died");
       set_end(data, &(*data)->end_mutex);
       return (true);
     }
@@ -86,9 +93,7 @@ int main_thread_monitoring(t_data **data) // a bouger !
   /* pthread_mutex_unlock(&(*data)->write_mutex); */
   while (1)
   {
-    //avec un temps de mort tres court, les threads partent quand meme !
     exit_code = are_philo_fed(data);
-    //LE PB EST ICI !!
     if (exit_code)
     {
       /* pthread_mutex_lock(&(*data)->write_mutex); */
@@ -99,9 +104,9 @@ int main_thread_monitoring(t_data **data) // a bouger !
     exit_code = are_philo_starving(data);
     if (exit_code)
     {
-      /* pthread_mutex_lock(&(*data)->write_mutex); */
-      /* printf("starve exit_code = %d\n", exit_code); */
-      /* pthread_mutex_unlock(&(*data)->write_mutex); */
+      pthread_mutex_lock(&(*data)->write_mutex);
+      printf("starve exit_code = %d\n", exit_code);
+      pthread_mutex_unlock(&(*data)->write_mutex);
       return (exit_code);
     }
     accurate_sleep (5);

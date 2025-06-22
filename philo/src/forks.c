@@ -29,9 +29,9 @@ int try_to_catch_fork(t_philosopher *philosopher, int fork_to_catch)
   {
     if (is_simulation_over(philosopher))
       return (false);
-    pthread_mutex_lock(&philosopher->data->write_mutex);
+    /* pthread_mutex_lock(&philosopher->data->write_mutex); */
     /* printf("trying to catch fork %d\n", fork_to_catch); */
-    pthread_mutex_unlock(&philosopher->data->write_mutex);
+    /* pthread_mutex_unlock(&philosopher->data->write_mutex); */
     usleep(100);
     exit_code = get_fork_state(philosopher, fork_to_catch);
   }
