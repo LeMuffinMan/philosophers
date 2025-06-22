@@ -36,7 +36,7 @@ RESET = \033[0m
 
 all: $(NAME)
 
-$(NAME): $(OBJ) Makefile include/philo.h src/philo.c #ajouter ici  !!
+$(NAME): $(OBJ) Makefile include/philo.h $(SRC)
 	mkdir -p bin
 	$(CC) $(FLAGS) $(OBJ) -I $(INC) -o bin/$(NAME)
 	@echo 
