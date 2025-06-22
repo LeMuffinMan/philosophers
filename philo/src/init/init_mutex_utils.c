@@ -64,10 +64,10 @@ int init_philo_struct_mutex(t_data **data, int i)
   {
     if (i > 0)
     {
-        while (id >= 0)
+        while (i >= 0)
         {
-          pthread_join((*data)->threads[id], NULL);
-          id--;
+          pthread_join((*data)->threads[i], NULL);
+          i--;
         }
       destroy_all_philo_mutex(data, i - 1);
     }
@@ -78,10 +78,10 @@ int init_philo_struct_mutex(t_data **data, int i)
     pthread_mutex_destroy(&(*data)->philosophers[i].last_meal_mutex);
     if (i > 0)
     {
-      while (id >= 0)
+      while (i >= 0)
       {
-        pthread_join((*data)->threads[id], NULL);
-        id--;
+        pthread_join((*data)->threads[i], NULL);
+        i--;
       }
       destroy_all_philo_mutex(data, i - 1);
     }
