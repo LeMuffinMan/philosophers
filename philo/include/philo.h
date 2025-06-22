@@ -53,6 +53,7 @@ typedef struct s_philosopher
 	int				time_to_sleep;
 	int 			meals_limit;
 	int				id;
+	long int start_time;
 	pthread_mutex_t	last_meal_mutex;
 	long int				last_meal;
 	int				nb_meals_eaten;
@@ -111,13 +112,14 @@ int					init_data_print_error_and_free(char *msg, int exit_code,
 // time.c
 long int			get_time(void);
 bool is_simulation_over(t_philosopher *philosopher);
-bool is_time_started(t_philosopher *philosopher);
+long int is_time_started(t_philosopher *philosopher);
 int accurate_sleep(int time_to_sleep);
 
 // prints
 int					print_error_and_free(char *msg, int exit_code,
 						t_data **data);
-int					print_log(t_philosopher *philosopher, t_type action);
+// int					print_log(t_philosopher *philosopher, t_type action);
+int print_log(t_philosopher *philosopher, char *msg);
 
 // str_utils
 int					are_valids_args(char **av);
@@ -131,5 +133,6 @@ int main_thread_monitoring(t_data **data);
 bool take_one_fork(t_philosopher *philosopher, int i);
 bool take_two_forks(t_philosopher *philosopher);
 int release_forks(t_philosopher *philosopher);
+bool get_fork_state(t_philosopher *philosopher, int i);
 
 #endif
