@@ -60,6 +60,12 @@ int main (int ac, char **av)
 }
 
 // TESTS
-//
+// MAC
 // ./bin/philo 1 610 300 300 : il doit mourrir direct : OK
 // ./bin/philo 2 610 300 300 : personne ne meurt : FAIL ?
+// ./bin/philo 4 610 300 300 : personne ne meurt : FAIL ?
+// ./bin/philo 6 610 300 300 : personne ne meurt : FAIL ?
+// ./bin/philo 7 610 300 300 : personne ne meurt : FAIL ?
+// ./bin/philo 10 610 300 300 : personne ne meurt : FAIL ?
+// ./bin/philo 200 610 300 300 : personne ne meurt : FAIL ? : meurt + imprime des messages ensuite
+//
