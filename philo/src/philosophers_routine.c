@@ -28,7 +28,9 @@ int eating(t_philosopher *philosopher)
   accurate_sleep(philosopher->time_to_eat);
   /* usleep(philosopher->time_to_eat * 1000); */
   pthread_mutex_lock(&philosopher->last_meal_mutex);
-  philosopher->last_meal = get_time();
+  pthread_mutex_lock(&philosopher->data->time_mutex);
+  philosopher->last_meal = get_time() - philosopher->data->start_time;
+  pthread_mutex_unlock(&philosopher->data->time_mutex);
   pthread_mutex_unlock(&philosopher->last_meal_mutex);
   philosopher->nb_meals_eaten++;
   /* pthread_mutex_lock(&philosopher->data->write_mutex); */

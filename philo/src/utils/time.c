@@ -5,6 +5,7 @@
 #include <stddef.h> // POUR NULL !!
 #include <unistd.h> //usleep
 
+//returns ms elapsed since 1 january 1970
 long int get_time(void)
 {
   struct timeval tv;
