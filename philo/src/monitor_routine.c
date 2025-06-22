@@ -91,17 +91,17 @@ int main_thread_monitoring(t_data **data) // a bouger !
     //LE PB EST ICI !!
     if (exit_code)
     {
-      pthread_mutex_lock(&(*data)->write_mutex);
-      printf("fed exit_code = %d\n", exit_code);
-      pthread_mutex_unlock(&(*data)->write_mutex);
+      /* pthread_mutex_lock(&(*data)->write_mutex); */
+      /* printf("fed exit_code = %d\n", exit_code); */
+      /* pthread_mutex_unlock(&(*data)->write_mutex); */
       return (exit_code);
     }
     exit_code = are_philo_starving(data);
     if (exit_code)
     {
-      pthread_mutex_lock(&(*data)->write_mutex);
-      printf("starve exit_code = %d\n", exit_code);
-      pthread_mutex_unlock(&(*data)->write_mutex);
+      /* pthread_mutex_lock(&(*data)->write_mutex); */
+      /* printf("starve exit_code = %d\n", exit_code); */
+      /* pthread_mutex_unlock(&(*data)->write_mutex); */
       return (exit_code);
     }
     accurate_sleep (5);

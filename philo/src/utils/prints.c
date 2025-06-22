@@ -29,19 +29,23 @@ int print_log(t_philosopher *philosopher, t_type action)
 
   pthread_mutex_lock(&philosopher->data->write_mutex); // le write mutex doit etre prio sur le time mutex
   pthread_mutex_lock(&philosopher->data->time_mutex);
-  time = get_time() - philosopher->data->start_time;
   if (action == TAKE_FORK)
-    printf("%ld %d has taken a fork\n", time, philosopher->id);
+    printf("%ld %d has taken a fork\n", get_time() - philosopher->data->start_time, philosopher->id);
   /* else if (action == RELEASE_FORK) */
-  /*   printf("%ld %d has released a fork\n", time, philosopher->id); */
+  /*   printf("%ld %d has released a fork\n", get_time() - philosopher->data->start_time, philosopher->id); */
   else if (action == EAT)
+  {
+    time = get_time() - philosopher->data->start_time;
     printf("%ld %d is eating\n", time, philosopher->id);
+    philosopher->last_meal = time;
+    printf("id : %d | last_meal = %ld\n", philosopher-> id, philosopher->last_meal);
+  }
   else if (action == SLEEP)
-    printf("%ld %d is sleeping\n", time, philosopher->id);
+    printf("%ld %d is sleeping\n", get_time() - philosopher->data->start_time, philosopher->id);
   else if (action == THINK)
-    printf("%ld %d is thinking\n", time, philosopher->id);
+    printf("%ld %d is thinking\n", get_time() - philosopher->data->start_time, philosopher->id);
   else if (action == DIE)
-    printf("%ld %d died\n", time, philosopher->id);
+    printf("%ld %d died\n", get_time() - philosopher->data->start_time, philosopher->id);
   pthread_mutex_unlock(&philosopher->data->time_mutex);
   pthread_mutex_unlock(&philosopher->data->write_mutex);
   return (0);
