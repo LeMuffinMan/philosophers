@@ -31,7 +31,7 @@ int try_to_catch_fork(t_philosopher *philosopher, int fork_to_catch)
   return (exit_code);
 }
 
-bool take_two_forks(t_philosopher *philosopher)
+bool take_two_forks(t_philosopher *philosopher) //ajouter une detection de fin par la simu 
 {
   int left;
   int right;
@@ -57,6 +57,7 @@ int set_fork(t_philosopher *philosopher, int fork, bool state)
   pthread_mutex_lock(&philosopher->data->forks_mutex[fork]);
   philosopher->data->forks[fork] = state;
   pthread_mutex_unlock(&philosopher->data->forks_mutex[fork]);
+  return (0);
 }
 
 int release_forks(t_philosopher *philosopher)
