@@ -75,7 +75,6 @@ void *philosophers_routine(void *arg)
   t_philosopher *philosopher;
   int exit_code;
 
-  exit_code = 0;
   philosopher = (t_philosopher *)arg;
   /* pthread_mutex_lock(&philosopher->data->write_mutex); // le write mutex doit etre prio sur le time mutex */
   /* printf("id : %d\n", philosopher->id); */
@@ -85,9 +84,14 @@ void *philosophers_routine(void *arg)
   {
     exit_code = is_time_started(philosopher);
   }
+  if (philosopher->id % 2 == 0)
+    usleep(100);
   while (!is_simulation_over(philosopher))
   {
-    take_two_forks(philosopher);
+    if (!take_two_forks(philosopher))
+      return (NULL);
+    if (is_simulation_over(philosopher))
+      return (NULL);
     eating(philosopher);
     release_forks(philosopher);
     /* sleeping(philosopher); */

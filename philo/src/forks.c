@@ -10,7 +10,9 @@ bool get_fork_state(t_philosopher *philosopher, int i)
   pthread_mutex_lock(&philosopher->data->forks_mutex[i]);
   if (philosopher->data->forks[i] == true)
   {
+    /* pthread_mutex_lock(&philosopher->data->write_mutex); */
     /* printf("fork %d taken\n", i); */
+    /* pthread_mutex_unlock(&philosopher->data->write_mutex); */
     exit_code = true;
     philosopher->data->forks[i] = false;
   }
@@ -25,10 +27,23 @@ int try_to_catch_fork(t_philosopher *philosopher, int fork_to_catch)
   exit_code = get_fork_state(philosopher, fork_to_catch);
   while (!exit_code)
   {
+    if (is_simulation_over(philosopher))
+      return (false);
+    pthread_mutex_lock(&philosopher->data->write_mutex);
+    /* printf("trying to catch fork %d\n", fork_to_catch); */
+    pthread_mutex_unlock(&philosopher->data->write_mutex);
     usleep(100);
     exit_code = get_fork_state(philosopher, fork_to_catch);
   }
   return (exit_code);
+}
+
+int set_fork(t_philosopher *philosopher, int fork, bool state)
+{
+  pthread_mutex_lock(&philosopher->data->forks_mutex[fork]);
+  philosopher->data->forks[fork] = state;
+  pthread_mutex_unlock(&philosopher->data->forks_mutex[fork]);
+  return (0);
 }
 
 bool take_two_forks(t_philosopher *philosopher) //ajouter une detection de fin par la simu 
@@ -40,24 +55,26 @@ bool take_two_forks(t_philosopher *philosopher) //ajouter une detection de fin p
   right = (philosopher->id + 1) % philosopher->nb_philo;
   if (left > right)
   {
-    try_to_catch_fork(philosopher, left);
-    try_to_catch_fork(philosopher, right);
+    if (!try_to_catch_fork(philosopher, left))
+      return (false);
+    if (!try_to_catch_fork(philosopher, right))
+    {
+      set_fork(philosopher, left, true);
+      return (false);
+    }
     return (true);
   }
   else
   {
-    try_to_catch_fork(philosopher, right);
-    try_to_catch_fork(philosopher, left);
+    if (!try_to_catch_fork(philosopher, right))
+      return (false);
+    if (!try_to_catch_fork(philosopher, left))
+    {
+      set_fork(philosopher, right, true);
+      return (false);
+    }
     return (true);
   }
-}
-
-int set_fork(t_philosopher *philosopher, int fork, bool state)
-{
-  pthread_mutex_lock(&philosopher->data->forks_mutex[fork]);
-  philosopher->data->forks[fork] = state;
-  pthread_mutex_unlock(&philosopher->data->forks_mutex[fork]);
-  return (0);
 }
 
 int release_forks(t_philosopher *philosopher)
