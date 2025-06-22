@@ -60,11 +60,6 @@ typedef struct s_philosopher
 	pthread_mutex_t	fed_mutex;
 	bool fed;
 	t_data *data;
-	// pthread_t		*threads;
-	// pthread_mutex_t	*time_mutex;
-	// long int		*start_time;
-	// pthread_mutex_t	*end_mutex;
-	// pthread_mutex_t	*write_mutex;
 }					t_philosopher;
 
 typedef enum e_type
@@ -94,7 +89,6 @@ int					init_mutex_end_mutex(t_data **data);
 int					init_mutex_write_mutex(t_data **data);
 int					init_mutex_meals_limit_mutex(t_data **data);
 int					init_philo_struct_mutex(t_data **data, int i);
-int					join_threads_backward(t_data **data, int i);
 
 // --------------------------------------- UTILS -------------------------------------//
 

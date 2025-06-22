@@ -78,20 +78,31 @@ int init_philo_struct(t_data **data, int i)
   (*data)->philosophers[i].time_to_die = (*data)->time_to_die;
   (*data)->philosophers[i].time_to_eat = (*data)->time_to_eat;
   (*data)->philosophers[i].time_to_sleep = (*data)->time_to_sleep;
-  (*data)->philosophers[i].id = i; // attention au 0 !
+  (*data)->philosophers[i].id = i;
   (*data)->philosophers[i].last_meal = 0;
   (*data)->philosophers[i].nb_meals_eaten = 0;
   (*data)->philosophers[i].data = *data;
   (*data)->philosophers[i].fed = false;
   (*data)->philosophers[i].meals_limit = (*data)->meals_limit;
-  /* (*data)->philosophers[i].start_time = &((*data)->start_time); */
-  /* (*data)->philosophers[i].time_mutex = &((*data)->time_mutex); */
-  /* (*data)->philosophers[i].end_mutex = &((*data)->end_mutex); */
-  /* (*data)->philosophers[i].threads = (*data)->threads; */
-  /* (*data)->philosophers[i].write_mutex = &(*data)->write_mutex; */
   return (init_philo_struct_mutex(data, i));
 }
 
+int create_philosopher(t_data **data, int id)
+{
+    if (pthread_create(&(*data)->threads[id], NULL, philosophers_routine, &(*data)->philosophers[id]) != 0)
+    {
+      if (id > 0)
+      {
+        while (id >= 0)
+        {
+          pthread_join((*data)->threads[id], NULL);
+          id--;
+        }
+      }
+      destroy_all_philo_mutex(data, id);
+      return (destroy_all_data_mutex_and_free(data));
+    }
+}
 
 int init_threads(t_data **data)
 {
@@ -108,13 +119,7 @@ int init_threads(t_data **data)
   while (i < (*data)->nb_philo)
   {
     init_philo_struct(data, i);
-    if (pthread_create(&(*data)->threads[i], NULL, philosophers_routine, &(*data)->philosophers[i]) != 0)
-    {
-      if (i > 0)
-        join_threads_backward(data, i);
-      destroy_all_philo_mutex(data, i);
-      return (destroy_all_data_mutex_and_free(data));
-    }
+    create_philosopher(data, i);
     i++;
   }
   (*data)->start_time = get_time();
