@@ -4,6 +4,7 @@
 #include <sys/time.h>
 #include <stddef.h> // POUR NULL !!
 #include <unistd.h> //usleep
+#include <stdio.h>
 
 //returns ms elapsed since 1 january 1970
 long int get_time(void)
@@ -19,6 +20,9 @@ bool is_simulation_over(t_philosopher *philosopher)
   pthread_mutex_lock(&philosopher->data->end_mutex);
   if (philosopher->data->end)
   {
+    /* pthread_mutex_lock(&philosopher->data->write_mutex); */
+    /* printf("id leaving %d\n", philosopher->id); */
+    /* pthread_mutex_unlock(&philosopher->data->write_mutex); */
     pthread_mutex_unlock(&philosopher->data->end_mutex);
     return (true);
   }
