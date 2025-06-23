@@ -6,13 +6,13 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:12:39 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 17:17:53 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 18:20:01 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	are_philo_fed(t_data **data)
+static bool	are_philo_fed(t_data **data)
 {
 	int	i;
 
@@ -27,7 +27,7 @@ bool	are_philo_fed(t_data **data)
 	return (true);
 }
 
-bool	is_philo_eating(t_data **data, int id)
+static bool	is_philo_eating(t_data **data, int id)
 {
 	if (id == (id + 1) % (*data)->nb_philo)
 		return (false);
@@ -39,7 +39,7 @@ bool	is_philo_eating(t_data **data, int id)
 		return (false);
 }
 
-int	are_philo_starving(t_data **data)
+static int	are_philo_starving(t_data **data)
 {
 	int			i;
 	long int	time_elapsed;
@@ -83,7 +83,9 @@ int	main_thread_monitoring(t_data **data)
 		{
 			return (exit_code);
 		}
-		accurate_sleep(data, 5);
+		exit_code = accurate_sleep(data, 5);
+		if (exit_code == GETTIMEOFDAY_ERROR)
+			return (exit_code);
 	}
 	return (0);
 }
