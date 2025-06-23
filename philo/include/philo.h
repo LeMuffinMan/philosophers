@@ -22,7 +22,7 @@
 # define THREAD_ERROR -3
 # define GETTIMEOFDAY_ERROR -4
 
-struct s_philosopher;
+struct					s_philosopher;
 typedef struct s_philosopher	t_philosopher;
 
 typedef struct s_data
@@ -62,13 +62,13 @@ typedef struct s_philosopher
 	t_data						*data;
 }								t_philosopher;
 
-// --------------------------------------- INIT -------------------------------------//
+// ---------------------------------- INIT --------------------------------//
 // init.c
 int								init_data(t_data **data, char **av);
 int								init_mutex(t_data **data);
 int								init_threads(t_data **data);
 
-//init_philo_struct.c
+// init_philo_struct.c
 int								init_philo_struct(t_data **data, int i);
 
 // init_data_utils.c
@@ -84,7 +84,7 @@ int								init_mutex_end_mutex(t_data **data);
 int								init_mutex_write_mutex(t_data **data);
 int								init_mutex_meals_limit_mutex(t_data **data);
 
-// --------------------------------------- UTILS -------------------------------------//
+// ---------------------------------- UTILS --------------------------------//
 
 // free_destroy_utils.c
 int								destroy_all_data_mutex_and_free(t_data **data);
@@ -92,33 +92,36 @@ int								destroy_all_philo_mutex(t_data **data, int i);
 int								destroy_forks_mutex(t_data **data,
 									int last_mutex);
 int								free_allocated_memory(t_data **data);
-int								simulation_end_destroy_and_free(t_data **data, int exit_code);
+int								simulation_end_destroy_and_free(t_data **data,
+									int exit_code);
 
 // time.c
 long int						get_time(t_data **data);
 bool							is_simulation_over(t_philosopher *philosopher);
 long int						is_time_started(t_philosopher *philosopher);
-int								accurate_sleep(t_data **data, int time_to_sleep);
+int								accurate_sleep(t_data **data,
+									int time_to_sleep);
 
 // prints
 int								print_error_and_free(char *msg, int exit_code,
 									t_data **data);
 int								init_data_print_error_and_free(char *msg,
 									int exit_code, t_data **data);
-int								print_log(t_data **data, t_philosopher *philosopher,
-									char *msg);
+int								print_log(t_data **data,
+									t_philosopher *philosopher, char *msg);
 
 // str_utils
 int								are_valids_args(char **av);
 int								ft_atoi(const char *nptr);
 
-//getters_setters
-bool	get_fed_state(t_philosopher *philosopher);
-long int	get_last_meal_time(t_philosopher *philosopher);
-int	set_end(t_data **data, pthread_mutex_t *mutex);
-int set_fed(t_philosopher *philosopher, pthread_mutex_t *mutex);
+// getters_setters
+bool							get_fed_state(t_philosopher *philosopher);
+long int						get_last_meal_time(t_philosopher *philosopher);
+int								set_end(t_data **data, pthread_mutex_t *mutex);
+int								set_fed(t_philosopher *philosopher,
+									pthread_mutex_t *mutex);
 
-// --------------------------------------- src/ -------------------------------------//
+// ---------------------------------- SRC/ --------------------------------//
 void							*philosophers_routine(void *arg);
 int								main_thread_monitoring(t_data **data);
 
@@ -130,7 +133,7 @@ int								release_forks(t_philosopher *philosopher);
 bool							get_fork_state(t_philosopher *philosopher,
 									int i);
 
-//monitor_routine.c
-int set_end(t_data **data, pthread_mutex_t *mutex);
+// monitor_routine.c
+int								set_end(t_data **data, pthread_mutex_t *mutex);
 
 #endif
