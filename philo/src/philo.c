@@ -55,7 +55,7 @@ int main (int ac, char **av)
   if (exit_code != 0)
     return (exit_code);
   exit_code = main_thread_monitoring(&data);
-  return (simulation_end_destroy_and_free(&data));
+  return (simulation_end_destroy_and_free(&data, 0));
 }
 
 // TESTS

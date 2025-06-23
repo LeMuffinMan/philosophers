@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:18:19 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 15:37:58 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 16:23:38 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	free_allocated_memory(t_data **data)
 	return (0);
 }
 
-int	simulation_end_destroy_and_free(t_data **data)
+int	simulation_end_destroy_and_free(t_data **data, int exit_code)
 {
 	int	i;
 
@@ -78,5 +78,5 @@ int	simulation_end_destroy_and_free(t_data **data)
 	pthread_mutex_destroy(&(*data)->end_mutex);
 	pthread_mutex_destroy(&(*data)->meals_limit_mutex);
 	free_allocated_memory(data);
-	return (0);
+	return (exit_code);
 }

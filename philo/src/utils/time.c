@@ -7,12 +7,15 @@
 #include <unistd.h> //usleep
 
 // returns ms elapsed since 1 january 1970
-long int	get_time(void)
+long int	get_time(t_data **data)
 {
 	struct timeval	tv;
 
-	gettimeofday(&tv, NULL);
-	// gerer l'erreur du gettimeofday ?
+	if (gettimeofday(&tv, NULL) != 0)
+	{
+    set_end(data, &(*data)->end_mutex);
+	  return (GETTIMEOFDAY_ERROR);
+  }
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 bool	is_simulation_over(t_philosopher *philosopher)
@@ -39,12 +42,12 @@ long int	is_time_started(t_philosopher *philosopher)
 	return (start_time);
 }
 
-int	accurate_sleep(int time_to_sleep)
+int	accurate_sleep(t_data **data, int time_to_sleep)
 {
 	long int	start_time;
 
-	start_time = get_time();
-	while ((get_time() - start_time) < time_to_sleep)
+	start_time = get_time(data);
+	while ((get_time(data) - start_time) < time_to_sleep)
 		usleep(100);
 	return (0);
 }

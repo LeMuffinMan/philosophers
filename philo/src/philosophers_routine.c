@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:13:15 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/20 17:22:29 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 16:26:18 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ int thinking(t_philosopher *philosopher)
 {
   if (is_simulation_over(philosopher))
     return (1);
-  if (print_log(philosopher, "is thinking"))
+  if (print_log(&philosopher->data, philosopher, "is thinking"))
     return (1);
-  /* pthread_mutex_lock(&philosopher->data->write_mutex); 
-  /* printf("id : %d started to think at %ld\n", philosopher->id, get_time() - philosopher->data->start_time); */
+  /* pthread_mutex_lock(&philosopher->data->write_mutex);  */
+  /* printf("id : %d started to think at %ld\n", philosopher->id, get_time(&philosopher->data) - philosopher->data->start_time); */
   /* pthread_mutex_unlock(&philosopher->data->write_mutex);  */
-  accurate_sleep((philosopher->time_to_eat * 2 - philosopher->time_to_sleep));
+  accurate_sleep(&philosopher->data, philosopher->time_to_eat * 2 - philosopher->time_to_sleep);
   /* pthread_mutex_lock(&philosopher->data->write_mutex); */
-  /* printf("id : %d finished to think at %ld\n", philosopher->id, get_time() - philosopher->data->start_time); */
+  /* printf("id : %d finished to think at %ld\n", philosopher->id, get_time(&philosopher->data) - philosopher->data->start_time); */
   /* pthread_mutex_unlock(&philosopher->data->write_mutex);  */
   if (is_simulation_over(philosopher))
     return (1);
@@ -40,7 +40,7 @@ int eating(t_philosopher *philosopher)
     release_forks(philosopher);
     return (1);
   }
-  if (print_log(philosopher, "is eating"))
+  if (print_log(&philosopher->data, philosopher, "is eating"))
     return (1);
   philosopher->nb_meals_eaten++;
   if (philosopher->nb_meals_eaten == philosopher->meals_limit)
@@ -50,17 +50,19 @@ int eating(t_philosopher *philosopher)
     pthread_mutex_unlock(&philosopher->fed_mutex);
   }
   /* pthread_mutex_lock(&philosopher->data->write_mutex);  */
-  /* printf("id : %d started to eat at %ld\n", philosopher->id, get_time() - philosopher->data->start_time); */
+  /* printf("id : %d started to eat at %ld\n", philosopher->id, get_time(&philosopher->data) - philosopher->data->start_time); */
   /* pthread_mutex_unlock(&philosopher->data->write_mutex);  */
   pthread_mutex_lock(&philosopher->last_meal_mutex);
-  philosopher->last_meal = get_time() - philosopher->start_time;
+  philosopher->last_meal = get_time(&philosopher->data) - philosopher->start_time;
   pthread_mutex_unlock(&philosopher->last_meal_mutex);
-  accurate_sleep(philosopher->time_to_eat);
+  if (is_simulation_over(philosopher))
+    return (1);
+  accurate_sleep(&philosopher->data, philosopher->time_to_eat);
   /* pthread_mutex_lock(&philosopher->data->write_mutex); */
-  /* printf("id : %d finished to eat at %ld\n", philosopher->id, get_time() - philosopher->data->start_time); */
+  /* printf("id : %d finished to eat at %ld\n", philosopher->id, get_time(&philosopher->data) - philosopher->data->start_time); */
   /* pthread_mutex_unlock(&philosopher->data->write_mutex);  */
   pthread_mutex_lock(&philosopher->last_meal_mutex);
-  philosopher->last_meal = get_time() - philosopher->start_time;
+  philosopher->last_meal = get_time(&philosopher->data) - philosopher->start_time;
   pthread_mutex_unlock(&philosopher->last_meal_mutex);
   if (is_simulation_over(philosopher))
     return (1);
@@ -71,9 +73,9 @@ int sleeping(t_philosopher *philosopher)
 {
   /* if (is_simulation_over(philosopher)) */
   /*   return (1); */
-  if (print_log(philosopher, "is sleeping"))
+  if (print_log(&philosopher->data, philosopher, "is sleeping"))
     return (1);
-  accurate_sleep(philosopher->time_to_sleep);
+  accurate_sleep(&philosopher->data, philosopher->time_to_sleep);
   /* if (is_simulation_over(philosopher)) */
   /*   return (1); */
   return (0);
@@ -88,11 +90,13 @@ void *philosophers_routine(void *arg)
   start_time = is_time_started(philosopher);
   while (start_time < 0)
   {
+    if (is_simulation_over(philosopher))
+      return (NULL);
     start_time = is_time_started(philosopher);
   }
   philosopher->start_time = start_time;
   if (philosopher->id % 2 == 0)
-    accurate_sleep(10);
+    accurate_sleep(&philosopher->data, 10);
   while (!is_simulation_over(philosopher))
   {
     if (!take_two_forks(philosopher))

@@ -67,14 +67,16 @@ int are_philo_starving(t_data **data)
   {
     last_meal_time = get_last_meal_time(&(*data)->philosophers[i]);
     pthread_mutex_lock(&(*data)->time_mutex);
-    time_elapsed = get_time() - (*data)->start_time - last_meal_time;
-    pthread_mutex_unlock(&(*data)->time_mutex);
+    time_elapsed = get_time(data) - (*data)->start_time - last_meal_time;
+    pthread_mutex_unlock(&(*data)->time_mutex); 
+    if (time_elapsed == GETTIMEOFDAY_ERROR)
+      return (true);
     if (last_meal_time >= 0 && time_elapsed > (*data)->time_to_die && !is_philo_eating(data, i))
     {
       /* pthread_mutex_lock(&(*data)->write_mutex); */
       /* printf("id : %d | last_meal_time = %ld | time elapsed = %ld\n", (*data)->philosophers[i].id, last_meal_time, time_elapsed); */
       /* pthread_mutex_unlock(&(*data)->write_mutex); */
-      print_log(&(*data)->philosophers[i], "died");
+      print_log(data, &(*data)->philosophers[i], "died");
       set_end(data, &(*data)->end_mutex);
       return (true);
     }
@@ -89,7 +91,7 @@ int main_thread_monitoring(t_data **data) // a bouger !
 
   exit_code = false;
   /* pthread_mutex_lock(&(*data)->write_mutex); */
-  /* printf("monitor started at %ld\n", get_time() - (*data)->start_time); */
+  /* printf("monitor started at %ld\n", get_time(data) - (*data)->start_time); */
   /* pthread_mutex_unlock(&(*data)->write_mutex); */
   while (1)
   {
@@ -109,7 +111,7 @@ int main_thread_monitoring(t_data **data) // a bouger !
       /* pthread_mutex_unlock(&(*data)->write_mutex); */
       return (exit_code);
     }
-    accurate_sleep (5);
+    accurate_sleep (data, 5);
     /* usleep(100); */
   }
   return (0);
