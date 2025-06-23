@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 16:53:27 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 16:58:45 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 17:21:56 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	set_end(t_data **data, pthread_mutex_t *mutex)
 	return (0);
 }
 
-int set_fed(t_philosopher *philosopher, pthread_mutex_t *mutex)
+int	set_fed(t_philosopher *philosopher, pthread_mutex_t *mutex)
 {
 	pthread_mutex_lock(mutex);
 	philosopher->fed = true;
