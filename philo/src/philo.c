@@ -58,6 +58,9 @@ int main (int ac, char **av)
   return (simulation_end_destroy_and_free(&data, 0));
 }
 
+ /* make re && ./bin/philo 600 300 300 300 */
+// arret anormal
+
 // TESTS
 // MAC
 // ./bin/philo 1 610 300 300 : il doit mourrir direct : OK

@@ -6,12 +6,11 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:10:01 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 17:11:25 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 17:12:27 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <pthread.h>
 #include <unistd.h>
 
 bool	get_fork_state(t_philosopher *philosopher, int i)
