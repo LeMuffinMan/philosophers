@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/21 12:18:19 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 16:23:38 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 18:45:19 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,13 @@
 #include <pthread.h>
 #include <stdlib.h>
 
-int	destroy_forks_mutex(t_data **data, int last_mutex)
+void	destroy_forks_mutex(t_data **data, int last_mutex)
 {
 	while (last_mutex >= 0)
 	{
 		pthread_mutex_destroy(&((*data)->forks_mutex[last_mutex]));
 		last_mutex--;
 	}
-	return (0);
 }
 
 int	destroy_all_data_mutex_and_free(t_data **data)
@@ -34,7 +33,7 @@ int	destroy_all_data_mutex_and_free(t_data **data)
 	return (print_error_and_free("Threads init failed\n", THREAD_ERROR, data));
 }
 
-int	destroy_all_philo_mutex(t_data **data, int i)
+void	destroy_all_philo_mutex(t_data **data, int i)
 {
 	while (i >= 0)
 	{
@@ -42,13 +41,12 @@ int	destroy_all_philo_mutex(t_data **data, int i)
 		pthread_mutex_destroy(&(*data)->philosophers[i].fed_mutex);
 		i--;
 	}
-	return (0);
 }
 
-int	free_allocated_memory(t_data **data)
+void	free_allocated_memory(t_data **data)
 {
 	if (!*data)
-		return (0);
+		return ;
 	if ((*data)->forks)
 		free((*data)->forks);
 	if ((*data)->forks_mutex)
@@ -58,7 +56,6 @@ int	free_allocated_memory(t_data **data)
 	if ((*data)->philosophers)
 		free((*data)->philosophers);
 	free(*data);
-	return (0);
 }
 
 int	simulation_end_destroy_and_free(t_data **data, int exit_code)
@@ -78,5 +75,5 @@ int	simulation_end_destroy_and_free(t_data **data, int exit_code)
 	pthread_mutex_destroy(&(*data)->end_mutex);
 	pthread_mutex_destroy(&(*data)->meals_limit_mutex);
 	free_allocated_memory(data);
-	return (exit_code);
+	return (0);
 }
