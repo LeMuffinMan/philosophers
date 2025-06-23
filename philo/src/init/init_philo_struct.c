@@ -6,13 +6,13 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 15:25:05 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 15:25:15 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 15:29:48 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_philo_struct_last_meal_mutex(t_data **data, int i)
+static int	init_philo_struct_last_meal_mutex(t_data **data, int i)
 {
 	if (pthread_mutex_init(&(*data)->philosophers[i].last_meal_mutex,
 			NULL) != 0)
@@ -31,7 +31,7 @@ int	init_philo_struct_last_meal_mutex(t_data **data, int i)
 	return (0);
 }
 
-int	init_philo_struct_fed_mutex(t_data **data, int i)
+static int	init_philo_struct_fed_mutex(t_data **data, int i)
 {
 	if (pthread_mutex_init(&(*data)->philosophers[i].fed_mutex, NULL) != 0)
 	{
@@ -50,7 +50,7 @@ int	init_philo_struct_fed_mutex(t_data **data, int i)
 	return (0);
 }
 
-int	init_philo_struct_mutex(t_data **data, int i)
+static int	init_philo_struct_mutex(t_data **data, int i)
 {
 	int	exit_code;
 
@@ -61,4 +61,19 @@ int	init_philo_struct_mutex(t_data **data, int i)
 	if (exit_code)
 		return (exit_code);
 	return (0);
+}
+
+int	init_philo_struct(t_data **data, int i)
+{
+	(*data)->philosophers[i].nb_philo = (*data)->nb_philo;
+	(*data)->philosophers[i].time_to_die = (*data)->time_to_die;
+	(*data)->philosophers[i].time_to_eat = (*data)->time_to_eat;
+	(*data)->philosophers[i].time_to_sleep = (*data)->time_to_sleep;
+	(*data)->philosophers[i].id = i;
+	(*data)->philosophers[i].last_meal = 0;
+	(*data)->philosophers[i].nb_meals_eaten = 0;
+	(*data)->philosophers[i].data = *data;
+	(*data)->philosophers[i].fed = false;
+	(*data)->philosophers[i].meals_limit = (*data)->meals_limit;
+	return (init_philo_struct_mutex(data, i));
 }
