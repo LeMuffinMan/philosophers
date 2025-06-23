@@ -14,41 +14,55 @@
 #include <unistd.h>
 #include <stdio.h>
 
-static bool	try_to_catch_fork(t_philosopher *philosopher, int fork_to_catch)
+static bool	try_to_catch_fork(t_philosopher *philosopher, int fork_to_catch, bool attempt)
 {
 	while (!get_fork_state(philosopher, fork_to_catch))
 	{
-		if (is_simulation_over(philosopher))
-			return (false);
+		/* if (is_simulation_over(philosopher)) */
+		/* 	return (false); */
 		usleep(100);
-		if (is_simulation_over(philosopher))
+		/* if (is_simulation_over(philosopher)) */
+		/* 	return (false); */
+		if (attempt == true)
 			return (false);
 	}
 	return (true);
 }
 
-bool	take_two_forks(t_philosopher *philosopher)
+bool take_two_forks(t_philosopher *philosopher)
 {
-	int	left;
-	int	right;
+	int left;
+	int right;
+	int first;
+	int second;
+	int exit_code;
 
 	left = philosopher->id - 1;
-	right = (philosopher->id) % philosopher->nb_philo;
-	if (left < right)
+	right = philosopher->id % philosopher->nb_philo;
+	if (philosopher->id % 2 == 0)
 	{
-		left = (philosopher->id) % philosopher->nb_philo;
-		right = philosopher->id - 1;
+		first = left;
+		second = right;
 	}
-	/* if (philosopher->id == 1) */
-	/* 	printf("trying to catch fork %d and %d\n", left, right); */
-	if (!try_to_catch_fork(philosopher, left))
-		return (false);
-	if (!try_to_catch_fork(philosopher, right))
+	else
 	{
-		set_fork(philosopher, left, true);
-		return (false);
+		first = right;
+		second = left;
 	}
-	return (true);
+	while (!is_simulation_over(philosopher))
+	{
+		exit_code = try_to_catch_fork(philosopher, first, false);
+		if (exit_code)
+		{
+			exit_code = try_to_catch_fork(philosopher, second, true);
+			if (exit_code)
+				return (true);
+			else
+				set_fork(philosopher, first, true);
+		}
+		usleep(100);
+	}
+	return (false);
 }
 
 bool	release_forks(t_philosopher *philosopher)
@@ -61,7 +75,7 @@ bool	release_forks(t_philosopher *philosopher)
 	right = (philosopher->id) % philosopher->nb_philo;
 	if (is_simulation_over(philosopher))
 		return (false);
-	if (left > right)
+	if (philosopher->id % 2 == 0)
 	{
 		set_fork(philosopher, left, true);
 		set_fork(philosopher, right, true);

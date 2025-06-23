@@ -20,8 +20,10 @@ static bool	thinking(t_philosopher *philosopher)
 	if (!print_log(&philosopher->data, philosopher, "is thinking"))
 		return (false);
 	if (philosopher->nb_philo % 2 != 0)
-	accurate_sleep(&philosopher->data, philosopher->time_to_eat * 2
-		- philosopher->time_to_sleep);
+	{
+		accurate_sleep(&philosopher->data, philosopher->time_to_eat * 2
+			- philosopher->time_to_sleep);
+	}
 	if (is_simulation_over(philosopher))
 		return (false);
 	return (true);
@@ -77,7 +79,7 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 	}
 	philosopher->start_time = start_time;
 	if (philosopher->id % 2 != 0)
-		usleep(100);
+		usleep(200);
 	/* 	accurate_sleep(&philosopher->data, 10); */
 	/* if (is_simulation_over(philosopher)) */
 	/* 	return (false); */
