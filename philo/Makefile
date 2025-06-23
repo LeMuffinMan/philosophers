@@ -14,6 +14,8 @@ SRC = src/philo.c \
 			src/init/init_mutex_utils.c \
 			src/init/init_forks.c \
 			src/init/init.c \
+			src/init/init_data_utils.c \
+			src/init/init_philo_struct.c \
 			src/utils/prints.c \
 			src/utils/destroy_mutex.c \
 			src/utils/str_utils.c \
