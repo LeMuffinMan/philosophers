@@ -12,6 +12,7 @@
 
 #include "philo.h"
 #include <unistd.h>
+#include <stdio.h>
 
 static bool	try_to_catch_fork(t_philosopher *philosopher, int fork_to_catch)
 {
@@ -31,13 +32,15 @@ bool	take_two_forks(t_philosopher *philosopher)
 	int	left;
 	int	right;
 
-	left = philosopher->id;
-	right = (philosopher->id + 1) % philosopher->nb_philo;
+	left = philosopher->id - 1;
+	right = (philosopher->id) % philosopher->nb_philo;
 	if (left < right)
 	{
-		left = (philosopher->id + 1) % philosopher->nb_philo;
-		right = philosopher->id;
+		left = (philosopher->id) % philosopher->nb_philo;
+		right = philosopher->id - 1;
 	}
+	/* if (philosopher->id == 1) */
+	/* 	printf("trying to catch fork %d and %d\n", left, right); */
 	if (!try_to_catch_fork(philosopher, left))
 		return (false);
 	if (!try_to_catch_fork(philosopher, right))
@@ -54,8 +57,8 @@ bool	release_forks(t_philosopher *philosopher)
 	int		right;
 	bool	exit_code;
 
-	left = philosopher->id;
-	right = (philosopher->id + 1) % philosopher->nb_philo;
+	left = philosopher->id - 1;
+	right = (philosopher->id) % philosopher->nb_philo;
 	if (is_simulation_over(philosopher))
 		return (false);
 	if (left > right)
@@ -70,5 +73,7 @@ bool	release_forks(t_philosopher *philosopher)
 	}
 	if (is_simulation_over(philosopher))
 		return (false);
+	/* if (philosopher->id != 1) */
+	/* 	printf("caught fork %d and %d\n", left, right); */
 	return (true);
 }
