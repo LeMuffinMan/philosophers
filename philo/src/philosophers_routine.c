@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <unistd.h>
 
 static bool	thinking(t_philosopher *philosopher)
 {
@@ -18,6 +19,7 @@ static bool	thinking(t_philosopher *philosopher)
 		return (false);
 	if (!print_log(&philosopher->data, philosopher, "is thinking"))
 		return (false);
+	if (philosopher->nb_philo % 2 != 0)
 	accurate_sleep(&philosopher->data, philosopher->time_to_eat * 2
 		- philosopher->time_to_sleep);
 	if (is_simulation_over(philosopher))
@@ -43,10 +45,10 @@ static bool	eating(t_philosopher *philosopher)
 	accurate_sleep(&philosopher->data, philosopher->time_to_eat);
 	if (is_simulation_over(philosopher))
 		return (false);
-	pthread_mutex_lock(&philosopher->last_meal_mutex);
-	philosopher->last_meal = get_time(&philosopher->data)
-		- philosopher->start_time;
-	pthread_mutex_unlock(&philosopher->last_meal_mutex);
+	/* pthread_mutex_lock(&philosopher->last_meal_mutex); */
+	/* philosopher->last_meal = get_time(&philosopher->data) */
+	/* 	- philosopher->start_time; */
+	/* pthread_mutex_unlock(&philosopher->last_meal_mutex); */
 	if (is_simulation_over(philosopher))
 		return (false);
 	return (true);
@@ -74,10 +76,11 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 		start_time = is_time_started(philosopher);
 	}
 	philosopher->start_time = start_time;
-	if (philosopher->id % 2 == 0)
-		accurate_sleep(&philosopher->data, 10);
-	if (is_simulation_over(philosopher))
-		return (false);
+	if (philosopher->id % 2 != 0)
+		usleep(100);
+	/* 	accurate_sleep(&philosopher->data, 10); */
+	/* if (is_simulation_over(philosopher)) */
+	/* 	return (false); */
 	return (true);
 }
 

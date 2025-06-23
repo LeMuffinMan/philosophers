@@ -69,7 +69,7 @@ int	init_philo_struct(t_data **data, int i)
 	(*data)->philosophers[i].time_to_die = (*data)->time_to_die;
 	(*data)->philosophers[i].time_to_eat = (*data)->time_to_eat;
 	(*data)->philosophers[i].time_to_sleep = (*data)->time_to_sleep;
-	(*data)->philosophers[i].id = i;
+	(*data)->philosophers[i].id = i + 1;
 	(*data)->philosophers[i].last_meal = 0;
 	(*data)->philosophers[i].nb_meals_eaten = 0;
 	(*data)->philosophers[i].data = *data;
