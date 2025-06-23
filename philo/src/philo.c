@@ -51,3 +51,19 @@ int	main(int ac, char **av)
 	exit_code = main_thread_monitoring(&data);
 	return (simulation_end_destroy_and_free(&data, exit_code));
 }
+
+/* 0 2 is eating */
+/* 0 4 is eating */
+/* 100 4 is sleeping */
+/* 100 5 is eating */
+/* 100 2 is sleeping */
+/* 100 3 is eating */
+/* 200 3 is sleeping */
+/* 200 5 is sleeping */
+/* 200 1 is eating */
+/* 300 1 is sleeping */
+/* 902 2 died */
+
+/* ❯ make re && ./bin/philo 5 800 100 1500 */
+
+//mort annoncee trop tard

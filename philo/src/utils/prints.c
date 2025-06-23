@@ -32,7 +32,8 @@ bool	print_log(t_data **data, t_philosopher *philosopher, char *msg)
 	time = get_time(data);
 	if (is_simulation_over(philosopher))
 		return (false);
-	printf("%ld %d %s\n", time - philosopher->data->start_time, philosopher->id,
+	//temp fix
+	printf("%ld %d %s\n", time - philosopher->data->start_time, philosopher->id + 1,
 		msg);
 	pthread_mutex_unlock(&philosopher->data->write_mutex);
 	pthread_mutex_unlock(&philosopher->data->time_mutex);
