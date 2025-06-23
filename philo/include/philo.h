@@ -20,6 +20,7 @@
 # define MALLOC_ERROR -1
 # define MUTEX_ERROR -2
 # define THREAD_ERROR -3
+# define GETTIMEOFDAY_ERROR -4
 
 struct s_philosopher;
 typedef struct s_philosopher	t_philosopher;
@@ -91,20 +92,20 @@ int								destroy_all_philo_mutex(t_data **data, int i);
 int								destroy_forks_mutex(t_data **data,
 									int last_mutex);
 int								free_allocated_memory(t_data **data);
-int								simulation_end_destroy_and_free(t_data **data);
+int								simulation_end_destroy_and_free(t_data **data, int exit_code);
 
 // time.c
-long int						get_time(void);
+long int						get_time(t_data **data);
 bool							is_simulation_over(t_philosopher *philosopher);
 long int						is_time_started(t_philosopher *philosopher);
-int								accurate_sleep(int time_to_sleep);
+int								accurate_sleep(t_data **data, int time_to_sleep);
 
 // prints
 int								print_error_and_free(char *msg, int exit_code,
 									t_data **data);
 int								init_data_print_error_and_free(char *msg,
 									int exit_code, t_data **data);
-int								print_log(t_philosopher *philosopher,
+int								print_log(t_data **data, t_philosopher *philosopher,
 									char *msg);
 
 // str_utils
@@ -122,5 +123,8 @@ bool							take_two_forks(t_philosopher *philosopher);
 int								release_forks(t_philosopher *philosopher);
 bool							get_fork_state(t_philosopher *philosopher,
 									int i);
+
+//monitor_routine.c
+int set_end(t_data **data, pthread_mutex_t *mutex);
 
 #endif

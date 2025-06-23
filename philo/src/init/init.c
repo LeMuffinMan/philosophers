@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:56:22 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 15:28:05 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 16:25:18 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,13 @@ int	init_threads(t_data **data)
 		create_philosopher(data, i);
 		i++;
 	}
-	(*data)->start_time = get_time();
+	(*data)->start_time = get_time(data);
+	if ((*data)->start_time == GETTIMEOFDAY_ERROR)
+	{
+		simulation_end_destroy_and_free(data, GETTIMEOFDAY_ERROR);	
+		pthread_mutex_unlock(&(*data)->time_mutex);
+		return (GETTIMEOFDAY_ERROR);	
+	}
 	pthread_mutex_unlock(&(*data)->time_mutex);
 	return (0);
 }
