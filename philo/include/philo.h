@@ -85,17 +85,13 @@ int								init_mutex_meals_limit_mutex(t_data **data);
 
 // --------------------------------------- UTILS -------------------------------------//
 
-// destroy_mutex.c
+// free_destroy_utils.c
 int								destroy_all_data_mutex_and_free(t_data **data);
 int								destroy_all_philo_mutex(t_data **data, int i);
 int								destroy_forks_mutex(t_data **data,
 									int last_mutex);
-
-// free_fcts.c
 int								free_allocated_memory(t_data **data);
 int								simulation_end_destroy_and_free(t_data **data);
-int								init_data_print_error_and_free(char *msg,
-									int exit_code, t_data **data);
 
 // time.c
 long int						get_time(void);
@@ -106,7 +102,8 @@ int								accurate_sleep(int time_to_sleep);
 // prints
 int								print_error_and_free(char *msg, int exit_code,
 									t_data **data);
-// int					print_log(t_philosopher *philosopher, t_type action);
+int								init_data_print_error_and_free(char *msg,
+									int exit_code, t_data **data);
 int								print_log(t_philosopher *philosopher,
 									char *msg);
 

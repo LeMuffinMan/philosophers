@@ -17,9 +17,8 @@ SRC = src/philo.c \
 			src/init/init_data_utils.c \
 			src/init/init_philo_struct.c \
 			src/utils/prints.c \
-			src/utils/destroy_mutex.c \
 			src/utils/str_utils.c \
-			src/utils/free_fcts.c \
+			src/utils/free_destroy_utils.c \
 			src/utils/time.c \
 			src/philosophers_routine.c \
 			src/forks.c \
