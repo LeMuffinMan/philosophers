@@ -39,3 +39,11 @@ int	set_end(t_data **data, pthread_mutex_t *mutex)
 	pthread_mutex_unlock(mutex);
 	return (0);
 }
+
+int set_fed(t_philosopher *philosopher, pthread_mutex_t *mutex)
+{
+	pthread_mutex_lock(mutex);
+	philosopher->fed = true;
+	pthread_mutex_unlock(mutex);
+	return (0);
+}

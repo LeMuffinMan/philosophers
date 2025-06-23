@@ -116,6 +116,7 @@ int								ft_atoi(const char *nptr);
 bool	get_fed_state(t_philosopher *philosopher);
 long int	get_last_meal_time(t_philosopher *philosopher);
 int	set_end(t_data **data, pthread_mutex_t *mutex);
+int set_fed(t_philosopher *philosopher, pthread_mutex_t *mutex);
 
 // --------------------------------------- src/ -------------------------------------//
 void							*philosophers_routine(void *arg);
