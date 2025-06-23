@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 16:57:36 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 16:58:19 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 18:24:53 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,17 @@ long int	is_time_started(t_philosopher *philosopher)
 
 int	accurate_sleep(t_data **data, int time_to_sleep)
 {
+	int			ret_val;
 	long int	start_time;
 
 	start_time = get_time(data);
-	while ((get_time(data) - start_time) < time_to_sleep)
+	if (start_time == GETTIMEOFDAY_ERROR)
+		return (GETTIMEOFDAY_ERROR);
+	ret_val = get_time(data);
+	while (ret_val != GETTIMEOFDAY_ERROR && ret_val < time_to_sleep)
+	{
 		usleep(100);
-	return (0);
+		ret_val = get_time(data) - start_time;
+	}
+	return (ret_val);
 }

@@ -6,14 +6,14 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:26:45 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 17:23:54 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 18:14:58 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <stdio.h>
 
-bool	check_user_inputs(int ac)
+static bool	check_user_inputs(int ac)
 {
 	if (ac < 5 || ac > 6)
 	{
@@ -35,7 +35,7 @@ int	main(int ac, char **av)
 	// arret anormal
 	data = NULL;
 	if (check_user_inputs(ac))
-		return (INVALID_ARGS);
+		return (INVALID_ARG);
 	exit_code = are_valids_args(av);
 	if (exit_code != 0)
 		return (exit_code);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   getters_setters.c                                  :+:      :+:    :+:   */
+/*   getters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 16:53:27 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 17:21:56 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 18:25:09 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,17 @@ long int	get_last_meal_time(t_philosopher *philosopher)
 	return (last_meal_time);
 }
 
-int	set_end(t_data **data, pthread_mutex_t *mutex)
+bool	get_fork_state(t_philosopher *philosopher, int i)
 {
-	pthread_mutex_lock(mutex);
-	(*data)->end = true;
-	pthread_mutex_unlock(mutex);
-	return (0);
-}
+	bool	exit_code;
 
-int	set_fed(t_philosopher *philosopher, pthread_mutex_t *mutex)
-{
-	pthread_mutex_lock(mutex);
-	philosopher->fed = true;
-	pthread_mutex_unlock(mutex);
-	return (0);
+	exit_code = false;
+	pthread_mutex_lock(&philosopher->data->forks_mutex[i]);
+	if (philosopher->data->forks[i] == true)
+	{
+		exit_code = true;
+		philosopher->data->forks[i] = false;
+	}
+	pthread_mutex_unlock(&philosopher->data->forks_mutex[i]);
+	return (exit_code);
 }

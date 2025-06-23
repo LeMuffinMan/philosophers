@@ -20,7 +20,8 @@ SRC = src/philo.c \
 			src/utils/str_utils.c \
 			src/utils/free_destroy_utils.c \
 			src/utils/time.c \
-			src/utils/getters_setters.c \
+			src/utils/getters.c \
+			src/utils/setters.c \
 			src/philosophers_routine.c \
 			src/forks.c \
 			src/monitor_routine.c
