@@ -31,8 +31,6 @@ int	main(int ac, char **av)
 	t_data	*data;
 	int		exit_code;
 
-	/* make re && ./bin/philo 600 300 300 300 */
-	// arret anormal
 	data = NULL;
 	if (check_user_inputs(ac))
 		return (INVALID_ARG);
@@ -66,4 +64,4 @@ int	main(int ac, char **av)
 
 /* ❯ make re && ./bin/philo 5 800 100 1500 */
 
-//mort annoncee trop tard
+//mort annoncee trop tard !
