@@ -75,5 +75,5 @@ int	simulation_end_destroy_and_free(t_data **data, int exit_code)
 	pthread_mutex_destroy(&(*data)->end_mutex);
 	pthread_mutex_destroy(&(*data)->meals_limit_mutex);
 	free_allocated_memory(data);
-	return (0);
+	return (exit_code);
 }

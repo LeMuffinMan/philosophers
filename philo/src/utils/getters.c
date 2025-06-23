@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 16:53:27 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 18:25:09 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 19:48:34 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,20 @@ bool	get_fork_state(t_philosopher *philosopher, int i)
 	}
 	pthread_mutex_unlock(&philosopher->data->forks_mutex[i]);
 	return (exit_code);
+}
+
+long int	get_elapsed_time_since_last_meal(t_data **data,
+		long int last_meal_time)
+{
+	long int	time_elapsed;
+
+	pthread_mutex_lock(&(*data)->time_mutex);
+	time_elapsed = get_time(data) - (*data)->start_time - last_meal_time;
+	if (time_elapsed == GETTIMEOFDAY_ERROR)
+	{
+		pthread_mutex_unlock(&(*data)->time_mutex);
+		return (GETTIMEOFDAY_ERROR);
+	}
+	pthread_mutex_unlock(&(*data)->time_mutex);
+	return (time_elapsed);
 }
