@@ -65,3 +65,7 @@ int	main(int ac, char **av)
 /* ❯ make re && ./bin/philo 5 800 100 1500 */
 
 //mort annoncee trop tard !
+//
+//time_to_die (in milliseconds): If a philosopher didn’t start eating time_to_die
+/* milliseconds since the beginning of their last meal or the beginning of the sim- */
+/* ulation, they die. */
