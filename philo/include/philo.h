@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:56:03 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/01 18:56:05 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 19:49:01 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ bool							get_fed_state(t_philosopher *philosopher);
 long int						get_last_meal_time(t_philosopher *philosopher);
 bool							get_fork_state(t_philosopher *philosopher,
 									int i);
+long int						get_elapsed_time_since_last_meal(t_data **data,
+									long int last_meal_time);
 
 // prints
 int								print_error_and_free(char *msg, int exit_code,

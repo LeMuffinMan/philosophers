@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:26:45 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 18:48:57 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 19:36:17 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,5 @@ int	main(int ac, char **av)
 	if (exit_code != 0)
 		return (exit_code);
 	exit_code = main_thread_monitoring(&data);
-	return (simulation_end_destroy_and_free(&data, 0));
+	return (simulation_end_destroy_and_free(&data, exit_code));
 }
