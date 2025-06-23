@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 16:57:36 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 18:24:53 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 18:47:14 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ long int	is_time_started(t_philosopher *philosopher)
 {
 	long int	start_time;
 
-	start_time = false;
+	start_time = -1;
 	pthread_mutex_lock(&philosopher->data->time_mutex);
 	if (philosopher->data->start_time != -1)
 		start_time = philosopher->data->start_time;

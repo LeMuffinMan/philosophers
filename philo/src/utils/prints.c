@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:56:03 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 15:40:39 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 18:38:18 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,23 @@ int	print_error_and_free(char *msg, int exit_code, t_data **data)
 	return (exit_code);
 }
 
-int	print_log(t_data **data, t_philosopher *philosopher, char *msg)
+bool	print_log(t_data **data, t_philosopher *philosopher, char *msg)
 {
+	//inverser le retour de fonction
+	long int time;
+
 	pthread_mutex_lock(&philosopher->data->write_mutex);
 	pthread_mutex_lock(&philosopher->data->time_mutex);
 	if (is_simulation_over(philosopher))
-		return (1);
-	printf("%ld %d %s\n", get_time(data) - philosopher->data->start_time,
+		return (true);
+	time = get_time(data);
+	if (is_simulation_over(philosopher))
+		return (true);
+	printf("%ld %d %s\n", time - philosopher->data->start_time,
 		philosopher->id, msg);
 	pthread_mutex_unlock(&philosopher->data->write_mutex);
 	pthread_mutex_unlock(&philosopher->data->time_mutex);
-	return (0);
+	return (false);
 }
 
 int	init_data_print_error_and_free(char *msg, int exit_code, t_data **data)

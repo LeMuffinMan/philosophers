@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:10:01 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 18:12:59 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 18:47:57 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 static bool	try_to_catch_fork(t_philosopher *philosopher, int fork_to_catch)
 {
+	//revoir l'inversion des bool
 	while (!get_fork_state(philosopher, fork_to_catch))
 	{
 		if (is_simulation_over(philosopher))
@@ -31,6 +32,7 @@ bool	take_two_forks(t_philosopher *philosopher)
 	int	left;
 	int	right;
 
+	//revoir l'inversion des bool
 	left = philosopher->id;
 	right = (philosopher->id + 1) % philosopher->nb_philo;
 	if (left < right)
@@ -54,6 +56,7 @@ bool	release_forks(t_philosopher *philosopher)
 	int		right;
 	bool	exit_code;
 
+	//revoir l'inversion des bool
 	left = philosopher->id;
 	right = (philosopher->id + 1) % philosopher->nb_philo;
 	if (is_simulation_over(philosopher))

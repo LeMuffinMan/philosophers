@@ -27,7 +27,7 @@ SRC = src/philo.c \
 			src/monitor_routine.c
 
 CC = cc
-FLAGS = -Wall -Werror -Wextra -g3 -pthread #-fsanitize=thread
+FLAGS = -Wall -Werror -Wextra #-g3 -pthread -fsanitize=thread
 NAME = philo
 INC = include
 

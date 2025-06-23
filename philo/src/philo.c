@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:26:45 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 18:14:58 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 18:48:57 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ static bool	check_user_inputs(int ac)
 			"<time_to_die time_to_eat> "
 			"<time_to_sleep> "
 			"(optionnaly : <number_of_times_each_philosopher_must_eat>)\n");
-		return (1);
+		return (true);
 	}
-	return (0);
+	return (false);
 }
 
 int	main(int ac, char **av)

@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:13:15 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 18:22:17 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/06/23 18:49:21 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static bool	thinking(t_philosopher *philosopher)
 {
+	//revoir le retour des bools
 	if (is_simulation_over(philosopher))
 		return (true);
 	if (print_log(&philosopher->data, philosopher, "is thinking"))
@@ -27,6 +28,7 @@ static bool	thinking(t_philosopher *philosopher)
 
 static bool	eating(t_philosopher *philosopher)
 {
+	//revoir le retour des bools
 	if (is_simulation_over(philosopher))
 		return (true);
 	if (print_log(&philosopher->data, philosopher, "is eating"))
@@ -54,6 +56,7 @@ static bool	eating(t_philosopher *philosopher)
 
 static bool	sleeping(t_philosopher *philosopher)
 {
+	//revoir le retour des bools
 	if (print_log(&philosopher->data, philosopher, "is sleeping"))
 		return (true);
 	accurate_sleep(&philosopher->data, philosopher->time_to_sleep);
@@ -66,6 +69,7 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 {
 	long int	start_time;
 
+	//revoir le retour des bools
 	start_time = is_time_started(philosopher);
 	while (start_time < 0)
 	{
