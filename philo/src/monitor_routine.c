@@ -4,33 +4,6 @@
 #include <unistd.h> //usleep
 #include <stdio.h> // a virerr !!!!
 
-bool get_fed_state(t_philosopher *philosopher)
-{
-  bool state;
-
-  pthread_mutex_lock(&philosopher->fed_mutex);
-  state = philosopher->fed;
-  pthread_mutex_unlock(&philosopher->fed_mutex);
-  return (state);
-}
-
-long int get_last_meal_time(t_philosopher *philosopher)
-{
-  long int last_meal_time;
-  pthread_mutex_lock(&philosopher->last_meal_mutex);
-  last_meal_time = philosopher->last_meal;
-  pthread_mutex_unlock(&philosopher->last_meal_mutex);
-  return (last_meal_time);
-}
-
-int set_end(t_data **data, pthread_mutex_t *mutex)
-{
-  pthread_mutex_lock(mutex);
-  (*data)->end = true;
-  pthread_mutex_unlock(mutex);
-  return (0);
-}
-
 bool are_philo_fed(t_data **data)
 {
   int i;

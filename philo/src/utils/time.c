@@ -1,23 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   time.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/23 16:57:36 by oelleaum          #+#    #+#             */
+/*   Updated: 2025/06/23 16:58:19 by oelleaum         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo.h"
-#include <pthread.h>
-#include <stddef.h> // POUR NULL !!
-#include <stdio.h>
 #include <sys/time.h>
-#include <unistd.h> //usleep
+#include <unistd.h>
 
-// returns ms elapsed since 1 january 1970
 long int	get_time(t_data **data)
 {
 	struct timeval	tv;
 
 	if (gettimeofday(&tv, NULL) != 0)
 	{
-    set_end(data, &(*data)->end_mutex);
-	  return (GETTIMEOFDAY_ERROR);
-  }
+		set_end(data, &(*data)->end_mutex);
+		return (GETTIMEOFDAY_ERROR);
+	}
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
+
 bool	is_simulation_over(t_philosopher *philosopher)
 {
 	pthread_mutex_lock(&philosopher->data->end_mutex);

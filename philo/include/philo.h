@@ -112,6 +112,11 @@ int								print_log(t_data **data, t_philosopher *philosopher,
 int								are_valids_args(char **av);
 int								ft_atoi(const char *nptr);
 
+//getters_setters
+bool	get_fed_state(t_philosopher *philosopher);
+long int	get_last_meal_time(t_philosopher *philosopher);
+int	set_end(t_data **data, pthread_mutex_t *mutex);
+
 // --------------------------------------- src/ -------------------------------------//
 void							*philosophers_routine(void *arg);
 int								main_thread_monitoring(t_data **data);
