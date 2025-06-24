@@ -84,10 +84,10 @@ int	main_thread_monitoring(t_data **data)
 	{
 		exit_code = are_philo_fed(data);
 		if (exit_code != 0)
-			return (exit_code);
+			return (0);
 		exit_code = are_philo_starving(data);
 		if (exit_code != 0)
-			return (exit_code != 0);
+			return (0);
 		exit_code = accurate_sleep(data, 5);
 		/* usleep (100); */
 		if (exit_code == GETTIMEOFDAY_ERROR)

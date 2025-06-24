@@ -13,6 +13,7 @@
 #include "philo.h"
 #include <pthread.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 void	destroy_forks_mutex(t_data **data, int last_mutex)
 {
@@ -65,9 +66,9 @@ int	simulation_end_destroy_and_free(t_data **data, int exit_code)
 	i = 0;
 	while (i < (*data)->nb_philo)
 	{
-		/* printf("waiting %d to join\n", i); */
+		/* printf("waiting %d to join\n", i + 1); */
 		pthread_join((*data)->threads[i], NULL);
-		/* printf("%d joined\n", i); */
+		/* printf("%d joined\n", i + 1); */
 		i++;
 	}
 	destroy_all_philo_mutex(data, (*data)->nb_philo - 1);
