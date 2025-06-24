@@ -23,6 +23,7 @@ bool take_one_fork(t_philosopher *philosopher, int fork, int fork_in_hand)
     {
     	if (fork_in_hand >= 0)
     		set_fork(philosopher, fork_in_hand, true);
+    	pthread_mutex_unlock(&philosopher->data->forks_mutex[fork]);
     	return (false);
     }
     pthread_mutex_unlock(&philosopher->data->forks_mutex[fork]);
