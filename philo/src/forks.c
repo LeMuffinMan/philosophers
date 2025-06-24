@@ -39,42 +39,67 @@ bool take_two_forks(t_philosopher *philosopher)
 
 	left = philosopher->id - 1;
 	right = philosopher->id % philosopher->nb_philo;
-	if (philosopher->id % 2 == 0)
-	{
-		first = left;
-		second = right;
-	}
-	else
-	{
-		first = right;
-		second = left;
-	}
-	while (!is_simulation_over(philosopher))
-	{
-		exit_code = try_to_catch_fork(philosopher, first, false);
-		if (exit_code)
-		{
-			if (is_simulation_over(philosopher))
-			{
-				set_fork(philosopher, first, true);
-				return (false);
-			}
-			exit_code = try_to_catch_fork(philosopher, second, true);
-			if (exit_code)
-			{
-				//maggouille ?
-				if (!print_log(&philosopher->data, philosopher, "has taken a fork"))
-					return (false);
-				if (!print_log(&philosopher->data, philosopher, "has taken a fork"))
-					return (false);
-				return (true);
-			}
-			else
-				set_fork(philosopher, first, true);
-		}
-		usleep(100);
-	}
-	return (false);
+  if (philosopher->id % 2 == 0)
+  {
+    pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
+    while (philosopher->data->forks[left] == false && !is_simulation_over(philosopher)) 
+    {
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[left]);
+      usleep(50);
+      pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
+    }
+    philosopher->data->forks[left] = false;
+    pthread_mutex_unlock(&philosopher->data->forks_mutex[left]);
+		if (!print_log(&philosopher->data, philosopher, "has taken a fork"))
+			return (false);
+    pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
+    while (philosopher->data->forks[right] == false)
+    {
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
+    	if (is_simulation_over(philosopher))
+    	{
+    		set_fork(philosopher, left, true);
+    		return (false);
+    	}
+      usleep(50);
+      pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
+    }
+    philosopher->data->forks[right] = false;
+    pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
+		if (!print_log(&philosopher->data, philosopher, "has taken a fork"))
+			return (false);
+  }
+  else
+  {
+    pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
+    while (philosopher->data->forks[left] == false) 
+    {
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
+      usleep(50);
+      pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
+    }
+    philosopher->data->forks[right] = false;
+    pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
+		if (!print_log(&philosopher->data, philosopher, "has taken a fork"))
+			return (false);
+    pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
+    while (philosopher->data->forks[left] == false) 
+    {
+      pthread_mutex_unlock(&philosopher->data->forks_mutex[left]);
+    	if (is_simulation_over(philosopher))
+    	{
+    		set_fork(philosopher, left, true);
+    		return (false);
+    	}
+      usleep(50);
+      pthread_mutex_lock(&philosopher->data->forks_mutex[left]);
+    }
+    philosopher->data->forks[left] = false;
+    pthread_mutex_unlock(&philosopher->data->forks_mutex[left]);
+		if (!print_log(&philosopher->data, philosopher, "has taken a fork"))
+			return (false);
+  }
+  return (true);
 }
 
 bool	release_forks(t_philosopher *philosopher)
