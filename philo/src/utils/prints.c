@@ -28,10 +28,18 @@ bool	print_log(t_data **data, t_philosopher *philosopher, char *msg)
 	pthread_mutex_lock(&philosopher->data->write_mutex);
 	pthread_mutex_lock(&philosopher->data->time_mutex);
 	if (is_simulation_over(philosopher))
+	{
+		pthread_mutex_unlock(&philosopher->data->write_mutex);
+		pthread_mutex_unlock(&philosopher->data->time_mutex);
 		return (false);
+	}
 	time = get_time(data);
 	if (is_simulation_over(philosopher))
+	{
+		pthread_mutex_unlock(&philosopher->data->write_mutex);
+		pthread_mutex_unlock(&philosopher->data->time_mutex);
 		return (false);
+	}
 	printf("%ld %d %s\n", time - philosopher->data->start_time, philosopher->id,
 		msg);
 	pthread_mutex_unlock(&philosopher->data->write_mutex);
