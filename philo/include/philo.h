@@ -21,6 +21,7 @@
 # define MUTEX_ERROR -2
 # define THREAD_ERROR -3
 # define GETTIMEOFDAY_ERROR -4
+# define SIMULATION_END -5
 
 struct													s_philosopher;
 typedef struct s_philosopher							t_philosopher;

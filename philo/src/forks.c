@@ -16,7 +16,7 @@
 
 static bool	try_to_catch_fork(t_philosopher *philosopher, int fork_to_catch, bool attempt)
 {
-	while (!get_fork_state(philosopher, fork_to_catch))
+	while (!get_fork_state(philosopher, fork_to_catch) && !is_simulation_over(philosopher))
 	{
 		/* if (is_simulation_over(philosopher)) */
 		/* 	return (false); */
@@ -54,9 +54,21 @@ bool take_two_forks(t_philosopher *philosopher)
 		exit_code = try_to_catch_fork(philosopher, first, false);
 		if (exit_code)
 		{
+			if (is_simulation_over(philosopher))
+			{
+				set_fork(philosopher, first, true);
+				return (false);
+			}
 			exit_code = try_to_catch_fork(philosopher, second, true);
 			if (exit_code)
+			{
+				//maggouille ?
+				if (!print_log(&philosopher->data, philosopher, "has taken a fork"))
+					return (false);
+				if (!print_log(&philosopher->data, philosopher, "has taken a fork"))
+					return (false);
 				return (true);
+			}
 			else
 				set_fork(philosopher, first, true);
 		}

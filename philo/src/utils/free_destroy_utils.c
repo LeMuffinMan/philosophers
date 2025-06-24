@@ -65,7 +65,9 @@ int	simulation_end_destroy_and_free(t_data **data, int exit_code)
 	i = 0;
 	while (i < (*data)->nb_philo)
 	{
+		/* printf("waiting %d to join\n", i); */
 		pthread_join((*data)->threads[i], NULL);
+		/* printf("%d joined\n", i); */
 		i++;
 	}
 	destroy_all_philo_mutex(data, (*data)->nb_philo - 1);
