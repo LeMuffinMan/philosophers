@@ -15,14 +15,18 @@
 
 static bool	thinking(t_philosopher *philosopher)
 {
+	long int exit_code;
+
 	if (is_simulation_over(philosopher))
 		return (false);
 	if (!print_log(&philosopher->data, philosopher, "is thinking"))
 		return (false);
 	if (philosopher->nb_philo % 2 != 0)
 	{
-		accurate_sleep(&philosopher->data, philosopher->time_to_eat * 2
+		exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_eat * 2
 			- philosopher->time_to_sleep);
+		if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
+			return (false);
 	}
 	if (is_simulation_over(philosopher))
 		return (false);
@@ -31,6 +35,8 @@ static bool	thinking(t_philosopher *philosopher)
 
 static bool	eating(t_philosopher *philosopher)
 {
+	long int exit_code;
+
 	if (is_simulation_over(philosopher))
 		return (false);
 	if (!print_log(&philosopher->data, philosopher, "is eating"))
@@ -44,7 +50,9 @@ static bool	eating(t_philosopher *philosopher)
 	pthread_mutex_unlock(&philosopher->last_meal_mutex);
 	if (is_simulation_over(philosopher))
 		return (false);
-	accurate_sleep(&philosopher->data, philosopher->time_to_eat);
+	exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_eat);
+	if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
+		return (false);
 	if (is_simulation_over(philosopher))
 		return (false);
 	return (true);
@@ -52,9 +60,13 @@ static bool	eating(t_philosopher *philosopher)
 
 static bool	sleeping(t_philosopher *philosopher)
 {
+	long int exit_code;
+
 	if (!print_log(&philosopher->data, philosopher, "is sleeping"))
 		return (false);
-	accurate_sleep(&philosopher->data, philosopher->time_to_sleep);
+	exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_sleep);
+	if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
+		return (false);
 	if (is_simulation_over(philosopher))
 		return (false);
 	return (true);
@@ -75,8 +87,8 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 	if (philosopher->id % 2 != 0)
 		usleep(200);
 	/* 	accurate_sleep(&philosopher->data, 10); */
-	/* if (is_simulation_over(philosopher)) */
-	/* 	return (false); */
+	if (is_simulation_over(philosopher))
+		return (false);
 	return (true);
 }
 
