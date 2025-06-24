@@ -130,6 +130,7 @@ void							set_fed(t_philosopher *philosopher,
 									pthread_mutex_t *mutex);
 void							set_fork(t_philosopher *philosopher, int fork,
 									bool state);
+bool 							set_last_meal(t_philosopher *philosopher, pthread_mutex_t *mutex);
 
 // time.c
 long int						get_time(t_data **data);
