@@ -19,7 +19,7 @@ static bool	thinking(t_philosopher *philosopher)
 
 	if (is_simulation_over(philosopher))
 		return (false);
-	if (!print_log(&philosopher->data, philosopher, "is thinking"))
+	if (!print_log(&philosopher->data, philosopher, "is thinking", false))
 		return (false);
 	if (philosopher->nb_philo % 2 != 0)
 	{
@@ -39,11 +39,8 @@ static bool	eating(t_philosopher *philosopher)
 
 	if (is_simulation_over(philosopher))
 		return (false);
-	if (!print_log(&philosopher->data, philosopher, "is eating"))
+	if (!print_log(&philosopher->data, philosopher, "is eating", false))
 		return (false);
-	philosopher->nb_meals_eaten++;
-	if (philosopher->nb_meals_eaten == philosopher->meals_limit)
-		set_fed(philosopher, &philosopher->fed_mutex);
 	if (!set_last_meal(philosopher, &philosopher->last_meal_mutex))
 		return (false);
 	if (is_simulation_over(philosopher))
@@ -51,6 +48,9 @@ static bool	eating(t_philosopher *philosopher)
 	exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_eat);
 	if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
 		return (false);
+	philosopher->nb_meals_eaten++;
+	if (philosopher->nb_meals_eaten == philosopher->meals_limit)
+		set_fed(philosopher, &philosopher->fed_mutex);
 	if (is_simulation_over(philosopher))
 		return (false);
 	return (true);
@@ -60,7 +60,7 @@ static bool	sleeping(t_philosopher *philosopher)
 {
 	long int exit_code;
 
-	if (!print_log(&philosopher->data, philosopher, "is sleeping"))
+	if (!print_log(&philosopher->data, philosopher, "is sleeping", false))
 		return (false);
 	exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_sleep);
 	if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
@@ -82,8 +82,12 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 		start_time = is_time_started(philosopher);
 	}
 	philosopher->start_time = start_time;
-	if (philosopher->id % 2 == 0)
+	if (philosopher->id % 2 != 0)
+	{
+		if (!print_log(&philosopher->data, philosopher, "is thinking", false))
+			return (false);
 		usleep(300);
+	}
 	if (is_simulation_over(philosopher))
 		return (false);
 	return (true);
@@ -93,7 +97,6 @@ void	*philosophers_routine(void *arg)
 {
 	t_philosopher	*philosopher;
 
-	//revoir le while ?
 	philosopher = (t_philosopher *)arg;
 	if (!sync_threads_start(philosopher))
 		return (NULL);
@@ -101,8 +104,6 @@ void	*philosophers_routine(void *arg)
 	{
 		if (!take_two_forks(philosopher))
 			return (NULL);
-		/* if (is_simulation_over(philosopher)) */
-		/* 	return (NULL); */
 		if (!eating(philosopher))
 		{
 			release_forks(philosopher);
@@ -110,8 +111,6 @@ void	*philosophers_routine(void *arg)
 		}
 		if (!release_forks(philosopher))
 			return (NULL);
-		/* if (is_simulation_over(philosopher)) */
-		/* 	return (NULL); */
 		if (!sleeping(philosopher) || !thinking(philosopher))
 			return (NULL);
 	}

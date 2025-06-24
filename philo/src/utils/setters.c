@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <stdio.h>
 
 void	set_fork(t_philosopher *philosopher, int fork, bool state)
 {

@@ -46,9 +46,8 @@ static int	print_death(t_data **data, int id)
 	int	exit_code;
 
 	exit_code = 1;
-	if (!print_log(data, &(*data)->philosophers[id], "died"))
+	if (!print_log(data, &(*data)->philosophers[id], "died", true))
 		exit_code = GETTIMEOFDAY_ERROR;
-	set_end(data, &(*data)->end_mutex);
 	return (exit_code);
 }
 
@@ -66,11 +65,8 @@ static int	are_philo_starving(t_data **data)
 		last_meal_time = get_last_meal_time(&(*data)->philosophers[i]);
 		time_elapsed = get_elapsed_time_since_last_meal(data, last_meal_time);
 			/* printf("last_meal_time = %ld | time_elapsed = %ld\n", last_meal_time, time_elapsed); */
-		if (last_meal_time >= 0 && time_elapsed > (*data)->time_to_die
-			/* && !is_philo_eating(data, i) */)
-		{
+		if (last_meal_time >= 0 && time_elapsed > (*data)->time_to_die)
 			return (print_death(data, i));
-		}
 		i++;
 	}
 	return (exit_code);
