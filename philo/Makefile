@@ -27,9 +27,11 @@ SRC = src/philo.c \
 			src/monitor_routine.c
 
 CC = cc
-FLAGS = -Wall -Werror -Wextra -g3 -pthread -fsanitize=thread
+FLAGS = -Wall -Werror -Wextra -g3 -lpthread -fsanitize=thread
 NAME = philo
 INC = include
+
+# gdb : au blocage : thread apply all bt
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 OBJ_DIR = .objs
