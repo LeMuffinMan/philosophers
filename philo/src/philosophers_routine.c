@@ -110,8 +110,8 @@ void	*philosophers_routine(void *arg)
 		}
 		if (!release_forks(philosopher))
 			return (NULL);
-		if (is_simulation_over(philosopher))
-			return (NULL);
+		/* if (is_simulation_over(philosopher)) */
+		/* 	return (NULL); */
 		if (!sleeping(philosopher) || !thinking(philosopher))
 			return (NULL);
 	}
