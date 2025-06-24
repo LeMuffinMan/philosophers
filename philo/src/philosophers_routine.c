@@ -44,10 +44,8 @@ static bool	eating(t_philosopher *philosopher)
 	philosopher->nb_meals_eaten++;
 	if (philosopher->nb_meals_eaten == philosopher->meals_limit)
 		set_fed(philosopher, &philosopher->fed_mutex);
-	pthread_mutex_lock(&philosopher->last_meal_mutex);
-	philosopher->last_meal = get_time(&philosopher->data)
-		- philosopher->start_time;
-	pthread_mutex_unlock(&philosopher->last_meal_mutex);
+	if (!set_last_meal(philosopher, &philosopher->last_meal_mutex))
+		return (false);
 	if (is_simulation_over(philosopher))
 		return (false);
 	exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_eat);
@@ -86,7 +84,6 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 	philosopher->start_time = start_time;
 	if (philosopher->id % 2 == 0)
 		usleep(300);
-	/* 	accurate_sleep(&philosopher->data, 10); */
 	if (is_simulation_over(philosopher))
 		return (false);
 	return (true);
@@ -104,8 +101,8 @@ void	*philosophers_routine(void *arg)
 	{
 		if (!take_two_forks(philosopher))
 			return (NULL);
-		if (is_simulation_over(philosopher))
-			return (NULL);
+		/* if (is_simulation_over(philosopher)) */
+		/* 	return (NULL); */
 		if (!eating(philosopher))
 		{
 			release_forks(philosopher);
