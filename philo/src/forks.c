@@ -33,8 +33,6 @@ bool take_two_forks(t_philosopher *philosopher)
 {
 	int left;
 	int right;
-	int first;
-	int second;
 	int exit_code;
 
 	left = philosopher->id - 1;
@@ -75,6 +73,11 @@ bool take_two_forks(t_philosopher *philosopher)
     while (philosopher->data->forks[left] == false) 
     {
       pthread_mutex_unlock(&philosopher->data->forks_mutex[right]);
+    	if (is_simulation_over(philosopher))
+    	{
+    		set_fork(philosopher, left, true);
+    		return (false);
+    	}
       usleep(50);
       pthread_mutex_lock(&philosopher->data->forks_mutex[right]);
     }

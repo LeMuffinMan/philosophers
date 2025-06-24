@@ -84,7 +84,7 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 		start_time = is_time_started(philosopher);
 	}
 	philosopher->start_time = start_time;
-	if (philosopher->id % 2 != 0)
+	if (philosopher->id % 2 == 0)
 		usleep(300);
 	/* 	accurate_sleep(&philosopher->data, 10); */
 	if (is_simulation_over(philosopher))
