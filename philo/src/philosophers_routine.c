@@ -47,12 +47,6 @@ static bool	eating(t_philosopher *philosopher)
 	accurate_sleep(&philosopher->data, philosopher->time_to_eat);
 	if (is_simulation_over(philosopher))
 		return (false);
-	/* pthread_mutex_lock(&philosopher->last_meal_mutex); */
-	/* philosopher->last_meal = get_time(&philosopher->data) */
-	/* 	- philosopher->start_time; */
-	/* pthread_mutex_unlock(&philosopher->last_meal_mutex); */
-	if (is_simulation_over(philosopher))
-		return (false);
 	return (true);
 }
 
