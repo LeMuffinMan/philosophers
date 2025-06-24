@@ -17,7 +17,7 @@
 bool take_one_fork(t_philosopher *philosopher, int fork, int fork_in_hand)
 {
   pthread_mutex_lock(&philosopher->data->forks_mutex[fork]);
-  while (philosopher->data->forks[fork] == false && !is_simulation_over(philosopher)) 
+  while (philosopher->data->forks[fork] == false) 
   {
     if (is_simulation_over(philosopher))
     {
@@ -32,7 +32,7 @@ bool take_one_fork(t_philosopher *philosopher, int fork, int fork_in_hand)
   }
   philosopher->data->forks[fork] = false;
   pthread_mutex_unlock(&philosopher->data->forks_mutex[fork]);
-  if (!print_log(&philosopher->data, philosopher, "has taken a fork"))
+  if (!print_log(&philosopher->data, philosopher, "has taken a fork", false))
 		return (false);
   return (true);
 }
@@ -71,7 +71,11 @@ bool	release_forks(t_philosopher *philosopher)
 	left = philosopher->id - 1;
 	right = (philosopher->id) % philosopher->nb_philo;
 	if (is_simulation_over(philosopher))
+	{
+		set_fork(philosopher, left, true);
+		set_fork(philosopher, right, true);
 		return (false);
+	}
 	if (philosopher->id % 2 == 0)
 	{
 		set_fork(philosopher, left, true);

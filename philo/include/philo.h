@@ -122,7 +122,7 @@ int								print_error_and_free(char *msg, int exit_code,
 int								init_data_print_error_and_free(char *msg,
 									int exit_code, t_data **data);
 bool							print_log(t_data **data,
-									t_philosopher *philosopher, char *msg);
+									t_philosopher *philosopher, char *msg, bool end);
 
 // setters
 void							set_end(t_data **data, pthread_mutex_t *mutex);
