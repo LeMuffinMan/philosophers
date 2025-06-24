@@ -14,8 +14,19 @@
 #include <unistd.h>
 #include <stdio.h>
 
+bool only_one_fork_case(t_philosopher *philosopher)
+{
+	int exit_code;
+
+	exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_die);
+	if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END || is_simulation_over(philosopher))
+		return (false);
+}
+
 bool take_one_fork(t_philosopher *philosopher, int fork, int fork_in_hand)
 {
+	if (fork == fork_in_hand)
+		return (only_one_fork_case(philosopher));
   pthread_mutex_lock(&philosopher->data->forks_mutex[fork]);
   while (philosopher->data->forks[fork] == false) 
   {
