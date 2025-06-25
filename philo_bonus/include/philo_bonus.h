@@ -8,8 +8,9 @@
 # define INVALID_ARG 1
 # define MALLOC_ERROR -1
 # define SEM_ERROR -2
-// # define THREAD_ERROR -3
+# define THREAD_ERROR -3
 # define GETTIMEOFDAY_ERROR -4
+# define FORK_ERROR -5
 // # define SIMULATION_END -5
 
 typedef struct s_time
@@ -21,12 +22,14 @@ typedef struct s_time
   long int start;
 } t_time;
 
-typedef struct s_pids
+typedef struct s_data
 {
-  pid_t watch_death;
-  pid_t watch_fed;
-  pid_t *philos;
-} s_pids;
+  int id;
+  int nb_philos;
+  int meals_limit;
+  bool end;
+  struct s_time time;
+} t_data;
 
 typedef struct s_sems
 {
@@ -35,25 +38,40 @@ typedef struct s_sems
   sem_t *death;
   sem_t *fed;
   sem_t *start;
+  sem_t *simulation_end;
+  sem_t *philo_end;
 } t_sems;
 
-typedef struct s_data
+typedef struct s_threads
 {
-  int id;
-  int nb_philos;
-  int meals_limit;
+  pthread_t philo_monitor;
+  pthread_t simulation_death_monitor;
+  pthread_t simulation_fed_monitor;
+} t_threads;
+
+typedef struct s_pids
+{
+  pid_t *philos;
+  pid_t monitor;
+} t_pids;
+
+typedef struct s_simulation
+{
+  struct s_data data;
   struct s_time time;
-  struct s_pids pids;
   struct s_sems sems;
-} t_data;
+  struct s_threads threads;
+  struct s_pids pids;
+} t_simulation;
 
 
-int								init_data(t_data **data, char **av);
-int								init_user_inputs(t_data **data, char **av);
-int init_semaphores(t_data **data);
+int	init_simulation(t_simulation **simulation, char **av);
+int	init_user_inputs(t_simulation **simulation, char **av);
+int init_shared_semaphores(t_simulation **simulation);
 void unlink_semaphores(void);
-int init_data_print_error_and_free(char *msg, int exit_code, t_data **data);
-int print_log(char *msg, t_data **data);
+int print_log(char *msg, t_simulation **simulation);
+int init_simulation_print_error_and_free(char *msg, int exit_code, t_simulation **simulation);
+void unlink_shared_semaphores(void);
 
 //Utils
 long int	get_time(void);
@@ -66,16 +84,10 @@ int								ft_atoi(const char *nptr);
 // prints
 int								print_error_and_free(char *msg, int exit_code,
 									t_data **data);
-int								init_data_print_error_and_free(char *msg,
-									int exit_code, t_data **data);
 
 
 // init_bonus.c
 bool	check_user_inputs(int ac);
 int init_semaphores(t_data **data);
-int								init_data(t_data **data, char **av);
-
-// init_data_utils.c
-int								init_user_inputs(t_data **data, char **av);
 
 #endif
