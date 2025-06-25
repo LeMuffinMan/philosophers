@@ -50,23 +50,23 @@ int	are_valids_args(char **av)
 	return (0);
 }
 
-int init_data_print_error_and_free(char *msg, int exit_code, t_data **data)
+int init_simulation_print_error_and_free(char *msg, int exit_code, t_simulation **simulation)
 {
-  if (*data)
-    free(*data);
+  if (*simulation)
+    free(*simulation);
   printf("%s", msg);
   return (exit_code);
 }
 
-int print_log(char *msg, t_data **data)
+int print_log(char *msg, t_simulation **simulation)
 {
   long int time;
 
-  sem_wait((*data)->sems.print);
-  time = get_time() - (*data)->time.start;
+  sem_wait((*simulation)->sems.print);
+  time = get_time() - (*simulation)->time.start;
   if (time == GETTIMEOFDAY_ERROR)
     return (GETTIMEOFDAY_ERROR);
   printf("%ld %s\n", time, msg);
-  sem_post((*data)->sems.print);
+  sem_post((*simulation)->sems.print);
   return (0);
 }
