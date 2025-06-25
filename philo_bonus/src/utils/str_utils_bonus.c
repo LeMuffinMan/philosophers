@@ -1,5 +1,5 @@
 
-#include "philo.h"
+#include "philo_bonus.h"
 #include <limits.h>
 #include <stdio.h>
 
