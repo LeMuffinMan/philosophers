@@ -38,9 +38,11 @@ typedef struct s_data
 	long int					start_time;
 	pthread_mutex_t				end_mutex;
 	bool						end;
+	//a virer ???
 	pthread_mutex_t				meals_limit_mutex;
 	int							meals_limit;
 	pthread_t					*threads;
+	//a virer ?
 	pthread_t					monitor;
 	pthread_mutex_t				write_mutex;
 	t_philosopher				*philosophers;

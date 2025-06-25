@@ -10,25 +10,23 @@
 #                                                                              #
 # **************************************************************************** #
 
-SRC = src/philo.c \
-			src/init/init_mutex_utils.c \
-			src/init/init_forks.c \
-			src/init/init.c \
-			src/init/init_data_utils.c \
-			src/init/init_philo_struct.c \
-			src/utils/prints.c \
-			src/utils/str_utils.c \
-			src/utils/free_destroy_utils.c \
-			src/utils/time.c \
-			src/utils/getters.c \
-			src/utils/setters.c \
-			src/philosophers_routine.c \
-			src/forks.c \
-			src/monitor_routine.c
+SRC = src/philo_bonus.c \
+			src/init/init_semaphores_bonus.c \
+			src/init/init_bonus.c \
+			src/init/init_data_utils_bonus.c \
+			src/utils/prints_bonus.c \
+			src/utils/str_utils_bonus.c 
+			# src/utils/free_destroy_utils.c \
+			# src/utils/time.c \
+			# src/utils/getters.c \
+			# src/utils/setters.c \
+			# src/philosophers_routine.c \
+			# src/forks.c \
+			# src/monitor_routine.c
 
 CC = cc
 FLAGS = -Wall -Werror -Wextra -g3 -lpthread -fsanitize=thread
-NAME = philo
+NAME = philo_bonus
 INC = include
 
 # gdb : au blocage : thread apply all bt
@@ -41,7 +39,7 @@ RESET = \033[0m
 
 all: $(NAME)
 
-$(NAME): $(OBJ) Makefile include/philo.h $(SRC)
+$(NAME): $(OBJ) Makefile include/philo_bonus.h $(SRC)
 	mkdir -p bin
 	$(CC) $(FLAGS) $(OBJ) -I $(INC) -o bin/$(NAME)
 	@echo 
