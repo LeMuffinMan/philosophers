@@ -4,6 +4,8 @@
 #include <fcntl.h>
 #include <stdio.h>
 
+
+
 bool	check_user_inputs(int ac)
 {
 	if (ac < 5 || ac > 6)
@@ -17,48 +19,7 @@ bool	check_user_inputs(int ac)
 	return (false);
 }
 
-int init_semaphores(t_data **data)
-{
-	sem_unlink("/philo_forks");
-	sem_unlink("/philo_print");
-	sem_unlink("/philo_death");
-	sem_unlink("/philo_fed");
-	sem_unlink("/philo_start");
-	(*data)->sems.forks = sem_open("/philo_forks", O_CREAT | O_EXCL, 0644, (*data)->nb_philos);
-	if ((*data)->sems.forks == SEM_FAILED)
-		return (init_data_print_error_and_free("Semaphore init failed\n", SEM_ERROR, data));
-	(*data)->sems.print = sem_open("/philo_print", O_CREAT | O_EXCL, 0644, 1);
-	if ((*data)->sems.print == SEM_FAILED)
-	{
-    sem_close((*data)->sems.forks);
-		return (init_data_print_error_and_free("Semaphore init failed\n", SEM_ERROR, data));
-	}
-	(*data)->sems.death = sem_open("/philo_death", O_CREAT | O_EXCL, 0644, 1);
-	if ((*data)->sems.death == SEM_FAILED)
-	{
-    sem_close((*data)->sems.forks);
-    sem_close((*data)->sems.print);
-		return (init_data_print_error_and_free("Semaphore init failed\n", SEM_ERROR, data));
-	}
-	(*data)->sems.fed = sem_open("/philo_fed", O_CREAT | O_EXCL, 0644, (*data)->nb_philos);
-	if ((*data)->sems.fed == SEM_FAILED)
-	{
-    sem_close((*data)->sems.forks);
-    sem_close((*data)->sems.print);
-    sem_close((*data)->sems.death);
-		return (init_data_print_error_and_free("Semaphore init failed\n", SEM_ERROR, data));
-	}
-	(*data)->sems.start = sem_open("/philo_start", O_CREAT | O_EXCL, 0644, 0);
-	if ((*data)->sems.start == SEM_FAILED)
-	{
-    sem_close((*data)->sems.forks);
-    sem_close((*data)->sems.print);
-    sem_close((*data)->sems.death);
-    sem_close((*data)->sems.fed);
-		return (init_data_print_error_and_free("Semaphore init failed\n", SEM_ERROR, data));
-	}
-	return (0);
-}
+
 
 static int	init_meals_limit(t_data **data, char **av)
 {

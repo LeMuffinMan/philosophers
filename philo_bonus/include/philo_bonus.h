@@ -51,6 +51,13 @@ typedef struct s_data
 int								init_data(t_data **data, char **av);
 int								init_user_inputs(t_data **data, char **av);
 int init_semaphores(t_data **data);
+void unlink_semaphores(void);
+int init_data_print_error_and_free(char *msg, int exit_code, t_data **data);
+int print_log(char *msg, t_data **data);
+
+//Utils
+long int	get_time(void);
+int	accurate_sleep(int time_to_sleep);
 
 // str_utils
 int								are_valids_args(char **av);

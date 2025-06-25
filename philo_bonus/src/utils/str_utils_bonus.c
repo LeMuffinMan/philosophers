@@ -2,6 +2,7 @@
 #include "philo_bonus.h"
 #include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 int	ft_atoi(const char *nptr)
 {
@@ -47,4 +48,25 @@ int	are_valids_args(char **av)
 		return (INVALID_ARG);
 	}
 	return (0);
+}
+
+int init_data_print_error_and_free(char *msg, int exit_code, t_data **data)
+{
+  if (*data)
+    free(*data);
+  printf("%s", msg);
+  return (exit_code);
+}
+
+int print_log(char *msg, t_data **data)
+{
+  long int time;
+
+  sem_wait((*data)->sems.print);
+  time = get_time() - (*data)->time.start;
+  if (time == GETTIMEOFDAY_ERROR)
+    return (GETTIMEOFDAY_ERROR);
+  printf("%ld %s\n", time, msg);
+  sem_post((*data)->sems.print);
+  return (0);
 }
