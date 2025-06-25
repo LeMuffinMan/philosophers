@@ -42,7 +42,7 @@ int	main(int ac, char **av)
 	exit_code = init_data(&data, av);
 	if (exit_code != 0)
 		return (exit_code);
-	exit_code = init_mutex(&data);
+	exit_code = init_forks(&data);
 	if (exit_code != 0)
 		return (exit_code);
 	exit_code = init_threads(&data);
