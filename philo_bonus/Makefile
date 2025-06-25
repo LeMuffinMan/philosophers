@@ -11,11 +11,11 @@
 # **************************************************************************** #
 
 SRC = src/philo_bonus.c \
-			src/init/init_semaphores_bonus.c \
-			src/init/init_bonus.c \
-			src/init/init_data_utils_bonus.c \
-			src/utils/prints_bonus.c \
-			src/utils/str_utils_bonus.c 
+			src/utils/str_utils_bonus.c \
+			src/init_bonus.c
+			# src/init/init_bonus.c \
+			# src/init/init_data_utils_bonus.c \
+			# src/utils/prints_bonus.c \
 			# src/utils/free_destroy_utils.c \
 			# src/utils/time.c \
 			# src/utils/getters.c \
@@ -25,7 +25,7 @@ SRC = src/philo_bonus.c \
 			# src/monitor_routine.c
 
 CC = cc
-FLAGS = -Wall -Werror -Wextra -g3 -lpthread -fsanitize=thread
+FLAGS = -Wall -Werror -Wextra -g3 #-lpthread -fsanitize=thread
 NAME = philo_bonus
 INC = include
 

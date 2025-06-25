@@ -52,6 +52,7 @@ int	init_data_print_error_and_free(char *msg, int exit_code, t_data **data)
 	if (!*data)
 		return (0);
 	printf("%s", msg);
-	free(*data);
+	if (*data)
+		free(*data);
 	return (exit_code);
 }
