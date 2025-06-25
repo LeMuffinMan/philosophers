@@ -7,72 +7,15 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-/* void close_and_unlink_semaphores(t_data **data) */
-/* { */
-/* 	if ((*data)->sems.forks != SEM_FAILED) */
-/* 		sem_close((*data)->sems.forks); */
-/* 	if ((*data)->sems.print != SEM_FAILED) */
-/* 		sem_close((*data)->sems.print); */
-/* 	if ((*data)->sems.death != SEM_FAILED) */
-/* 		sem_close((*data)->sems.death); */
-/* 	if ((*data)->sems.fed != SEM_FAILED) */
-/* 		sem_close((*data)->sems.fed); */
-/* 	if ((*data)->sems.start != SEM_FAILED) */
-/* 		sem_close((*data)->sems.start); */
-/* 	sem_unlink("/philo_forks"); */
-/* 	sem_unlink("/philo_print"); */
-/* 	sem_unlink("/philo_death"); */
-/* 	sem_unlink("/philo_fed"); */
-/* 	sem_unlink("/philo_start"); */
-/* 	return ; */
-/* } */
-
-int init_data_print_error_and_free(char *msg, int exit_code, t_data **data)
+void unlink_semaphores(void)
 {
-  if (*data)
-    free(*data);
-  printf("%s", msg);
-  return (exit_code);
+	sem_unlink("/philo_forks");
+	sem_unlink("/philo_print");
+	sem_unlink("/philo_death");
+	sem_unlink("/philo_fed");
+	sem_unlink("/philo_start");
 }
 
-long int	get_time(void)
-{
-	struct timeval	tv;
-
-	if (gettimeofday(&tv, NULL) != 0)
-		return (GETTIMEOFDAY_ERROR);
-	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
-}
-
-int print_log(char *msg, t_data **data)
-{
-  long int time;
-
-  sem_wait((*data)->sems.print);
-  time = get_time() - (*data)->time.start;
-  if (time == GETTIMEOFDAY_ERROR)
-    return (GETTIMEOFDAY_ERROR);
-  printf("%ld %s\n", time, msg);
-  sem_post((*data)->sems.print);
-  return (0);
-}
-
-int	accurate_sleep(int time_to_sleep)
-{
-	int			ret_val;
-	long int	start_time;
-
-	start_time = get_time();
-	if (start_time == GETTIMEOFDAY_ERROR)
-		return (GETTIMEOFDAY_ERROR);
-	ret_val = get_time();
-	while (ret_val != GETTIMEOFDAY_ERROR && ret_val < time_to_sleep)
-	{
-		usleep(100);
-		ret_val = get_time() - start_time;
-	}
-	return (ret_val);
-}
 
 int eating(t_data **data)
 {

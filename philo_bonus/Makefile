@@ -12,7 +12,9 @@
 
 SRC = src/philo_bonus.c \
 			src/utils/str_utils_bonus.c \
-			src/init_bonus.c
+			src/utils/time_bonus.c \
+			src/init_bonus.c \
+			src/init_semaphores_bonus.c
 			# src/init/init_bonus.c \
 			# src/init/init_data_utils_bonus.c \
 			# src/utils/prints_bonus.c \
