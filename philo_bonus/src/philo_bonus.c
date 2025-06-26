@@ -192,6 +192,7 @@ int init_monitor(t_simulation **simulation)
     pthread_join((*simulation)->threads.simulation_fed_monitor, NULL);
     sem_wait((*simulation)->sems.simulation_end);
     (*simulation)->data.end = true;
+    //tous les childs ont un threads qui wait sim_end init a 0 : avec un post, ils vont tous pouvoir passer le portique 
     sem_post((*simulation)->sems.simulation_end);
   }
   return (0);
