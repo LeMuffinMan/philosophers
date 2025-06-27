@@ -50,12 +50,11 @@ typedef struct s_sems
   sem_t *fed;
   sem_t *start;
   sem_t *simulation_end;
-  sem_t *philo_end;
+  sem_t *proc_end;
 } t_sems;
 
 typedef struct s_threads
 {
-  pthread_t philo_monitor;
   pthread_t simulation_death_monitor;
   pthread_t simulation_fed_monitor;
 } t_threads;
@@ -63,13 +62,12 @@ typedef struct s_threads
 typedef struct s_pids
 {
   pid_t *philos;
-  pid_t monitor;
+  // pid_t monitor;
 } t_pids;
 
 typedef struct s_simulation
 {
   struct s_data data;
-  struct s_time time;
   struct s_sems sems;
   struct s_threads threads;
   struct s_pids pids;

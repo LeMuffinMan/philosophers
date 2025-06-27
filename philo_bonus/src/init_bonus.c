@@ -61,6 +61,7 @@ int	init_user_inputs(t_simulation **simulation, char **av)
 		return (init_meals_limit(simulation, av));
 	else
 		(*simulation)->data.meals_limit = -1;
+  (*simulation)->data.end = false;
 	return (0);
 }
 
