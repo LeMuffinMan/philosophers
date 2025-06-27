@@ -31,6 +31,7 @@ int	main(int ac, char **av)
 	t_data	*data;
 	int		exit_code;
 
+	// cas du 1 800 200 200 : il think puis prend la fourchette
 	/* make re && ./bin/philo 600 300 300 300 */
 	// arret anormal
 	data = NULL;

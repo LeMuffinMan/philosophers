@@ -84,9 +84,9 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 	philosopher->start_time = start_time;
 	if (philosopher->id % 2 != 0)
 	{
-		/* if (!print_log(&philosopher->data, philosopher, "is thinking", false)) */
-		/* 	return (false); */
-		usleep(300);
+		if (!print_log(&philosopher->data, philosopher, "is thinking", false))
+			return (false);
+		usleep(philosopher->time_to_eat); 
 	}
 	if (is_simulation_over(philosopher))
 		return (false);
