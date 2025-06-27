@@ -87,7 +87,7 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 	{
 		if (!print_log(&philosopher->data, philosopher, "is thinking", false))
 			return (false);
-		exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_sleep);
+		exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_eat);
 		if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
 			return (false);
 	}
