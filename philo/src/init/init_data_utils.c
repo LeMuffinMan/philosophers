@@ -24,6 +24,7 @@ static int	init_meals_limit(t_data **data, char **av)
 
 int	init_user_inputs(t_data **data, char **av)
 {
+	//1\00 passe !!! 
 	(*data)->nb_philo = ft_atoi(av[1]);
 	if ((*data)->nb_philo <= 0)
 		return (init_data_print_error_and_free(
