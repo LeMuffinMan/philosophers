@@ -69,15 +69,17 @@ int init_simulation_print_error_and_free(char *msg, int exit_code, t_simulation 
   return (exit_code);
 }
 
-int print_log(char *msg, t_simulation **simulation)
+bool print_log(char *msg, t_simulation **simulation)
 {
   long int time;
 
   sem_wait((*simulation)->sems.print);
-  time = get_time() - (*simulation)->time.start;
+  time = get_time() - (*simulation)->data.time.start;
   if (time == GETTIMEOFDAY_ERROR)
     return (GETTIMEOFDAY_ERROR);
-  printf("%ld %s\n", time, msg);
+  if (is_simulation_over(simulation))
+  	return (false);
+  printf("%ld %d %s", time, (*simulation)->data.id, msg);
   sem_post((*simulation)->sems.print);
-  return (0);
+  return (true);
 }
