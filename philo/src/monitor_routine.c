@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdio.h> // AVIRERRR !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!111
-#include <unistd.h>
 
 static bool	are_philo_fed(t_data **data)
 {
@@ -64,7 +62,6 @@ static int	are_philo_starving(t_data **data)
 	{
 		last_meal_time = get_last_meal_time(&(*data)->philosophers[i]);
 		time_elapsed = get_elapsed_time_since_last_meal(data, last_meal_time);
-			/* printf("last_meal_time = %ld | time_elapsed = %ld\n", last_meal_time, time_elapsed); */
 		if (last_meal_time >= 0 && time_elapsed > (*data)->time_to_die)
 			return (print_death(data, i));
 		i++;
@@ -85,7 +82,6 @@ int	main_thread_monitoring(t_data **data)
 		if (exit_code != 0)
 			return (0);
 		exit_code = accurate_sleep(data, 5);
-		/* usleep (100); */
 		if (exit_code == GETTIMEOFDAY_ERROR)
 			return (exit_code);
 	}
