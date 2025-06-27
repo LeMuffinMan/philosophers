@@ -19,7 +19,6 @@ bool only_one_fork_case(t_philosopher *philosopher)
 	int exit_code;
 
 	exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_die);
-	//dans tous les cas on return false ?
 	if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END || is_simulation_over(philosopher))
 		return (false);
 	return (false);
