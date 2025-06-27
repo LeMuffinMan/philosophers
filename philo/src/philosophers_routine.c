@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <unistd.h>
+/* #include <unistd.h> */
 
 static bool	thinking(t_philosopher *philosopher)
 {
@@ -73,6 +73,7 @@ static bool	sleeping(t_philosopher *philosopher)
 static bool	sync_threads_start(t_philosopher *philosopher)
 {
 	long int	start_time;
+	int exit_code;
 
 	start_time = is_time_started(philosopher);
 	while (start_time < 0)
@@ -86,7 +87,9 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 	{
 		if (!print_log(&philosopher->data, philosopher, "is thinking", false))
 			return (false);
-		usleep(philosopher->time_to_eat);
+		exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_sleep);
+		if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
+			return (false);
 	}
 	if (is_simulation_over(philosopher))
 		return (false);
