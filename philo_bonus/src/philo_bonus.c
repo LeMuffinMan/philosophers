@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/27 18:55:38 by oelleaum          #+#    #+#             */
+/*   Updated: 2025/06/27 18:55:39 by oelleaum         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo_bonus.h"
 #include <stddef.h>
@@ -10,14 +21,7 @@
 #include <stdlib.h>
 #include <signal.h>
 
-void unlink_shared_semaphores(void)
-{
-	sem_unlink("/philo_forks");
-	sem_unlink("/philo_print");
-	sem_unlink("/philo_death");
-	sem_unlink("/philo_fed");
-	sem_unlink("/philo_start");
-}
+
 
 int simulation_end_unlink_close_free(t_simulation **simulation, int exit_code)
 {
@@ -89,13 +93,15 @@ void *philo_monitor_thread(void *args)
   return (0);
 }
 
+//pb ici, il faut que j'init ce semaphore dans l'init de base
 int init_processes_thread_and_sem(t_simulation **simulation)
 {
 	(*simulation)->sems.philo_end = sem_open("/philo_philo_end", O_CREAT | O_EXCL, 0644, 1);
 	if ((*simulation)->sems.philo_end == SEM_FAILED)
 	{
+
     //revoir le return ici
-		return (init_simulation_print_error_and_free("Semaphore init failed\n", SEM_ERROR, simulation));
+		return (printf("ici\n"), init_simulation_print_error_and_free("Semaphore init failed\n", SEM_ERROR, simulation));
 	}
   (*simulation)->data.end = false;
   if (pthread_create(&(*simulation)->threads.philo_monitor, NULL, philo_monitor_thread, &simulation) != 0)

@@ -1,10 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/27 18:56:05 by oelleaum          #+#    #+#             */
+/*   Updated: 2025/06/27 18:56:06 by oelleaum         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo_bonus.h"
 #include <stdlib.h>
 #include <fcntl.h>
 #include <stdio.h>
-
-
 
 bool	check_user_inputs(int ac)
 {
@@ -18,8 +27,6 @@ bool	check_user_inputs(int ac)
 	}
 	return (false);
 }
-
-
 
 static int	init_meals_limit(t_simulation **simulation, char **av)
 {
