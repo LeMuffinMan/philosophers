@@ -20,7 +20,7 @@ int	init_data(t_data **data, char **av)
 	*data = malloc(sizeof(t_data));
 	if (!*data)
 		return (init_data_print_error_and_free("Data struct mem_alloc failed\n",
-				MALLOC_ERROR, data)); //mettre un if (data) dans le print !!
+				MALLOC_ERROR, data));
 	exit_code = init_user_inputs(data, av);
 	if (exit_code)
 		return (exit_code);

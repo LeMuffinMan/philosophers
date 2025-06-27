@@ -15,7 +15,7 @@
 
 static bool	thinking(t_philosopher *philosopher)
 {
-	long int exit_code;
+	long int	exit_code;
 
 	if (is_simulation_over(philosopher))
 		return (false);
@@ -23,8 +23,8 @@ static bool	thinking(t_philosopher *philosopher)
 		return (false);
 	if (philosopher->nb_philo % 2 != 0)
 	{
-		exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_eat * 2
-			- philosopher->time_to_sleep);
+		exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_eat
+				* 2 - philosopher->time_to_sleep);
 		if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
 			return (false);
 	}
@@ -35,7 +35,7 @@ static bool	thinking(t_philosopher *philosopher)
 
 static bool	eating(t_philosopher *philosopher)
 {
-	long int exit_code;
+	long int	exit_code;
 
 	if (is_simulation_over(philosopher))
 		return (false);
@@ -58,7 +58,7 @@ static bool	eating(t_philosopher *philosopher)
 
 static bool	sleeping(t_philosopher *philosopher)
 {
-	long int exit_code;
+	long int	exit_code;
 
 	if (!print_log(&philosopher->data, philosopher, "is sleeping", false))
 		return (false);
@@ -86,7 +86,7 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 	{
 		if (!print_log(&philosopher->data, philosopher, "is thinking", false))
 			return (false);
-		usleep(philosopher->time_to_eat); 
+		usleep(philosopher->time_to_eat);
 	}
 	if (is_simulation_over(philosopher))
 		return (false);

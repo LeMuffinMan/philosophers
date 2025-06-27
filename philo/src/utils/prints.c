@@ -17,11 +17,13 @@
 int	print_error_and_free(char *msg, int exit_code, t_data **data)
 {
 	printf("%s", msg);
-	free_allocated_memory(data);
+	if (data)
+		free_allocated_memory(data);
 	return (exit_code);
 }
 
-bool	print_log(t_data **data, t_philosopher *philosopher, char *msg, bool end)
+bool	print_log(t_data **data, t_philosopher *philosopher, char *msg,
+		bool end)
 {
 	long int	time;
 
