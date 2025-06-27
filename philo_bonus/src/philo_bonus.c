@@ -43,9 +43,9 @@ int is_simulation_over(t_simulation **simulation)
 {
   int exit_code;
 
-  sem_wait((*simulation)->sems.philo_end);
+  sem_wait((*simulation)->sems.proc_end);
   exit_code = (*simulation)->data.end;
-  sem_post((*simulation)->sems.philo_end);
+  sem_post((*simulation)->sems.proc_end);
   return (exit_code);
 }
 
@@ -56,8 +56,8 @@ int eating(t_simulation **simulation)
 	sem_wait((*simulation)->sems.forks);
 	print_log("has taken a fork\n", simulation);
 	print_log("is eating\n", simulation);
-	(*simulation)->time.last_meal = get_time() - (*simulation)->time.start;
-	accurate_sleep((*simulation)->time.eat);
+	(*simulation)->data.time.last_meal = get_time() - (*simulation)->data.time.start;
+	accurate_sleep((*simulation)->data.time.eat);
 	sem_post((*simulation)->sems.forks);
 	sem_post((*simulation)->sems.forks);
 	(*simulation)->data.meals_limit--;
@@ -68,13 +68,13 @@ int eating(t_simulation **simulation)
 int philo_process_routine(t_simulation **simulation)
 {
   sem_wait((*simulation)->sems.start);
-  (*simulation)->time.start = get_time();
-  (*simulation)->time.last_meal = (*simulation)->time.start;
+  (*simulation)->data.time.start = get_time();
+  (*simulation)->data.time.last_meal = (*simulation)->data.time.start;
 	while (!is_simulation_over(simulation))
 	{
 		eating(simulation);
 		print_log("is sleeping\n", simulation);
-		accurate_sleep((*simulation)->time.sleep);
+		accurate_sleep((*simulation)->data.time.sleep);
 		print_log("is thinking\n", simulation);
 		accurate_sleep(100);
 	}
@@ -87,24 +87,22 @@ void *philo_monitor_thread(void *args)
 
   simulation = (t_simulation *)args;
   sem_wait(simulation->sems.simulation_end);
-  sem_wait(simulation->sems.philo_end);
+  sem_wait(simulation->sems.proc_end);
   simulation->data.end = true;
-  sem_post(simulation->sems.philo_end);
+  sem_post(simulation->sems.proc_end);
   return (0);
 }
 
 //pb ici, il faut que j'init ce semaphore dans l'init de base
-int init_processes_thread_and_sem(t_simulation **simulation)
+int init_processes_monitor_thread(t_simulation **simulation)
 {
-	(*simulation)->sems.philo_end = sem_open("/philo_philo_end", O_CREAT | O_EXCL, 0644, 1);
-	if ((*simulation)->sems.philo_end == SEM_FAILED)
-	{
-
-    //revoir le return ici
-		return (printf("ici\n"), init_simulation_print_error_and_free("Semaphore init failed\n", SEM_ERROR, simulation));
-	}
-  (*simulation)->data.end = false;
-  if (pthread_create(&(*simulation)->threads.philo_monitor, NULL, philo_monitor_thread, &simulation) != 0)
+  if (pthread_create(&(*simulation)->threads.simulation_death_monitor, NULL, philo_monitor_thread, &simulation) != 0)
+  {
+    //revoir le retrun
+    /* return (wait_close_unlink_free(simulation, 0, (*simulation)->data.id, THREAD_ERROR)); */
+    return (THREAD_ERROR);
+  }
+  if (pthread_create(&(*simulation)->threads.simulation_fed_monitor, NULL, philo_monitor_thread, &simulation) != 0)
   {
     //revoir le retrun
     /* return (wait_close_unlink_free(simulation, 0, (*simulation)->data.id, THREAD_ERROR)); */
@@ -131,10 +129,20 @@ int init_processes(t_simulation **simulation)
     }
     if ((*simulation)->pids.philos[(*simulation)->data.id - 1] == 0)
     {
-      init_processes_thread_and_sem(simulation);
-      philo_process_routine(simulation);
-      pthread_join((*simulation)->threads.philo_monitor, NULL);  
-      /* close_free_philo_data(simulation); */
+      /* init_processes_monitor_thread(simulation); */
+      /* philo_process_routine(simulation); */
+      /* pthread_join((*simulation)->threads.simulation_death_monitor, NULL);   */
+      /* pthread_join((*simulation)->threads.simulation_fed_monitor, NULL);   */
+  sem_close((*simulation)->sems.forks);
+  sem_close((*simulation)->sems.print);
+  sem_close((*simulation)->sems.death);
+  sem_close((*simulation)->sems.fed);
+  sem_close((*simulation)->sems.start);
+  sem_close((*simulation)->sems.simulation_end);
+  sem_close((*simulation)->sems.proc_end);
+      unlink_shared_semaphores();
+      free((*simulation)->pids.philos);
+      free(*simulation);
       exit (0);
     }
     (*simulation)->data.id++;
@@ -174,33 +182,95 @@ void *simulation_fed_monitor_thread(void *args)
   return (NULL);
 }
 
-int init_monitor(t_simulation **simulation)
+/* int init_monitor(t_simulation **simulation) */
+/* { */
+/*   (*simulation)->pids.monitor = fork(); */
+/*   if ((*simulation)->pids.monitor < 0) */
+/*   { */
+/*     //fork error */
+/*     return (FORK_ERROR); */
+/*   } */
+/*   if ((*simulation)->pids.monitor == 0) */
+/*   { */
+/*   } */
+/*   return (0); */
+/* } */
+
+int wait_philos(t_pids pids, int nb_philos)
 {
-  (*simulation)->pids.monitor = fork();
-  if ((*simulation)->pids.monitor < 0)
+  int status;
+  int exit_code;
+  int i;
+
+  i = 0;
+  while (i < nb_philos)
   {
-    //fork error
-    return (FORK_ERROR);
+    exit_code = waitpid(pids.philos[i], &status, 0);
+    /* if (exit_code == -1) */
+    /* { */
+    /*   //error waitpid */
+      /* return (WAITPID_ERROR); */
+    /*   return (1); */
+    /* } */
+    i++;
   }
-  if ((*simulation)->pids.monitor == 0)
+  //wait_monitor ?
+  return (0);
+}
+
+int close_unlink_semaphores(t_sems sems)
+{
+  sem_close(sems.forks);
+  sem_close(sems.print);
+  sem_close(sems.death);
+  sem_close(sems.fed);
+  sem_close(sems.start);
+  sem_close(sems.simulation_end);
+  sem_close(sems.proc_end);
+	sem_unlink("/philo_forks");
+	sem_unlink("/philo_print");
+	sem_unlink("/philo_death");
+	sem_unlink("/philo_fed");
+	sem_unlink("/philo_start");
+	sem_unlink("/philo_simulation_end");
+	sem_unlink("/philo_proc_end");
+	return (0);
+}
+
+int free_simulation(t_simulation **simulation)
+{
+  free((*simulation)->pids.philos);
+  free(*simulation);
+  return (0);
+}
+
+int simulation_cleanup(t_simulation **simulation)
+{
+  //! .. marche si renvoie -1 ?
+  wait_philos((*simulation)->pids, (*simulation)->data.nb_philos);
+  close_unlink_semaphores((*simulation)->sems);
+  free_simulation(simulation);
+  return (0);
+}
+
+int monitor_simulation(t_simulation **simulation)
+{
+  if (pthread_create(&(*simulation)->threads.simulation_death_monitor, NULL, simulation_death_monitor_thread, *simulation) != 0)
   {
-    if (pthread_create(&(*simulation)->threads.simulation_death_monitor, NULL, simulation_death_monitor_thread, &simulation) != 0)
-    {
-      //error
-      return (THREAD_ERROR);
-    }
-    if (pthread_create(&(*simulation)->threads.simulation_fed_monitor, NULL, simulation_fed_monitor_thread, &simulation) != 0)
-    {
-      //error
-      return (THREAD_ERROR);
-    }
-    pthread_join((*simulation)->threads.simulation_death_monitor, NULL);
-    pthread_join((*simulation)->threads.simulation_fed_monitor, NULL);
-    sem_wait((*simulation)->sems.simulation_end);
-    (*simulation)->data.end = true;
-    //tous les childs ont un threads qui wait sim_end init a 0 : avec un post, ils vont tous pouvoir passer le portique 
-    sem_post((*simulation)->sems.simulation_end);
+    //error
+    return (THREAD_ERROR);
   }
+  if (pthread_create(&(*simulation)->threads.simulation_fed_monitor, NULL, simulation_fed_monitor_thread, *simulation) != 0)
+  {
+    //error
+    return (THREAD_ERROR);
+  }
+  pthread_join((*simulation)->threads.simulation_death_monitor, NULL);
+  //gerer l'erreur
+  pthread_join((*simulation)->threads.simulation_fed_monitor, NULL);
+  //gerer l'erreur
+  (*simulation)->data.end = true;
+  sem_post((*simulation)->sems.simulation_end); //debloque les childs threads un par un 
   return (0);
 }
 
@@ -224,12 +294,8 @@ int main (int ac, char **av)
 	exit_code = init_processes(&simulation);
 	if (exit_code != 0)
 		return (exit_code);
-	exit_code = init_monitor(&simulation);
+	exit_code = monitor_simulation(&simulation);
 	if (exit_code)
 	  return (exit_code);
-	/* exit_code = wait_philos(&simulation); */
-	if (exit_code)
-	  return (exit_code);
-  /* return (wait_close_unlink_free(simulation)); */
-  return (0);
+  return (simulation_cleanup(&simulation));
 }

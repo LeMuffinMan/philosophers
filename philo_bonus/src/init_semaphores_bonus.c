@@ -17,6 +17,7 @@
 static int init_semaphores_close_forks(t_simulation **simulation)
 {
 	sem_close((*simulation)->sems.forks);
+	unlink_shared_semaphores();
 	return (init_simulation_print_error_and_free("Semaphore init failed\n", SEM_ERROR, simulation));
 }
 
@@ -38,6 +39,18 @@ static int init_semaphores_close_fed(t_simulation **simulation)
 	return (init_semaphores_close_death(simulation));
 }
 
+static int init_semaphores_close_sim_end(t_simulation **simulation)
+{
+	sem_close((*simulation)->sems.simulation_end);
+	return (init_semaphores_close_fed(simulation));
+}
+
+static int init_semaphores_close_proc_end(t_simulation **simulation)
+{
+	sem_close((*simulation)->sems.proc_end);
+	return (init_semaphores_close_sim_end(simulation));
+}
+
 void unlink_shared_semaphores(void)
 {
 	sem_unlink("/philo_forks");
@@ -45,9 +58,10 @@ void unlink_shared_semaphores(void)
 	sem_unlink("/philo_death");
 	sem_unlink("/philo_fed");
 	sem_unlink("/philo_start");
+	sem_unlink("/philo_simulation_end");
+	sem_unlink("/philo_proc_end");
 }
 
-//renommer le fichier
 int init_shared_semaphores(t_simulation **simulation)
 {
 	unlink_shared_semaphores();
@@ -66,5 +80,11 @@ int init_shared_semaphores(t_simulation **simulation)
 	(*simulation)->sems.start = sem_open("/philo_start", O_CREAT | O_EXCL, 0644, 0);
 	if ((*simulation)->sems.start == SEM_FAILED)
 		return (init_semaphores_close_fed(simulation));
+	(*simulation)->sems.simulation_end = sem_open("/philo_simulation_end", O_CREAT | O_EXCL, 0644, 0);
+	if ((*simulation)->sems.simulation_end == SEM_FAILED)
+		return (init_semaphores_close_sim_end(simulation));
+	(*simulation)->sems.proc_end = sem_open("/philo_proc_end", O_CREAT | O_EXCL, 0644, 0);
+	if ((*simulation)->sems.proc_end == SEM_FAILED)
+		return (init_semaphores_close_proc_end(simulation));
 	return (0);
 }
