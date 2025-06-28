@@ -35,7 +35,7 @@ int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
 	while (ret_val != GETTIMEOFDAY_ERROR && ret_val < time_to_sleep)
 	{
 		if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
-			return (SIMULATION_END);
+			return (SIMULATION_END); // BLOCAGE ICI !!!
 		/* if (should_i_stop(simulation) || is_simulation_over(simulation)) */
 		/* 	return (SIMULATION_END); */
 		usleep(100);
