@@ -10,8 +10,7 @@ bool is_simulation_over(t_simulation **simulation)
 
 	/* if (get_time() - (*simulation)->data.time.last_meal > (*simulation)->data.time.die) */
 	/* { */
-		//si une fourchette dans la main la lacher ?
-		//un booleen pour chacun
+	/* apres avoir mis bool end a true, le parent peut post une fois ou plus forks pour debloquer les philos coinces ici */
 	/* 	sem_post((*simulation)->sems.death); */
 	/* 	print_log("%d died\n", (*simulation)->data.id, simulation); */
 	/* 	exit(simulation_cleanup(simulation, 0)); //un exit code STARVED ? */
@@ -29,9 +28,9 @@ int eating(t_simulation **simulation)
 	print_log("has taken a fork\n", (*simulation)->data.id, simulation);
 	if ((*simulation)->data.nb_philos == 1)
 	{
-		accurate_sleep((*simulation)->data.time.sleep);
-		sem_post((*simulation)->sems.forks);
-		return (0);
+		accurate_sleep((*simulation)->data.time.die);
+		if (is_simulation_over(simulation))
+			exit (simulation_cleanup(simulation));
 	}
 	sem_wait((*simulation)->sems.forks);
 	print_log("has taken a fork\n", (*simulation)->data.id, simulation);
