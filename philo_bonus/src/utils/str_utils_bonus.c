@@ -90,12 +90,12 @@ bool print_log(char *msg, int id, t_simulation *simulation)
 
 	/* if (is_simulation_over(simulation)) */
 	/* 	return (false); */
+  sem_wait(simulation->sems.print);
   time = get_time() - simulation->data.time.start;
   if (time == GETTIMEOFDAY_ERROR)
     return (false);
   if (am_i_starving(simulation))
   	return (false);
-  sem_wait(simulation->sems.print);
   printf("%ld %d %s", time, id, msg);
   sem_post(simulation->sems.print);
   return (true);
