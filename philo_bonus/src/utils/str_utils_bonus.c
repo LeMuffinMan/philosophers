@@ -77,8 +77,8 @@ bool print_log(char *msg, int id, t_simulation *simulation)
   time = get_time() - simulation->data.time.start;
   if (time == GETTIMEOFDAY_ERROR)
     return (GETTIMEOFDAY_ERROR);
-  if (is_simulation_over(simulation))
-  	return (false);
+  /* if (is_simulation_over(simulation)) */
+  /* 	return (false); */
   printf("%ld %d %s", time, id, msg);
   sem_post(simulation->sems.print);
   return (true);

@@ -72,7 +72,7 @@ int init_shared_semaphores(t_simulation *simulation)
 	simulation->sems.print = sem_open("/philo_print", O_CREAT | O_EXCL, 0644, 1);
 	if (simulation->sems.print == SEM_FAILED)
 		return (init_semaphores_close_forks(simulation));
-	simulation->sems.death = sem_open("/philo_death", O_CREAT | O_EXCL, 0644, 1);
+	simulation->sems.death = sem_open("/philo_death", O_CREAT | O_EXCL, 0644, 0);
 	if (simulation->sems.death == SEM_FAILED)
 		return (init_semaphores_close_print(simulation));
 	simulation->sems.fed = sem_open("/philo_fed", O_CREAT | O_EXCL, 0644, simulation->data.nb_philos);

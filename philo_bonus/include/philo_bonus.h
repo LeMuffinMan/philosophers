@@ -22,7 +22,7 @@
 # define THREAD_ERROR -3
 # define GETTIMEOFDAY_ERROR -4
 # define FORK_ERROR -5
-// # define SIMULATION_END -5
+# define SIMULATION_END -5
 
 typedef struct s_time
 {
@@ -68,10 +68,11 @@ int init_shared_semaphores(t_simulation *simulation);
 void unlink_semaphores(void);
 void unlink_shared_semaphores(void);
 int philo_process_routine(t_simulation *simulation);
+bool should_i_stop(t_simulation *simulation);
 
 //Utils
 long int	get_time(void);
-int	accurate_sleep(int time_to_sleep);
+int	accurate_sleep(t_simulation *simulation, int time_to_sleep);
 int simulation_cleanup(t_simulation *simulation, int exit_code);
 
 // str_utils

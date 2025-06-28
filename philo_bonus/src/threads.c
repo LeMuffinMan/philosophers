@@ -17,10 +17,10 @@ void *philo_monitor_thread(void *args)
   return (0);
 }
 
-void *simulation_death_monitor_thread(void *args)
-{
-  t_simulation *simulation;
-  int i;
+/* void *simulation_death_monitor_thread(void *args) */
+/* { */
+/*   t_simulation *simulation; */
+/*   int i; */
 
   /* simulation = (t_simulation *)args; */
   /* sem_wait(simulation->sems.death); */
@@ -30,8 +30,8 @@ void *simulation_death_monitor_thread(void *args)
   /*   sem_post(simulation->sems.fed); */
   /*   i++; */
   /* } */
-  return (NULL);
-}
+/*   return (NULL); */
+/* } */
 
 void *simulation_fed_monitor_thread(void *args)
 {
