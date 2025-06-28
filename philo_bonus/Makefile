@@ -12,6 +12,7 @@
 
 SRC = src/philo_bonus.c \
 			src/threads.c \
+			src/philo_process.c \
 			src/utils/str_utils_bonus.c \
 			src/utils/time_bonus.c \
 			src/utils/cleanup.c \

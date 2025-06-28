@@ -105,6 +105,7 @@ int init_processes(t_simulation **simulation)
   if (!(*simulation)->pids.philos)
     return (simulation_cleanup(simulation, MALLOC_ERROR));
   (*simulation)->data.id = 1;
+	(*simulation)->data.end = false;
   while ((*simulation)->data.id <= (*simulation)->data.nb_philos)
   {
     (*simulation)->pids.philos[(*simulation)->data.id - 1] = fork();
@@ -114,26 +115,13 @@ int init_processes(t_simulation **simulation)
       return (FORK_ERROR);
     }
     if ((*simulation)->pids.philos[(*simulation)->data.id - 1] == 0)
-    {
-      init_processes_monitor_thread(simulation);
-      philo_process_routine(simulation);
-      printf("proc %d waiting his monitor thread\n", (*simulation)->data.id);
-      pthread_join((*simulation)->threads.proc_monitor, NULL);  
-      printf("proc %d joined monitor thread\n", (*simulation)->data.id);
-  sem_close((*simulation)->sems.forks);
-  sem_close((*simulation)->sems.print);
-  sem_close((*simulation)->sems.death);
-  sem_close((*simulation)->sems.fed);
-  sem_close((*simulation)->sems.start);
-  sem_close((*simulation)->sems.simulation_end);
-  sem_close((*simulation)->sems.proc_end);
-      unlink_shared_semaphores();
-      free((*simulation)->pids.philos);
-      free(*simulation);
-      printf("%d is about to exit\n", (*simulation)->data.id);
-      exit (0);
-    }
+      exit (philo_process_life(simulation));
     (*simulation)->data.id++;
+  }
+  while ((*simulation)->data.id >= 1)
+  {
+  	sem_post((*simulation)->sems.start);
+		(*simulation)->data.id--;
   }
   return (0);
 }

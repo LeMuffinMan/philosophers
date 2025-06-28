@@ -21,65 +21,6 @@
 #include <stdlib.h>
 #include <signal.h>
 
-int simulation_end_unlink_close_free(t_simulation **simulation, int exit_code)
-{
-  sem_close((*simulation)->sems.forks);
-  sem_close((*simulation)->sems.print);
-  sem_close((*simulation)->sems.death);
-  sem_close((*simulation)->sems.fed);
-  sem_close((*simulation)->sems.start);
-	sem_unlink("/philo_forks");
-	sem_unlink("/philo_print");
-	sem_unlink("/philo_death");
-	sem_unlink("/philo_fed");
-	sem_unlink("/philo_start");
-	free(*simulation);
-	return (exit_code);
-}
-
-int is_simulation_over(t_simulation **simulation)
-{
-  int exit_code;
-
-  sem_wait((*simulation)->sems.proc_end);
-  exit_code = (*simulation)->data.end;
-  sem_post((*simulation)->sems.proc_end);
-  return (exit_code);
-}
-
-int eating(t_simulation **simulation)
-{
-	sem_wait((*simulation)->sems.forks);
-	print_log("has taken a fork\n", simulation);
-	sem_wait((*simulation)->sems.forks);
-	print_log("has taken a fork\n", simulation);
-	print_log("is eating\n", simulation);
-	(*simulation)->data.time.last_meal = get_time() - (*simulation)->data.time.start;
-	accurate_sleep((*simulation)->data.time.eat);
-	sem_post((*simulation)->sems.forks);
-	sem_post((*simulation)->sems.forks);
-	(*simulation)->data.meals_limit--;
-	if ((*simulation)->data.meals_limit == 0)
-	  sem_post((*simulation)->sems.fed);
-	return (0);
-}
-
-int philo_process_routine(t_simulation **simulation)
-{
-  sem_wait((*simulation)->sems.start);
-  (*simulation)->data.time.start = get_time();
-  (*simulation)->data.time.last_meal = (*simulation)->data.time.start;
-	while (!is_simulation_over(simulation))
-	{
-		eating(simulation);
-		print_log("is sleeping\n", simulation);
-		accurate_sleep((*simulation)->data.time.sleep);
-		print_log("is thinking\n", simulation);
-		accurate_sleep(100);
-	}
-	return (0);
-}
-
 int monitor_simulation(t_simulation **simulation)
 {
   if (pthread_create(&(*simulation)->threads.simulation_death_monitor, NULL, simulation_death_monitor_thread, *simulation) != 0)
@@ -92,16 +33,18 @@ int monitor_simulation(t_simulation **simulation)
     //error
     return (THREAD_ERROR);
   }
-  printf("waiting threads\n");
+  /* printf("waiting threads\n"); */
   pthread_join((*simulation)->threads.simulation_death_monitor, NULL);
   //gerer l'erreur
-  printf("death thread joined\n");
+  /* printf("death thread joined\n"); */
   pthread_join((*simulation)->threads.simulation_fed_monitor, NULL);
-  printf("fed thread joined\n");
+  /* printf("fed thread joined\n"); */
   //gerer l'erreur
-  accurate_sleep(100);
+  /* accurate_sleep(1000); */
+  sleep(2);
+  /* printf("END set to TRUE\n"); */
   (*simulation)->data.end = true;
-  sem_post((*simulation)->sems.simulation_end); //debloque les childs threads un par un 
+  sem_post((*simulation)->sems.simulation_end); 
   return (0);
 }
 
