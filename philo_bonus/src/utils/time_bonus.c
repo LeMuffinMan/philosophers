@@ -23,7 +23,7 @@ long int	get_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-int	accurate_sleep(int time_to_sleep)
+int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
 {
 	int			ret_val;
 	long int	start_time;
@@ -34,6 +34,8 @@ int	accurate_sleep(int time_to_sleep)
 	ret_val = get_time();
 	while (ret_val != GETTIMEOFDAY_ERROR && ret_val < time_to_sleep)
 	{
+		if (should_i_stop(simulation) || is_simulation_over(simulation))
+			return (SIMULATION_END);
 		usleep(100);
 		ret_val = get_time() - start_time;
 	}

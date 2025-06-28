@@ -23,16 +23,29 @@
 
 int monitor_simulation(t_simulation *simulation)
 {
-  if (pthread_create(&simulation->monitor, NULL, simulation_death_monitor_thread, simulation) != 0)
+  int i;
+
+  if (pthread_create(&simulation->monitor, NULL, simulation_fed_monitor_thread, simulation) != 0)
   {
     //error
     return (THREAD_ERROR);
   }
   //gerer l'erreur
+  sem_wait(simulation->sems.death);
+  i = 0;
+  while (i < simulation->data.nb_philos)
+  {
+    sem_post(simulation->sems.fed);
+    i++;
+  }
   pthread_join(simulation->monitor, NULL);
   /* printf("fed thread joined\n"); */
   /* accurate_sleep(1000); */
-  sleep(2);
+  /* sleep(2); */
+  /* while (1) */
+  /* { */
+  /**/
+  /* } */
   /* printf("END set to TRUE\n"); */
   simulation->data.end = true;
   sem_post(simulation->sems.simulation_end); 
