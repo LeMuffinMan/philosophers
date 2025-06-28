@@ -22,7 +22,7 @@
 # define THREAD_ERROR -3
 # define GETTIMEOFDAY_ERROR -4
 # define FORK_ERROR -5
-# define SIMULATION_END -5
+# define SIMULATION_END -6
 
 typedef struct s_time
 {
