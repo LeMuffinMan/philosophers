@@ -13,6 +13,7 @@
 #include "philo_bonus.h"
 #include <sys/time.h>
 #include <unistd.h>
+#include <stdio.h>
 
 long int	get_time(void)
 {
@@ -27,20 +28,22 @@ int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
 {
 	int			ret_val;
 	long int	start_time;
+	long int time_elapsed;
 
 	start_time = get_time();
 	if (start_time == GETTIMEOFDAY_ERROR)
 		return (GETTIMEOFDAY_ERROR);
-	ret_val = get_time();
-	while (ret_val != GETTIMEOFDAY_ERROR && ret_val < time_to_sleep)
+	while ((get_time() - start_time) < time_to_sleep)
 	{
-		if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
-			return (SIMULATION_END); // BLOCAGE ICI !!!
-		/* if (should_i_stop(simulation) || is_simulation_over(simulation)) */
-		/* 	return (SIMULATION_END); */
-		usleep(100);
-		ret_val = get_time() - start_time;
+		time_elapsed = get_time() - start_time;
+		if (time_elapsed > simulation->data.time.die)
+		{
+  		sem_wait(simulation->sems.print);
+  		printf("%ld %d died\n", time_elapsed, simulation->data.id);
+  		sem_post(simulation->sems.print);
+  		return (SIMULATION_END);
+		}
+		usleep(500);
 	}
-		/* printf("ret_val = %d\n", ret_val); */
-	return (ret_val);
+	return (time_elapsed);
 }

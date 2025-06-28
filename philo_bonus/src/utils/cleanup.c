@@ -34,6 +34,7 @@ int close_unlink_semaphores(t_sems sems)
   sem_close(sems.start);
   sem_close(sems.simulation_end);
   sem_close(sems.proc_end);
+  sem_close(sems.can_i_eat);
 	sem_unlink("/philo_forks");
 	sem_unlink("/philo_print");
 	sem_unlink("/philo_death");
@@ -41,6 +42,7 @@ int close_unlink_semaphores(t_sems sems)
 	sem_unlink("/philo_start");
 	sem_unlink("/philo_simulation_end");
 	sem_unlink("/philo_proc_end");
+	sem_unlink("/philo_can_i_eat");
 	return (0);
 }
 
