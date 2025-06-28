@@ -10,7 +10,7 @@ void *philo_monitor_thread(void *args)
   simulation = (t_simulation *)args;
   sem_wait(simulation->sems.simulation_end);
   sem_wait(simulation->sems.proc_end);
-  printf("%d knows simulation is over\n", simulation->data.id);
+  /* printf("%d knows simulation is over\n", simulation->data.id); */
   simulation->data.end = true;
   sem_post(simulation->sems.proc_end);
   sem_post(simulation->sems.simulation_end);

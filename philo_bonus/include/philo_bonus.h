@@ -79,11 +79,9 @@ int	init_simulation(t_simulation **simulation, char **av);
 int	init_user_inputs(t_simulation **simulation, char **av);
 int init_shared_semaphores(t_simulation **simulation);
 void unlink_semaphores(void);
-bool print_log(char *msg, t_simulation **simulation);
 int init_simulation_print_error_and_free(char *msg, int exit_code, t_simulation **simulation);
 void unlink_shared_semaphores(void);
 int philo_process_routine(t_simulation **simulation);
-int is_simulation_over(t_simulation **simulation);
 
 //Utils
 long int	get_time(void);
@@ -93,6 +91,7 @@ int simulation_cleanup(t_simulation **simulation, int exit_code);
 // str_utils
 int								are_valids_args(char **av);
 int								ft_atoi(const char *nptr);
+bool print_log(char *msg, int id, t_simulation **simulation);
 
 // prints
 int								print_error_and_free(char *msg, int exit_code,
@@ -109,5 +108,11 @@ int init_processes(t_simulation **simulation);
 void *philo_monitor_thread(void *args);
 void *simulation_death_monitor_thread(void *args);
 void *simulation_fed_monitor_thread(void *args);
+
+//philo_process
+int eating(t_simulation **simulation);
+bool is_simulation_over(t_simulation **simulation);
+int philo_process_routine(t_simulation **simulation);
+int philo_process_life(t_simulation **simulatio);
 
 #endif
