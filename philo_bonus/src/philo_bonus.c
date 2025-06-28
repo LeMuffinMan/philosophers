@@ -35,8 +35,9 @@ int monitor_simulation(t_simulation *simulation)
   {
     sem_wait(simulation->sems.fed);
     i++;
+    if (i == simulation->data.nb_philos)
+      sem_post(simulation->sems.death);
   }
-  sem_post(simulation->sems.death);
   pthread_join(simulation->monitor, NULL);
   /* printf("END set to TRUE\n"); */
   simulation->data.end = true;
