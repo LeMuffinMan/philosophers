@@ -34,10 +34,13 @@ int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
 	ret_val = get_time();
 	while (ret_val != GETTIMEOFDAY_ERROR && ret_val < time_to_sleep)
 	{
-		if (should_i_stop(simulation) || is_simulation_over(simulation))
+		if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
 			return (SIMULATION_END);
+		/* if (should_i_stop(simulation) || is_simulation_over(simulation)) */
+		/* 	return (SIMULATION_END); */
 		usleep(100);
 		ret_val = get_time() - start_time;
 	}
+		/* printf("ret_val = %d\n", ret_val); */
 	return (ret_val);
 }

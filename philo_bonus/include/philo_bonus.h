@@ -51,6 +51,7 @@ typedef struct s_sems
   sem_t *start;
   sem_t *simulation_end;
   sem_t *proc_end;
+  sem_t *can_i_eat;
 } t_sems;
 
 typedef struct s_simulation
@@ -69,6 +70,7 @@ void unlink_semaphores(void);
 void unlink_shared_semaphores(void);
 int philo_process_routine(t_simulation *simulation);
 bool should_i_stop(t_simulation *simulation);
+int set_proc_end(t_simulation *simulation);
 
 //Utils
 long int	get_time(void);
@@ -93,7 +95,7 @@ void *simulation_death_monitor_thread(void *args);
 void *simulation_fed_monitor_thread(void *args);
 
 //philo_process
-int eating(t_simulation *simulation);
+bool eating(t_simulation *simulation);
 bool is_simulation_over(t_simulation *simulation);
 int philo_process_routine(t_simulation *simulation);
 int philo_process_life(t_simulation *simulation);

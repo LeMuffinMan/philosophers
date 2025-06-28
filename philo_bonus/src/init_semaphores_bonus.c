@@ -51,6 +51,12 @@ static int init_semaphores_close_proc_end(t_simulation *simulation)
 	return (init_semaphores_close_sim_end(simulation));
 }
 
+static int init_semaphores_close_can_i_eat(t_simulation *simulation)
+{
+	sem_close(simulation->sems.can_i_eat);
+	return (init_semaphores_close_proc_end(simulation));
+}
+
 void unlink_shared_semaphores(void)
 {
 	sem_unlink("/philo_forks");
@@ -60,6 +66,7 @@ void unlink_shared_semaphores(void)
 	sem_unlink("/philo_start");
 	sem_unlink("/philo_simulation_end");
 	sem_unlink("/philo_proc_end");
+	sem_unlink("/philo_can_i_eat");
 }
 
 int init_shared_semaphores(t_simulation *simulation)
@@ -87,5 +94,8 @@ int init_shared_semaphores(t_simulation *simulation)
 	simulation->sems.proc_end = sem_open("/philo_proc_end", O_CREAT | O_EXCL, 0644, 1);
 	if (simulation->sems.proc_end == SEM_FAILED)
 		return (init_semaphores_close_proc_end(simulation));
+	simulation->sems.can_i_eat = sem_open("/philo_can_i_eat", O_CREAT | O_EXCL, 0644, (simulation->data.nb_philos - 1));
+	if (simulation->sems.can_i_eat == SEM_FAILED)
+		return (init_semaphores_close_can_i_eat(simulation));
 	return (0);
 }
