@@ -38,7 +38,8 @@ bool is_simulation_over(t_simulation *simulation)
 int eating(t_simulation *simulation)
 {
 	sem_wait(simulation->sems.forks);
-	print_log("has taken a fork\n", simulation->data.id, simulation);
+	if (!print_log("has taken a fork\n", simulation->data.id, simulation))
+		return (SIMULATION_END);
 	if (simulation->data.nb_philos == 1)
 	{
 		if (accurate_sleep(simulation, simulation->data.time.die) == SIMULATION_END)
@@ -48,8 +49,10 @@ int eating(t_simulation *simulation)
 		}
 	}
 	sem_wait(simulation->sems.forks);
-	print_log("has taken a fork\n", simulation->data.id, simulation);
-	print_log("is eating\n", simulation->data.id, simulation);
+	if (!print_log("has taken a fork\n", simulation->data.id, simulation))
+		return (SIMULATION_END);
+	if (!print_log("is eating\n", simulation->data.id, simulation))
+		return (SIMULATION_END);
 	simulation->data.time.last_meal = get_time();
 	simulation->data.meals_limit--; //pas a la fin du repas ??
 	if (simulation->data.meals_limit == 0)
@@ -57,14 +60,13 @@ int eating(t_simulation *simulation)
 	/* printf("%d updated last meal = %ld\n", simulation->data.id, simulation->data.time.last_meal); */
 	if (accurate_sleep(simulation, simulation->data.time.eat) == SIMULATION_END)
 		return (SIMULATION_END);
-	sem_post(simulation->sems.forks);
-	sem_post(simulation->sems.forks);
 	return (0);
 }
 
 int thinking(t_simulation *simulation)
 {
-	print_log("is thinking\n", simulation->data.id, simulation);
+	if (!print_log("is thinking\n", simulation->data.id, simulation))
+		return (SIMULATION_END);
 	if (simulation->data.nb_philos % 2 != 0)
 	{
 		if (accurate_sleep(simulation, simulation->data.time.eat) == SIMULATION_END)
@@ -79,8 +81,6 @@ int philo_process_routine(t_simulation *simulation)
   sem_wait(simulation->sems.start);
   simulation->data.time.start = get_time();
   simulation->data.time.last_meal = simulation->data.time.start;
-  if (simulation->data.id % 2 != 0)
-		accurate_sleep(simulation, simulation->data.time.eat);
 	/* print_log("started\n", simulation->data.id, simulation); */
 	while (!is_simulation_over(simulation))
 	{
@@ -89,7 +89,9 @@ int philo_process_routine(t_simulation *simulation)
 		if (eating(simulation) == SIMULATION_END || is_simulation_over(simulation))
 			break ;
 		print_log("is sleeping\n", simulation->data.id, simulation);
-		accurate_sleep(simulation, simulation->data.time.eat);
+		sem_post(simulation->sems.forks);
+		sem_post(simulation->sems.forks);
+		accurate_sleep(simulation, simulation->data.time.sleep);
   	if (is_simulation_over(simulation))
   		break ;
 		/* print_log("is thinking\n", simulation->data.id, simulation); */
