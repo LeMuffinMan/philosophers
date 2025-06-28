@@ -23,37 +23,77 @@ int set_proc_end(t_simulation *simulation)
   return (0);
 }
 
-bool is_simulation_over(t_simulation *simulation)
-{
-  bool exit_code;
+/* bool is_simulation_over(t_simulation *simulation) */
+/* { */
+/*   bool exit_code; */
+/**/
+/* 	exit_code = get_proc_end(simulation); */
+/*   if (exit_code) */
+/*   	return (exit_code); */
+/*   else */
+/*   	return (should_i_stop(simulation)); */
+/* } */
 
-	exit_code = get_proc_end(simulation);
-  if (exit_code)
-  	return (exit_code);
-  else
-  	return (should_i_stop(simulation));
+bool take_two_fork(t_simulation *simulation)
+{
+  if (get_proc_end(simulation))
+    return (false);
+  sem_wait(simulation->sems.can_i_eat);
+  sem_wait(simulation->sems.forks);
+  if (get_proc_end(simulation) || am_i_starving(simulation) || !print_log("has taken a fork\n", simulation->data.id, simulation))
+  {
+    sem_post(simulation->sems.forks);
+    sem_post(simulation->sems.can_i_eat);
+    return (false);
+  }
+  if (get_proc_end(simulation) || am_i_starving(simulation) || !print_log("has taken a fork\n", simulation->data.id, simulation))
+  {
+    sem_post(simulation->sems.forks);
+    sem_post(simulation->sems.can_i_eat);
+    return (false);
+  }
+  return (true);
 }
 
 bool eating(t_simulation *simulation)
 {
-	if (get_proc_end(simulation))
+	if (!take_two_fork(simulation))
+	{
 		return (false);
-	sem_wait(simulation->sems.can_i_eat);
-	sem_wait(simulation->sems.forks);
-	/* printf("id = %d\n", simulation->data.id); */
-	if (!print_log("has taken a fork\n", simulation->data.id, simulation))
-		return (SIMULATION_END);
-	sem_wait(simulation->sems.forks);
-	if (!print_log("has taken a fork\n", simulation->data.id, simulation))
-		return (SIMULATION_END);
+	}
+	/* if (get_proc_end(simulation)) */
+	/* 	return (false); */
+	/* sem_wait(simulation->sems.can_i_eat); */
+	/* sem_wait(simulation->sems.forks); */
+	/* if (!print_log("has taken a fork\n", simulation->data.id, simulation)) */
+	/* 	return (SIMULATION_END); */
+	/* sem_wait(simulation->sems.forks); */
+	/* if (!print_log("has taken a fork\n", simulation->data.id, simulation)) */
+	/* 	return (SIMULATION_END); */
 	if (!print_log("is eating\n", simulation->data.id, simulation))
-		return (SIMULATION_END);
+	{
+		sem_post(simulation->sems.forks);
+		printf("%d released a fork\n", simulation->data.id);
+		sem_post(simulation->sems.forks);
+		printf("%d released a fork\n", simulation->data.id);
+		sem_post(simulation->sems.can_i_eat);
+		return (false);
+	}
 	simulation->data.time.last_meal = get_time();
 	/* printf("%d updated last meal = %ld\n", simulation->data.id, simulation->data.time.last_meal); */
-	if (accurate_sleep(simulation, simulation->data.time.eat) == SIMULATION_END)
-		return (SIMULATION_END);
+	if (accurate_sleep(simulation, simulation->data.time.eat) < 0)
+	{
+		sem_post(simulation->sems.forks);
+		printf("%d released a fork\n", simulation->data.id);
+		sem_post(simulation->sems.forks);
+		printf("%d released a fork\n", simulation->data.id);
+		sem_post(simulation->sems.can_i_eat);
+		return (false);
+	}
 	sem_post(simulation->sems.forks);
+	printf("%d released a fork\n", simulation->data.id);
 	sem_post(simulation->sems.forks);
+	printf("%d released a fork\n", simulation->data.id);
 	sem_post(simulation->sems.can_i_eat);
 	simulation->data.meals_limit--; //pas a la fin du repas ??
 	if (simulation->data.meals_limit == 0)
@@ -67,13 +107,19 @@ bool thinking(t_simulation *simulation)
 		return (false);
 	if (simulation->data.nb_philos % 2 != 0)
 	{
-		if (accurate_sleep(simulation, simulation->data.time.eat) != 0)
+		if (accurate_sleep(simulation, simulation->data.time.eat) > 0)
+		{
 			return (true);
+		}
 		else 
+		{
 			return (false); // PAS SUUUUR 
+		}
 	}
 	else
+	{
 		usleep(100);
+	}
 	return (true);
 }
 
@@ -94,6 +140,17 @@ bool am_i_starving(t_simulation *simulation)
 	return (false);
 }
 
+bool sleeping(t_simulation *simulation)
+{
+	if (am_i_starving(simulation))
+		return (false);
+	if (!print_log("is sleeping\n", simulation->data.id, simulation))
+		return (false);
+	if (accurate_sleep(simulation, simulation->data.time.sleep) < 0)
+		return (false);
+	return (true);
+}
+
 int philo_process_routine(t_simulation *simulation)
 {
 	//le start est pas synchro
@@ -105,13 +162,20 @@ int philo_process_routine(t_simulation *simulation)
 	while (1)
 	{
 		if (get_proc_end(simulation) || am_i_starving(simulation) || !thinking(simulation))
+		{
+			sem_post(simulation->sems.death);
 			break ;
+		}
 		if (get_proc_end(simulation) || am_i_starving(simulation) || !eating(simulation))
+		{
+			sem_post(simulation->sems.death);
 			break ;
-		if (!print_log("is sleeping\n", simulation->data.id, simulation))
+		}
+		if (get_proc_end(simulation) || am_i_starving(simulation) || !sleeping(simulation))
+		{
+			sem_post(simulation->sems.death);
 			break ;
-		if (accurate_sleep(simulation, simulation->data.time.sleep) == SIMULATION_END)
-			break ;
+		}
 	}
   /* printf("proc %d leaving philo process routine\n", simulation->data.id); */
 	return (0);
