@@ -21,39 +21,29 @@
 #include <stdlib.h>
 #include <signal.h>
 
-int monitor_simulation(t_simulation **simulation)
+int monitor_simulation(t_simulation *simulation)
 {
-  if (pthread_create(&(*simulation)->threads.simulation_death_monitor, NULL, simulation_death_monitor_thread, *simulation) != 0)
+  if (pthread_create(&simulation->monitor, NULL, simulation_death_monitor_thread, simulation) != 0)
   {
     //error
     return (THREAD_ERROR);
   }
-  if (pthread_create(&(*simulation)->threads.simulation_fed_monitor, NULL, simulation_fed_monitor_thread, *simulation) != 0)
-  {
-    //error
-    return (THREAD_ERROR);
-  }
-  /* printf("waiting threads\n"); */
-  pthread_join((*simulation)->threads.simulation_death_monitor, NULL);
   //gerer l'erreur
-  /* printf("death thread joined\n"); */
-  pthread_join((*simulation)->threads.simulation_fed_monitor, NULL);
+  pthread_join(simulation->monitor, NULL);
   /* printf("fed thread joined\n"); */
-  //gerer l'erreur
   /* accurate_sleep(1000); */
   sleep(2);
   /* printf("END set to TRUE\n"); */
-  (*simulation)->data.end = true;
-  sem_post((*simulation)->sems.simulation_end); 
+  simulation->data.end = true;
+  sem_post(simulation->sems.simulation_end); 
   return (0);
 }
 
 int main (int ac, char **av)
 {
-  t_simulation *simulation;
+  t_simulation simulation;
   int exit_code;
 
-  simulation = NULL;
   if (check_user_inputs(ac))
     return (INVALID_ARG);
   exit_code = are_valids_args(av);
