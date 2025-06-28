@@ -71,7 +71,9 @@ typedef struct s_simulation
   struct s_data data;
   struct s_sems sems;
   struct s_threads threads;
+  // un seul thread montirot
   struct s_pids pids;
+  //un seul tableau de pid alloue
 } t_simulation;
 
 
