@@ -17,36 +17,37 @@ void *philo_monitor_thread(void *args)
   return (0);
 }
 
-/* void *simulation_death_monitor_thread(void *args) */
-/* { */
-/*   t_simulation *simulation; */
-/*   int i; */
-
-  /* simulation = (t_simulation *)args; */
-  /* sem_wait(simulation->sems.death); */
-  /* i = 0; */
-  /* while (i < simulation->data.nb_philos) */
-  /* { */
-  /*   sem_post(simulation->sems.fed); */
-  /*   i++; */
-  /* } */
-/*   return (NULL); */
-/* } */
-
-void *simulation_fed_monitor_thread(void *args)
+void *simulation_death_monitor_thread(void *args)
 {
   t_simulation *simulation;
   int i;
 
-  /* simulation = (t_simulation *)args; */
-  /* i = 0; */
-  /* while (i < simulation->data.nb_philos) */
-  /* { */
-  /*   sem_wait(simulation->sems.fed); */
-  /*   i++; */
-  /* } */
-  /* sem_post(simulation->sems.death); */
+  simulation = (t_simulation *)args;
+  sem_wait(simulation->sems.death);
+  i = 0;
+  while (i < simulation->data.nb_philos)
+  {
+    sem_post(simulation->sems.fed);
+    i++;
+  }
   return (NULL);
 }
+
+/* void *simulation_fed_monitor_thread(void *args) */
+/* { */
+/*   t_simulation *simulation; */
+/*   int i; */
+/**/
+/*   simulation = (t_simulation *)args; */
+/*   i = 0; */
+/*   while (i < simulation->data.nb_philos) */
+/*   { */
+/*     sem_wait(simulation->sems.fed); */
+/*     printf("%d philos fed\n", i); */
+/*     i++; */
+/*   } */
+/*   sem_post(simulation->sems.death); */
+/*   return (NULL); */
+/* } */
 
 
