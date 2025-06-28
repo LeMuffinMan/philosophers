@@ -71,6 +71,7 @@ void unlink_shared_semaphores(void);
 int philo_process_routine(t_simulation *simulation);
 bool should_i_stop(t_simulation *simulation);
 int set_proc_end(t_simulation *simulation);
+bool am_i_starving(t_simulation *simulation);
 
 //Utils
 long int	get_time(void);

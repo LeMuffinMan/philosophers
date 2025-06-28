@@ -69,20 +69,20 @@ int print_error_and_free(char *msg, int exit_code, t_simulation *simulation)
   return (exit_code);
 }
 
-bool should_i_stop(t_simulation *simulation)
-{
-	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
-	{
+/* bool should_i_stop(t_simulation *simulation) */
+/* { */
+/* 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die) */
+/* 	{ */
 		/* printf("%d elapsed time = %d\n", simulation->data.id, get_time() - simulation->data.time.last_meal); */
-		sem_wait(simulation->sems.print);
-		printf("%ld %d died\n", get_time() - simulation->data.time.start, simulation->data.id);
-		sem_post(simulation->sems.print);
-  	sem_post(simulation->sems.death);
-  	set_proc_end(simulation);
-  	return (true);
-	}
-	return (false);
-}
+/* 		sem_wait(simulation->sems.print); */
+/* 		printf("%ld %d died\n", get_time() - simulation->data.time.start, simulation->data.id); */
+/* 		sem_post(simulation->sems.print); */
+/*   	sem_post(simulation->sems.death); */
+/*   	set_proc_end(simulation); */
+/*   	return (true); */
+/* 	} */
+/* 	return (false); */
+/* } */
 
 bool print_log(char *msg, int id, t_simulation *simulation)
 {
@@ -93,7 +93,7 @@ bool print_log(char *msg, int id, t_simulation *simulation)
   time = get_time() - simulation->data.time.start;
   if (time == GETTIMEOFDAY_ERROR)
     return (false);
-  if (should_i_stop(simulation))
+  if (am_i_starving(simulation))
   	return (false);
   sem_wait(simulation->sems.print);
   printf("%ld %d %s", time, id, msg);
