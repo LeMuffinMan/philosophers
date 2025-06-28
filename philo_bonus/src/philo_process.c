@@ -8,6 +8,14 @@ bool is_simulation_over(t_simulation **simulation)
 {
   bool exit_code;
 
+	/* if (get_time() - (*simulation)->data.time.last_meal > (*simulation)->data.time.die) */
+	/* { */
+		//si une fourchette dans la main la lacher ?
+		//un booleen pour chacun
+	/* 	sem_post((*simulation)->sems.death); */
+	/* 	print_log("%d died\n", (*simulation)->data.id, simulation); */
+	/* 	exit(simulation_cleanup(simulation, 0)); //un exit code STARVED ? */
+	/* } */
   sem_wait((*simulation)->sems.proc_end);
   exit_code = (*simulation)->data.end;
   sem_post((*simulation)->sems.proc_end);
