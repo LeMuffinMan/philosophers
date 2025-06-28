@@ -11,6 +11,8 @@ bool get_proc_end(t_simulation *simulation)
 
   sem_wait(simulation->sems.proc_end);
   exit_code = simulation->data.end;
+  /* if (exit_code != 0) */
+		/* print_log("found end bool true\n", simulation->data.id, simulation); */
   sem_post(simulation->sems.proc_end);
 	return (exit_code);
 }
@@ -91,9 +93,9 @@ bool eating(t_simulation *simulation)
 		return (false);
 	}
 	sem_post(simulation->sems.forks);
-	printf("%d released a fork\n", simulation->data.id);
+	/* printf("%d released a fork\n", simulation->data.id); */
 	sem_post(simulation->sems.forks);
-	printf("%d released a fork\n", simulation->data.id);
+	/* printf("%d released a fork\n", simulation->data.id); */
 	sem_post(simulation->sems.can_i_eat);
 	simulation->data.meals_limit--; //pas a la fin du repas ??
 	if (simulation->data.meals_limit == 0)
@@ -103,11 +105,14 @@ bool eating(t_simulation *simulation)
 
 bool thinking(t_simulation *simulation)
 {
+	int exit_code;
+
 	if (!print_log("is thinking\n", simulation->data.id, simulation))
 		return (false);
 	if (simulation->data.nb_philos % 2 != 0)
 	{
-		if (accurate_sleep(simulation, simulation->data.time.eat) > 0)
+		exit_code = accurate_sleep(simulation, simulation->data.time.eat);
+		if (exit_code > 0)
 		{
 			return (true);
 		}
@@ -130,7 +135,7 @@ bool am_i_starving(t_simulation *simulation)
 
 	elapsed_time = get_time() - simulation->data.time.last_meal;
 	/* printf("get_time - last meal = %ld\n", elapsed_time); */
-	if (get_time() - simulation->data.time.last_meal > simulation->data.time.die)
+	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
 	{
 		print_log("died\n", simulation->data.id, simulation);
 		sem_post(simulation->sems.death);
@@ -163,6 +168,7 @@ int philo_process_routine(t_simulation *simulation)
 	{
 		if (get_proc_end(simulation) || am_i_starving(simulation) || !thinking(simulation))
 		{
+			printf("%d : ici\n", simulation->data.id);
 			sem_post(simulation->sems.death);
 			break ;
 		}
