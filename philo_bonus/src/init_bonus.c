@@ -100,6 +100,8 @@ int init_processes(t_simulation *simulation)
     return (simulation_cleanup(simulation, MALLOC_ERROR));
   simulation->data.id = 1;
 	simulation->data.end = false;
+  simulation->data.time.start = get_time();
+  simulation->data.time.last_meal = simulation->data.time.start;
   while (simulation->data.id <= simulation->data.nb_philos)
   {
     simulation->philos[simulation->data.id - 1] = fork();
