@@ -27,17 +27,16 @@ int set_proc_end(t_simulation *simulation)
 
 bool take_two_fork(t_simulation *simulation)
 {
-  if (get_proc_end(simulation))
+  if (get_proc_end(simulation) || am_i_starving(simulation))
     return (false);
   if (simulation->data.nb_philos == 1)
   {
 		sem_wait(simulation->sems.forks);
-		if (!print_log("has taken a fork\n", simulation->data.id, simulation))
-		{
-  		accurate_sleep(simulation, simulation->data.time.die);
-  		sem_post(simulation->sems.forks);
-  		return (false);
-		}
+  	accurate_sleep(simulation, simulation->data.time.die - get_time() - simulation->data.time.start);
+  	print_log("died\n", simulation->data.id, simulation);
+  	sem_post(simulation->sems.death);
+  	sem_post(simulation->sems.forks);
+  	return (false);
   }
   sem_wait(simulation->sems.can_i_eat);
   sem_wait(simulation->sems.forks);
@@ -47,8 +46,10 @@ bool take_two_fork(t_simulation *simulation)
     sem_post(simulation->sems.can_i_eat);
     return (false);
   }
+  sem_wait(simulation->sems.forks);
   if (get_proc_end(simulation) || am_i_starving(simulation) || !print_log("has taken a fork\n", simulation->data.id, simulation))
   {
+    sem_post(simulation->sems.forks);
     sem_post(simulation->sems.forks);
     sem_post(simulation->sems.can_i_eat);
     return (false);
