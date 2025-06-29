@@ -33,9 +33,9 @@ int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
 	start_time = get_time();
 	if (start_time == GETTIMEOFDAY_ERROR)
 		return (GETTIMEOFDAY_ERROR);
-	while ((get_time() - start_time) < time_to_sleep)
+	time_elapsed = 0;
+	while (time_elapsed < time_to_sleep)
 	{
-		time_elapsed = get_time() - start_time;
 		if (time_elapsed > simulation->data.time.die)
 		{
   		sem_wait(simulation->sems.print);
@@ -44,6 +44,7 @@ int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
   		return (SIMULATION_END);
 		}
 		usleep(500);
+		time_elapsed = get_time() - start_time;
 	}
 	return (time_elapsed);
 }
