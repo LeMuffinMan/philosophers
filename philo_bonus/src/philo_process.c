@@ -145,8 +145,6 @@ bool sleeping(t_simulation *simulation)
 int philo_process_routine(t_simulation *simulation)
 {
   sem_wait(simulation->sems.start);
-  simulation->data.time.start = get_time();
-  simulation->data.time.last_meal = simulation->data.time.start;
 	/* print_log("started\n", simulation->data.id, simulation); */
 	/* while (!is_simulation_over(simulation)) */
 	while (1)
@@ -165,8 +163,8 @@ int philo_process_routine(t_simulation *simulation)
 		{
 			sem_post(simulation->sems.death);
 			break ;
-			usleep(500);
 		}
+		/* usleep(500); */
 	}
   /* printf("proc %d leaving philo process routine\n", simulation->data.id); */
 	return (0);
