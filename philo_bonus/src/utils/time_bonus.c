@@ -36,12 +36,10 @@ long int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
 	time_elapsed = 0;
 	while (time_elapsed < time_to_sleep)
 	{
-		if (time_elapsed > simulation->data.time.die)
+		if (time_elapsed > simulation->data.time.die || am_i_starving(simulation))
 		{
-  		sem_wait(simulation->sems.print);
-  		/* printf("%ld %d died\n", time_elapsed, simulation->data.id); */
+			simulation->data.exit_code = get_time() - simulation->data.time.start;
   		sem_post(simulation->sems.death);
-  		sem_post(simulation->sems.print);
   		return (SIMULATION_END);
 		}
 		usleep(500);

@@ -56,7 +56,7 @@ int one_fork_case(t_simulation *simulation)
   while(!am_i_starving(simulation))
   	usleep(500);
   /* print_log("died\n", simulation->data.id, simulation); */
-  simulation->data.exit_code = 1;
+  simulation->data.exit_code = get_time() - simulation->data.time.start;
   sem_post(simulation->sems.death);
   return (-1);
 }
@@ -122,7 +122,10 @@ bool thinking(t_simulation *simulation)
 			return (false); 
 	}
 	else
-		usleep(100);
+	{
+		if (accurate_sleep(simulation, simulation->data.time.eat * 2 - simulation->data.time.sleep) < 0)
+			return (false);
+	}
 
 	return (true);
 }
@@ -133,8 +136,9 @@ bool am_i_starving(t_simulation *simulation)
 
 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
 	{
-  	printf("someone died !\n");
-		simulation->data.exit_code = 1;
+  	/* printf("%ld %d died !\n", get_time() - simulation->data.time.start, simulation->data.id); */
+		simulation->data.exit_code = get_time() - simulation->data.time.start;
+		/* printf("%ld %d ici\n", get_time() - simulation->data.time.start, simulation->data.id); */
 		sem_post(simulation->sems.death);
 		/* printf("ici\n"); */
 		return (true);
@@ -167,6 +171,8 @@ int philo_process_routine(t_simulation *simulation)
 		if (!eating(simulation) || get_proc_end(simulation) || am_i_starving(simulation))
 			break ;
 		if (!sleeping(simulation) || get_proc_end(simulation) || am_i_starving(simulation))
+			break ;
+		if (am_i_starving(simulation))
 			break ;
 		if (!thinking(simulation) || get_proc_end(simulation) || am_i_starving(simulation))
 			break ;

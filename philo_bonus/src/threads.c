@@ -20,38 +20,39 @@ void *philo_monitor_thread(void *args)
   return (0);
 }
 
-int print_death(t_simulation *simulation, int id)
+int print_death(t_simulation *simulation, int id, int exit_code)
 {
   sem_wait(simulation->sems.print);
-  printf("%ld %d died\n", get_time() - simulation->data.time.start, id + 1);
+  printf("%ld %d died\n", exit_code, id + 1);
   sem_post(simulation->sems.fed);
   sem_post(simulation->sems.print);
   return (0);
 }
 
-
-int wait_children(t_simulation *simulation)
+int wait_children(t_simulation *simulation, long int death_time)
 {
   int status;
-  pid_t pid;
-  int i;
   int exit_code;
   int success = 1;
+  int i;
 
+  //voir si on a besoin d'incrementer i
+  //voir si on doit de nouveau attendre les chidls ensuite
   i = 0;
-  exit_code = 0;
   while (i < simulation->data.nb_philos)
   {
-    pid = wait(&status);
+    pid_t pid = waitpid(simulation->philos[i], &status, 0);
     if (pid == -1)
     {
       //gerer l'erreur
-        return (1);
+      return (1);
     }
     if (WIFEXITED(status))
+    {
       exit_code = WEXITSTATUS(status);
-    if (exit_code)
-      return (print_death(simulation, i));
+      if (exit_code)
+        return (print_death(simulation, i, death_time)); 
+    }
     i++;
   }
   return (0);
@@ -61,17 +62,18 @@ void *simulation_death_monitor_thread(void *args)
 {
   t_simulation *simulation;
   int i;
+  long int death_time;
 
   simulation = (t_simulation *)args;
   sem_wait(simulation->sems.death);
-  /* printf("soneone died !\n"); */
+  death_time = get_time() - simulation->data.time.start;
   i = 0;
   while (i < simulation->data.nb_philos)
   {
     sem_post(simulation->sems.simulation_end); 
     i++;
   }
-  wait_children(simulation);
+  wait_children(simulation, death_time);
   i = 0;
   while (i < simulation->data.nb_philos)
   {
