@@ -72,10 +72,11 @@ int philo_process_routine(t_simulation *simulation);
 bool should_i_stop(t_simulation *simulation);
 int set_proc_end(t_simulation *simulation);
 bool am_i_starving(t_simulation *simulation);
+bool get_proc_end(t_simulation *simulation);
 
 //Utils
 long int	get_time(void);
-int	accurate_sleep(t_simulation *simulation, int time_to_sleep);
+long int	accurate_sleep(t_simulation *simulation, int time_to_sleep);
 int simulation_cleanup(t_simulation *simulation, int exit_code);
 
 // str_utils
