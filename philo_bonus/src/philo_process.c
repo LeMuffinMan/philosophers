@@ -51,13 +51,14 @@ int take_two_fork(t_simulation *simulation)
 
 int one_fork_case(t_simulation *simulation)
 {
-		sem_wait(simulation->sems.forks);
-  	print_log("has taken a fork\n", simulation->data.id, simulation);
-  	while(!am_i_starving(simulation))
-  		usleep(500);
-  	/* print_log("died\n", simulation->data.id, simulation); */
-  	sem_post(simulation->sems.death);
-  	return (-1);
+	sem_wait(simulation->sems.forks);
+  print_log("has taken a fork\n", simulation->data.id, simulation);
+  while(!am_i_starving(simulation))
+  	usleep(500);
+  /* print_log("died\n", simulation->data.id, simulation); */
+  simulation->data.exit_code = 1;
+  sem_post(simulation->sems.death);
+  return (-1);
 }
 
 bool eating(t_simulation *simulation)
@@ -132,7 +133,10 @@ bool am_i_starving(t_simulation *simulation)
 
 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
 	{
+  	printf("someone died !\n");
+		simulation->data.exit_code = 1;
 		sem_post(simulation->sems.death);
+		/* printf("ici\n"); */
 		return (true);
 	}
 	return (false);
@@ -161,20 +165,11 @@ int philo_process_routine(t_simulation *simulation)
 	while (1)
 	{
 		if (!eating(simulation) || get_proc_end(simulation) || am_i_starving(simulation))
-		{
-			/* sem_post(simulation->sems.death); */
 			break ;
-		}
 		if (!sleeping(simulation) || get_proc_end(simulation) || am_i_starving(simulation))
-		{
-			/* sem_post(simulation->sems.death); */
 			break ;
-		}
 		if (!thinking(simulation) || get_proc_end(simulation) || am_i_starving(simulation))
-		{
-			/* sem_post(simulation->sems.death); */
 			break ;
-		}
 		usleep(500);
 	}
   /* printf("proc %d leaving philo process routine\n", simulation->data.id); */
@@ -189,6 +184,7 @@ int philo_process_life(t_simulation *simulation)
   pthread_join(simulation->monitor, NULL);  
   /* printf("proc %d joined monitor thread\n", simulation->data.id); */
   /* printf("%d is about to exit\n", simulation->data.id); */
+  /* printf("exit_code child %d = %d\n", simulation->data.id, simulation->data.exit_code); */
   simulation_cleanup(simulation, 0);
-  return (0);
+  return (simulation->data.exit_code);
 }
