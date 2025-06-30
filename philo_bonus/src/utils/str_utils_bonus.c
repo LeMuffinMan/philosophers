@@ -107,10 +107,15 @@ bool print_log(char *msg, int id, t_simulation *simulation)
 	/* printf("%ld %d puis la\n", time, simulation->data.id); // blocage ici */
 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
   {
-	printf("%ld %d WTF %d\n", time, simulation->data.id, get_time() - simulation->data.time.last_meal); // blocage ici
-		/* sem_wait(simulation->sems.print); */
 		sem_post(simulation->sems.death);
-		printf("%ld %d died\n", get_time() - simulation->data.time.start, simulation->data.id);
+	/* printf("%ld %d WTF %d\n", time, simulation->data.id, get_time() - simulation->data.time.last_meal); // blocage ici */
+		/* sem_wait(simulation->sems.print); */
+  	if (get_proc_end(simulation))
+  	{
+  		sem_post(simulation->sems.print);
+  		return (false);
+  	}
+		/* printf("%ld %d died\n", get_time() - simulation->data.time.start, simulation->data.id); */
 		/* sem_post(simulation->sems.print); */
 		set_proc_end(simulation);
 		sem_post(simulation->sems.print);

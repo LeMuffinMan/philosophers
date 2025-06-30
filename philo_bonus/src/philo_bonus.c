@@ -24,6 +24,7 @@
 int monitor_simulation(t_simulation *simulation)
 {
   int i;
+  int j;
 
   if (pthread_create(&simulation->monitor, NULL, simulation_death_monitor_thread, simulation) != 0)
   {
@@ -36,13 +37,19 @@ int monitor_simulation(t_simulation *simulation)
     sem_wait(simulation->sems.fed);
     i++;
     if (i == simulation->data.nb_philos)
+    {
+      j = 0;
+      while (j < simulation->data.nb_philos)
+      {
+      sem_post(simulation->sems.simulation_end); 
+        j++;
+      }
       sem_post(simulation->sems.death);
+    }
   }
   /* printf("waiting parent monitor\n"); */
   pthread_join(simulation->monitor, NULL);
   /* printf("END set to TRUE\n"); */
-  simulation->data.end = true;
-  sem_post(simulation->sems.simulation_end); 
   return (0);
 }
 

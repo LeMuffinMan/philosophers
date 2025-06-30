@@ -39,7 +39,8 @@ long int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
 		if (time_elapsed > simulation->data.time.die)
 		{
   		sem_wait(simulation->sems.print);
-  		printf("%ld %d died\n", time_elapsed, simulation->data.id);
+  		/* printf("%ld %d died\n", time_elapsed, simulation->data.id); */
+  		sem_post(simulation->sems.death);
   		sem_post(simulation->sems.print);
   		return (SIMULATION_END);
 		}

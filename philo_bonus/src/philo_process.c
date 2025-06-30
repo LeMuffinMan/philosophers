@@ -40,14 +40,6 @@ int take_two_fork(t_simulation *simulation)
 {
   if (get_proc_end(simulation) || am_i_starving(simulation))
     return (0);
-  if (simulation->data.nb_philos == 1)
-  {
-		sem_wait(simulation->sems.forks);
-  	accurate_sleep(simulation, simulation->data.time.die - get_time() - simulation->data.time.start);
-  	print_log("died\n", simulation->data.id, simulation);
-  	sem_post(simulation->sems.death);
-  	return (-1);
-  }
   sem_wait(simulation->sems.forks);
   if (!print_log("has taken a fork\n", simulation->data.id, simulation) || get_proc_end(simulation) || am_i_starving(simulation))
   	return (-1);
@@ -57,10 +49,23 @@ int take_two_fork(t_simulation *simulation)
   return (2);
 }
 
+int one_fork_case(t_simulation *simulation)
+{
+		sem_wait(simulation->sems.forks);
+  	print_log("has taken a fork\n", simulation->data.id, simulation);
+  	while(!am_i_starving(simulation))
+  		usleep(500);
+  	/* print_log("died\n", simulation->data.id, simulation); */
+  	sem_post(simulation->sems.death);
+  	return (-1);
+}
+
 bool eating(t_simulation *simulation)
 {
 	int forks_in_hand;
 
+  if (simulation->data.nb_philos == 1)
+		return (one_fork_case(simulation));
 	sem_wait(simulation->sems.can_i_eat);
 	/* printf("can i eat -1\n"); */
 	forks_in_hand = take_two_fork(simulation);
@@ -130,9 +135,9 @@ bool am_i_starving(t_simulation *simulation)
 	/* printf("get_time - last meal = %ld\n", elapsed_time); */
 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
 	{
-		print_log("died\n", simulation->data.id, simulation);
+		/* print_log("died\n", simulation->data.id, simulation); */
 		sem_post(simulation->sems.death);
-		set_proc_end(simulation);
+		/* set_proc_end(simulation); */
 		return (true);
 	}
 	return (false);
