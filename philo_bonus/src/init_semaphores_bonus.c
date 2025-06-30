@@ -97,5 +97,6 @@ int init_shared_semaphores(t_simulation *simulation)
 	simulation->sems.can_i_eat = sem_open("/philo_can_i_eat", O_CREAT | O_EXCL, 0644, (simulation->data.nb_philos - 1));
 	if (simulation->sems.can_i_eat == SEM_FAILED)
 		return (init_semaphores_close_can_i_eat(simulation));
+	printf("can i eat = %d\n", simulation->data.nb_philos - 1);
 	return (0);
 }

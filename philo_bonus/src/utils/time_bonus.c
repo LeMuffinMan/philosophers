@@ -24,7 +24,7 @@ long int	get_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
+long int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
 {
 	int			ret_val;
 	long int	start_time;
@@ -44,6 +44,7 @@ int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
   		return (SIMULATION_END);
 		}
 		usleep(500);
+
 		time_elapsed = get_time() - start_time;
 	}
 	return (time_elapsed);

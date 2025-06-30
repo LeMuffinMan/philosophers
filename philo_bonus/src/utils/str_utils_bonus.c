@@ -92,10 +92,31 @@ bool print_log(char *msg, int id, t_simulation *simulation)
 	/* 	return (false); */
   sem_wait(simulation->sems.print);
   time = get_time() - simulation->data.time.start;
+	/* printf("%ld %d ici\n",time,  simulation->data.id); */
   if (time == GETTIMEOFDAY_ERROR)
+  {
+		sem_post(simulation->sems.print);
     return (false);
-  if (am_i_starving(simulation))
+  }
+	/* printf("%ld %d puis ici\n", time, simulation->data.id); // blocage ici */
+  if (get_proc_end(simulation))
+  {
+  	sem_post(simulation->sems.print);
   	return (false);
+  }
+	/* printf("%ld %d puis la\n", time, simulation->data.id); // blocage ici */
+	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
+  {
+	printf("%ld %d WTF %d\n", time, simulation->data.id, get_time() - simulation->data.time.last_meal); // blocage ici
+		/* sem_wait(simulation->sems.print); */
+		sem_post(simulation->sems.death);
+		printf("%ld %d died\n", get_time() - simulation->data.time.start, simulation->data.id);
+		/* sem_post(simulation->sems.print); */
+		set_proc_end(simulation);
+		sem_post(simulation->sems.print);
+  	return (false);
+  }
+	/* printf("%ld %d enfin la\n", time, simulation->data.id); // blocage ici */
   printf("%ld %d %s", time, id, msg);
   sem_post(simulation->sems.print);
   return (true);
