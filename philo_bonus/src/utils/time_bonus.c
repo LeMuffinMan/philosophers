@@ -38,7 +38,7 @@ long int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
 	{
 		if (time_elapsed > simulation->data.time.die || am_i_starving(simulation))
 		{
-			simulation->data.exit_code = get_time() - simulation->data.time.start;
+			simulation->data.exit_code = 1;
   		sem_post(simulation->sems.death);
   		return (SIMULATION_END);
 		}
