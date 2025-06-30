@@ -90,6 +90,8 @@ bool print_log(char *msg, int id, t_simulation *simulation)
 
 	/* if (is_simulation_over(simulation)) */
 	/* 	return (false); */
+	if (am_i_starving(simulation))
+		return (false);
   sem_wait(simulation->sems.print);
   time = get_time() - simulation->data.time.start;
 	/* printf("%ld %d ici\n",time,  simulation->data.id); */
@@ -108,6 +110,7 @@ bool print_log(char *msg, int id, t_simulation *simulation)
 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
   {
   	simulation->data.exit_code = 1;
+  	printf("%d la\n", simulation->data.id);
 		sem_post(simulation->sems.death);
 	/* printf("%ld %d WTF %d\n", time, simulation->data.id, get_time() - simulation->data.time.last_meal); // blocage ici */
 		/* sem_wait(simulation->sems.print); */
