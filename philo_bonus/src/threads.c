@@ -49,6 +49,7 @@ int wait_dead_child(t_simulation *simulation)
         i++;
       }
     }
+    usleep(500);
   }
   return (0);
 }

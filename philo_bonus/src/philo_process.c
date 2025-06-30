@@ -38,8 +38,8 @@ int release_forks(t_simulation *simulation, sem_t *forks, int forks_in_hand)
 
 int take_two_fork(t_simulation *simulation)
 {
-  if (get_proc_end(simulation) || am_i_starving(simulation))
-    return (0);
+  /* if (get_proc_end(simulation) || am_i_starving(simulation)) */
+  /*   return (0); */
   sem_wait(simulation->sems.forks);
   if (!print_log("has taken a fork\n", simulation->data.id, simulation) || get_proc_end(simulation) || am_i_starving(simulation))
   	return (-1);
@@ -128,16 +128,11 @@ bool thinking(t_simulation *simulation)
 
 bool am_i_starving(t_simulation *simulation)
 {
-	/* long int elapsed_time; */
 	int exit_code;
 
-	/* elapsed_time = get_time() - simulation->data.time.last_meal; */
-	/* printf("get_time - last meal = %ld\n", elapsed_time); */
 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
 	{
-		/* print_log("died\n", simulation->data.id, simulation); */
 		sem_post(simulation->sems.death);
-		/* set_proc_end(simulation); */
 		return (true);
 	}
 	return (false);
@@ -146,9 +141,6 @@ bool am_i_starving(t_simulation *simulation)
 bool sleeping(t_simulation *simulation)
 {
 
-	if (am_i_starving(simulation))
-		return (false);
-	/* printf("%d ici\n", simulation->data.id); */
 	if (!print_log("is sleeping\n", simulation->data.id, simulation))
 		return (false);
 	if (accurate_sleep(simulation, simulation->data.time.sleep) < 0)
