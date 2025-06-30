@@ -30,7 +30,7 @@ int release_forks(t_simulation *simulation, sem_t *forks, int forks_in_hand)
 	while (forks_in_hand > 0)
 	{
 		sem_post(forks);
-		print_log("has released a fork\n", simulation->data.id, simulation);
+		/* print_log("has released a fork\n", simulation->data.id, simulation); */
 		forks_in_hand--;
 	}
 	return (0);
