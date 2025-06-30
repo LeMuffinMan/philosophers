@@ -67,6 +67,7 @@ void *simulation_death_monitor_thread(void *args)
   simulation = (t_simulation *)args;
   sem_wait(simulation->sems.death);
   death_time = get_time() - simulation->data.time.start;
+  /* printf("death_time = %ld\n", death_time); */
   i = 0;
   while (i < simulation->data.nb_philos)
   {
