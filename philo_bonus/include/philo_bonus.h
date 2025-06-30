@@ -38,7 +38,7 @@ typedef struct s_data
   int id;
   int nb_philos;
   int meals_limit;
-  int exit_code;
+  long int exit_code;
   bool end;
   struct s_time time;
 } t_data;
