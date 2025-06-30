@@ -107,6 +107,7 @@ bool print_log(char *msg, int id, t_simulation *simulation)
 	/* printf("%ld %d puis la\n", time, simulation->data.id); // blocage ici */
 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
   {
+  	simulation->data.exit_code = 1;
 		sem_post(simulation->sems.death);
 	/* printf("%ld %d WTF %d\n", time, simulation->data.id, get_time() - simulation->data.time.last_meal); // blocage ici */
 		/* sem_wait(simulation->sems.print); */

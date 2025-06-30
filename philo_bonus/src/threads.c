@@ -29,27 +29,30 @@ int print_death(t_simulation *simulation, int id)
   return (0);
 }
 
-int wait_dead_child(t_simulation *simulation)
+
+int wait_children(t_simulation *simulation)
 {
   int status;
   pid_t pid;
   int i;
+  int exit_code;
+  int success = 1;
 
-  while (1)
+  i = 0;
+  exit_code = 0;
+  while (i < simulation->data.nb_philos)
   {
     pid = wait(&status);
-    if (pid > 0)
+    if (pid == -1)
     {
-      i = 0;
-      while (i < simulation->data.nb_philos)
-      {
-        /* printf("pid = %d | philo[%d] = %d\n", pid, i, simulation->philos[i]); */
-        if (pid == simulation->philos[i])
-          return (print_death(simulation, i));
-        i++;
-      }
+      //gerer l'erreur
+        return (1);
     }
-    usleep(500);
+    if (WIFEXITED(status))
+      exit_code = WEXITSTATUS(status);
+    if (exit_code)
+      return (print_death(simulation, i));
+    i++;
   }
   return (0);
 }
@@ -68,7 +71,7 @@ void *simulation_death_monitor_thread(void *args)
     sem_post(simulation->sems.simulation_end); 
     i++;
   }
-  wait_dead_child(simulation);
+  wait_children(simulation);
   i = 0;
   while (i < simulation->data.nb_philos)
   {
