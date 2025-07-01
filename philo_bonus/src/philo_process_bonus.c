@@ -89,6 +89,6 @@ int	philo_process(t_simulation *simulation)
 	init_processes_monitor_thread(simulation);
 	philo_process_routine(simulation);
 	pthread_join(simulation->monitor, NULL);
-	simulation_cleanup(simulation, 0);
+	close_unlink_free(simulation, 0);
 	return (simulation->data.exit_code);
 }

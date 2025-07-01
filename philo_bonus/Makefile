@@ -17,9 +17,9 @@ SRC = src/philo_bonus.c \
       src/utils/str_utils_bonus.c \
       src/utils/time_bonus.c \
       src/utils/prints_bonus.c \
-      src/utils/philo_routine_utils.c \
+      src/utils/philo_routine_utils_bonus.c \
       src/utils/init_semaphores_utils_bonus.c \
-      src/utils/cleanup_bonus.c \
+      src/utils/close_unlink_free_bonus.c \
       src/utils/getters_setters_bonus.c \
       src/init/init_bonus.c \
       src/init/init_semaphores_bonus.c
