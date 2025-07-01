@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:27 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/27 18:56:29 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:46:41 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@
 # define MALLOC_ERROR -1
 # define SEM_ERROR -2
 # define THREAD_ERROR -3
-# define GETTIMEOFDAY_ERROR -4
+# define SIMULATION_END -4
 # define FORK_ERROR -5
-# define SIMULATION_END -6
 
 typedef struct s_time
 {

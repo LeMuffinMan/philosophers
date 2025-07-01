@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:21 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 19:39:40 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:50:34 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,6 @@ bool print_log(char *msg, int id, t_simulation *simulation)
 		return (false);
   sem_wait(simulation->sems.print);
   time = get_time() - simulation->data.time.start;
-  if (time == GETTIMEOFDAY_ERROR)
-  {
-		sem_post(simulation->sems.print);
-    return (false);
-  }
   if (get_proc_end(simulation))
   {
   	sem_post(simulation->sems.print);
