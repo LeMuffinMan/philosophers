@@ -126,14 +126,17 @@ bool thinking(t_simulation *simulation)
   else
 	{
 		/* printf("%d ici\n", simulation->data.id); */
-		if (simulation->data.time.sleep < simulation->data.time.eat && simulation->data.time.sleep + simulation->data.time.eat < simulation->data.time.die)
+		//si quand il se reveille, les fourchettes ne seront pas dispo dans le temps de survie restante
+		if (simulation->data.time.sleep < simulation->data.time.eat &&
+			simulation->data.time.sleep + simulation->data.time.eat < simulation->data.time.die)
+		{
 			think_time = simulation->data.time.die;
-		else
-			think_time = 5;
+  		if (accurate_sleep(simulation, think_time) < 0)
+    		return (false);
+		}
+		//Les faire penser 1ms ? ou on skip le think et on les lance sur les fourchettes ?
 		/* if (simulation->data.id == 2) */
 		/* 	printf("time = %ld | think_time = %ld\n", get_time() - simulation->data.time.start, think_time); */
-    if (accurate_sleep(simulation, think_time) < 0)
-      return (false);
 	}
 	return (true);
 }
