@@ -31,7 +31,6 @@ int	init_data(t_data **data, char **av)
 
 int	init_mutex(t_data **data)
 {
-	int	i;
 	int	exit_code;
 
 	exit_code = init_mutex_forks_bool(data);

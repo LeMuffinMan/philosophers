@@ -31,7 +31,6 @@ int	main(int ac, char **av)
 	t_data	*data;
 	int		exit_code;
 
-	// cas du 1 800 200 200 : il think puis prend la fourchette
 	data = NULL;
 	if (check_user_inputs(ac))
 		return (INVALID_ARG);
