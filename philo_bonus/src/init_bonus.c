@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:05 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/27 18:56:06 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:51:45 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ int init_processes_monitor_thread(t_simulation *simulation)
 
 int init_processes(t_simulation *simulation)
 {
-  int exit_code;
-
   simulation->philos = malloc(sizeof(pid_t) * simulation->data.nb_philos);
   if (!simulation->philos)
     return (simulation_cleanup(simulation, MALLOC_ERROR));

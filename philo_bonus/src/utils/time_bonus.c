@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:13 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 19:36:49 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:51:23 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,16 @@ long int	get_time(void)
 {
 	struct timeval	tv;
 
-	if (gettimeofday(&tv, NULL) != 0)
-		return (GETTIMEOFDAY_ERROR);
+	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
 long int	accurate_sleep(t_simulation *simulation, int time_to_sleep)
 {
-	int			ret_val;
 	long int	start_time;
 	long int time_elapsed;
 
 	start_time = get_time();
-	if (start_time == GETTIMEOFDAY_ERROR)
-		return (GETTIMEOFDAY_ERROR);
 	time_elapsed = 0;
 	while (time_elapsed < time_to_sleep)
 	{

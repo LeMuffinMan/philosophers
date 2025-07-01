@@ -33,7 +33,6 @@ int wait_children(t_simulation *simulation, long int death_time)
 {
   int status;
   int exit_code;
-  int success = 1;
   int i;
 
   //voir si on a besoin d'incrementer i

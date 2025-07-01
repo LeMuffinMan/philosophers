@@ -5,7 +5,7 @@
 #include <pthread.h>
 #include <unistd.h>
 
-int release_forks(t_simulation *simulation, sem_t *forks, int forks_in_hand)
+static int release_forks(sem_t *forks, int forks_in_hand)
 {
 	while (forks_in_hand > 0)
 	{
@@ -16,7 +16,7 @@ int release_forks(t_simulation *simulation, sem_t *forks, int forks_in_hand)
 	return (0);
 }
 
-int take_two_fork(t_simulation *simulation)
+static int take_two_fork(t_simulation *simulation)
 {
   /* if (get_proc_end(simulation) || am_i_starving(simulation)) */
   /*   return (0); */
@@ -53,7 +53,7 @@ bool eating(t_simulation *simulation)
 	forks_in_hand = take_two_fork(simulation);
 	if (forks_in_hand <= 0)
 	{
-		release_forks(simulation, simulation->sems.forks, forks_in_hand * -1);
+		release_forks(simulation->sems.forks, forks_in_hand * -1);
 		sem_post(simulation->sems.can_i_eat);
 		return (false);
 	}
@@ -61,18 +61,18 @@ bool eating(t_simulation *simulation)
 	if (!print_log("is eating\n", simulation->data.id, simulation))
 	{
 		/* sem_post(simulation->sems.can_i_eat); */
-		release_forks(simulation, simulation->sems.forks, forks_in_hand);
+		release_forks(simulation->sems.forks, forks_in_hand);
 		return (false);
 	}
 	if (accurate_sleep(simulation, simulation->data.time.eat) < 0)
 	{
 		/* sem_post(simulation->sems.can_i_eat); */
-		release_forks(simulation, simulation->sems.forks, forks_in_hand);
+		release_forks(simulation->sems.forks, forks_in_hand);
 		return (false);
 	}
 	/* sem_post(simulation->sems.can_i_eat); */
 	/* printf("can i eat +1\n"); */
-	release_forks(simulation, simulation->sems.forks, forks_in_hand);
+	release_forks(simulation->sems.forks, forks_in_hand);
 	simulation->data.meals_limit--; 
 	if (simulation->data.meals_limit == 0)
 	  sem_post(simulation->sems.fed);
@@ -81,7 +81,6 @@ bool eating(t_simulation *simulation)
 
 bool thinking(t_simulation *simulation)
 {
-	int exit_code;
 	long int last_meal_time_elapsed;
 	long int time_until_starvation;
 	long int think_time;
@@ -122,8 +121,6 @@ bool thinking(t_simulation *simulation)
 
 bool am_i_starving(t_simulation *simulation)
 {
-	int exit_code;
-
 	/* if (simulation->data.id == 2) */
 	/* 	printf("%ld | time_since_last_meal = %ld | simulation->data.time.die = %ld\n", get_time() - simulation->data.time.start, get_time() - simulation->data.time.last_meal, simulation->data.time.die); */
 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
