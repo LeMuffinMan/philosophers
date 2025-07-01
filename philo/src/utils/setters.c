@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 18:09:03 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 18:41:57 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:41:52 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ bool	set_last_meal(t_philosopher *philosopher, pthread_mutex_t *mutex)
 	pthread_mutex_lock(mutex);
 	philosopher->last_meal = get_time(&philosopher->data)
 		- philosopher->start_time;
-	if (philosopher->last_meal == GETTIMEOFDAY_ERROR)
-		return (false);
 	pthread_mutex_unlock(mutex);
 	return (true);
 }

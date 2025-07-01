@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:56:03 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 19:49:01 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:40:17 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # define MALLOC_ERROR -1
 # define MUTEX_ERROR -2
 # define THREAD_ERROR -3
-# define GETTIMEOFDAY_ERROR -4
-# define SIMULATION_END -5
+// # define GETTIMEOFDAY_ERROR -4
+# define SIMULATION_END -4
 
 struct													s_philosopher;
 typedef struct s_philosopher							t_philosopher;
