@@ -14,6 +14,7 @@
 #include <pthread.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 int fork_error_handler(t_simulation *simulation, int last_fork_started)
 {
@@ -21,6 +22,7 @@ int fork_error_handler(t_simulation *simulation, int last_fork_started)
 
 	sem_post(simulation->sems.simulation_end);
 	usleep(100);
+	sem_post(simulation->sems.start);
 	tmp = last_fork_started;
 	while (last_fork_started >= 0)
 	{
@@ -30,7 +32,7 @@ int fork_error_handler(t_simulation *simulation, int last_fork_started)
 	last_fork_started = tmp;
 	while (last_fork_started >= 0)	
 	{
-		waitpid(simulation->philos[last_fork_started - 1]);
+		waitpid(simulation->philos[last_fork_started - 1], NULL, 0);
 		last_fork_started--;
 	}
 	return (close_unlink_free(simulation, FORK_ERROR));
@@ -59,10 +61,7 @@ int	monitor_simulation(t_simulation *simulation)
 {
 	if (pthread_create(&simulation->monitor, NULL,
 			simulation_death_monitor_thread, simulation) != 0)
-	{
-		// error
-		return (THREAD_ERROR);
-	}
+		return (fork_error_handler(simulation, simulation->data.id - 1));
 	unlock_fed_monitor(simulation);
 	pthread_join(simulation->monitor, NULL);
 	return (0);

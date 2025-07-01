@@ -62,11 +62,6 @@ typedef struct s_simulation
 	struct s_sems	sems;
 }					t_simulation;
 
-// void				unlink_semaphores(void);
-// void				unlink_shared_semaphores(void);
-// int					philo_process_routine(t_simulation *simulation);
-// bool				should_i_stop(t_simulation *simulation);
-
 /* ------------------------ Utils ----------------------- */
 // close_unlink_free.c
 int close_unlink_free(t_simulation *simulation, int exit_code);
@@ -128,6 +123,7 @@ int					monitor_simulation(t_simulation *simulation);
 void				*philo_monitor_thread(void *args);
 void				*simulation_death_monitor_thread(void *args);
 void				*simulation_fed_monitor_thread(void *args);
+int unlock_fed_monitor(t_simulation *simulation);
 
 // philo_process
 int					philo_process(t_simulation *simulation);

@@ -67,7 +67,14 @@ int	init_processes_monitor_thread(t_simulation *simulation)
 {
 	if (pthread_create(&simulation->monitor, NULL, philo_monitor_thread,
 			simulation) != 0)
-		return (THREAD_ERROR);
+	{
+		while(simulation->data.nb_philos > 0)
+		{
+			sem_post(simulation->data.sems->fed);
+			simulation->data.nb_philos--;
+		}
+		return (close_unlink_free(simulation, THREAD_ERROR));
+	}
 	return (0);
 }
 
