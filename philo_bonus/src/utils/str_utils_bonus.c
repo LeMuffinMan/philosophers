@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:21 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/27 18:56:22 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:39:40 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,64 +63,39 @@ int	are_valids_args(char **av)
 
 int print_error_and_free(char *msg, int exit_code, t_simulation *simulation)
 {
-  if (simulation) //doute ?
+  if (simulation)
     free(simulation);
   printf("%s", msg);
   return (exit_code);
 }
 
-/* bool should_i_stop(t_simulation *simulation) */
-/* { */
-/* 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die) */
-/* 	{ */
-		/* printf("%d elapsed time = %d\n", simulation->data.id, get_time() - simulation->data.time.last_meal); */
-/* 		sem_wait(simulation->sems.print); */
-/* 		printf("%ld %d died\n", get_time() - simulation->data.time.start, simulation->data.id); */
-/* 		sem_post(simulation->sems.print); */
-/*   	sem_post(simulation->sems.death); */
-/*   	set_proc_end(simulation); */
-/*   	return (true); */
-/* 	} */
-/* 	return (false); */
-/* } */
-
 bool print_log(char *msg, int id, t_simulation *simulation)
 {
   long int time;
 
-	/* if (is_simulation_over(simulation)) */
-	/* 	return (false); */
 	if (am_i_starving(simulation))
 		return (false);
   sem_wait(simulation->sems.print);
   time = get_time() - simulation->data.time.start;
-	/* printf("%ld %d ici\n",time,  simulation->data.id); */
   if (time == GETTIMEOFDAY_ERROR)
   {
 		sem_post(simulation->sems.print);
     return (false);
   }
-	/* printf("%ld %d puis ici\n", time, simulation->data.id); // blocage ici */
   if (get_proc_end(simulation))
   {
   	sem_post(simulation->sems.print);
   	return (false);
   }
-	/* printf("%ld %d puis la\n", time, simulation->data.id); // blocage ici */
 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
   {
   	simulation->data.exit_code = 1;
-  	/* printf("%d la\n", simulation->data.id); */
 		sem_post(simulation->sems.death);
-	/* printf("%ld %d WTF %d\n", time, simulation->data.id, get_time() - simulation->data.time.last_meal); // blocage ici */
-		/* sem_wait(simulation->sems.print); */
   	if (get_proc_end(simulation))
   	{
   		sem_post(simulation->sems.print);
   		return (false);
   	}
-		/* printf("%ld %d died\n", get_time() - simulation->data.time.start, simulation->data.id); */
-		/* sem_post(simulation->sems.print); */
 		set_proc_end(simulation);
 		sem_post(simulation->sems.print);
   	return (false);
