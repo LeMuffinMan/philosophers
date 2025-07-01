@@ -35,7 +35,7 @@ int fork_error_handler(t_simulation *simulation, int last_fork_started)
 		waitpid(simulation->philos[last_fork_started - 1], NULL, 0);
 		last_fork_started--;
 	}
-	return (close_unlink_free(simulation, FORK_ERROR));
+	return (close_unlink_free(simulation, FORK_ERROR, true));
 }
 
 int launch_simulation(t_simulation *simulation)
@@ -90,5 +90,5 @@ int	main(int ac, char **av)
 	exit_code = monitor_simulation(&simulation);
 	if (exit_code)
 		return (exit_code);
-	return (close_unlink_free(&simulation, 0));
+	return (close_unlink_free(&simulation, 0, true));
 }

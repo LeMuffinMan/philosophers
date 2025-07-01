@@ -70,10 +70,10 @@ int	init_processes_monitor_thread(t_simulation *simulation)
 	{
 		while(simulation->data.nb_philos > 0)
 		{
-			sem_post(simulation->data.sems->fed);
+			sem_post(simulation->sems.fed);
 			simulation->data.nb_philos--;
 		}
-		return (close_unlink_free(simulation, THREAD_ERROR));
+		return (close_unlink_free(simulation, THREAD_ERROR, true));
 	}
 	return (0);
 }
@@ -82,7 +82,7 @@ int	init_processes(t_simulation *simulation)
 {
 	simulation->philos = malloc(sizeof(pid_t) * simulation->data.nb_philos);
 	if (!simulation->philos)
-		return (close_unlink_free(simulation, MALLOC_ERROR));
+		return (close_unlink_free(simulation, MALLOC_ERROR, true));
 	simulation->data.id = 1;
 	simulation->data.end = false;
 	simulation->data.exit_code = 0;

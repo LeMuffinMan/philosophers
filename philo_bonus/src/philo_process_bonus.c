@@ -62,7 +62,7 @@ static int	philo_process_routine(t_simulation *simulation)
 {
 	sem_wait(simulation->sems.start);
 	if (get_proc_end(simulation))
-		return (close_unlink_free(simulation, -1));
+		return (close_unlink_free(simulation, -1, false));
 	if (simulation->data.id % 2 != 0)
 	{
 		print_log("is thinking\n", simulation->data.id, simulation);
@@ -91,6 +91,6 @@ int	philo_process(t_simulation *simulation)
 	init_processes_monitor_thread(simulation);
 	philo_process_routine(simulation);
 	pthread_join(simulation->monitor, NULL);
-	close_unlink_free(simulation, 0);
+	close_unlink_free(simulation, 0, false);
 	return (simulation->data.exit_code);
 }
