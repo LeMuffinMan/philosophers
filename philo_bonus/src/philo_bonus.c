@@ -6,20 +6,12 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:55:38 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 20:23:57 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 20:27:32 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-#include <fcntl.h>
 #include <pthread.h>
-#include <signal.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/time.h>
-#include <sys/wait.h>
-#include <unistd.h>
 
 int	monitor_simulation(t_simulation *simulation)
 {

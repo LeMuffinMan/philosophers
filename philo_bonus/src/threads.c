@@ -6,15 +6,13 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 19:54:58 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 20:24:19 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 20:28:13 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-#include <stddef.h>
 #include <stdio.h>
 #include <sys/wait.h>
-#include <unistd.h>
 
 void	*philo_monitor_thread(void *args)
 {
