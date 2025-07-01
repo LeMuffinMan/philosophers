@@ -61,6 +61,8 @@ static bool	sleeping(t_simulation *simulation)
 static int	philo_process_routine(t_simulation *simulation)
 {
 	sem_wait(simulation->sems.start);
+	if (get_proc_end(simulation))
+		return (close_unlink_free(simulation, -1));
 	if (simulation->data.id % 2 != 0)
 	{
 		print_log("is thinking\n", simulation->data.id, simulation);

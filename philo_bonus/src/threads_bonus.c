@@ -28,7 +28,7 @@ static int	wait_children(t_simulation *simulation, long int death_time)
 		if (WIFEXITED(status))
 		{
 			exit_code = WEXITSTATUS(status);
-			if (exit_code)
+			if (exit_code == 1)
 				return (print_death(simulation, i, death_time));
 		}
 		i++;
@@ -83,19 +83,6 @@ void	*simulation_death_monitor_thread(void *args)
 		i++;
 	}
 	return (NULL);
-}
-
-int	monitor_simulation(t_simulation *simulation)
-{
-	if (pthread_create(&simulation->monitor, NULL,
-			simulation_death_monitor_thread, simulation) != 0)
-	{
-		// error
-		return (THREAD_ERROR);
-	}
-	unlock_fed_monitor(simulation);
-	pthread_join(simulation->monitor, NULL);
-	return (0);
 }
 
 void	*philo_monitor_thread(void *args)
