@@ -49,7 +49,7 @@ int close_unlink_semaphores(t_sems sems)
 int simulation_cleanup(t_simulation *simulation, int exit_code)
 {
   //! .. marche si renvoie -1 ?
-  wait_philos(simulation->philos, simulation->data.nb_philos);
+  /* wait_philos(simulation->philos, simulation->data.nb_philos); */
   close_unlink_semaphores(simulation->sems);
   free(simulation->philos);
   return (exit_code);

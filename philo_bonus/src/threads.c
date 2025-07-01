@@ -20,10 +20,10 @@ void *philo_monitor_thread(void *args)
   return (0);
 }
 
-int print_death(t_simulation *simulation, int id, int exit_code)
+int print_death(t_simulation *simulation, int id, long int death_time)
 {
   sem_wait(simulation->sems.print);
-  printf("%ld %d died\n", exit_code, id + 1);
+  printf("%ld %d died\n", death_time, id + 1);
   sem_post(simulation->sems.fed);
   sem_post(simulation->sems.print);
   return (0);
