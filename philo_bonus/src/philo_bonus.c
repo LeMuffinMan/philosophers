@@ -77,3 +77,9 @@ int main (int ac, char **av)
 	  return (exit_code);
   return (simulation_cleanup(&simulation, 0));
 }
+
+//1 800 200 200
+//5 800 200 200
+//5 800 200 200 7
+//4 410 200 200
+//4 310 200 100

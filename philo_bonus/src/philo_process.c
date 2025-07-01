@@ -101,34 +101,30 @@ bool eating(t_simulation *simulation)
 bool thinking(t_simulation *simulation)
 {
 	int exit_code;
+	long int last_meal_time_elapsed;
+	long int time_until_starvation;
+	long int think_time;
 
+	last_meal_time_elapsed = get_time() - simulation->data.time.last_meal;
+	time_until_starvation = simulation->data.time.die - last_meal_time_elapsed;
 	if (!print_log("is thinking\n", simulation->data.id, simulation))
 	{
 		/* printf("%d la\n", simulation->data.id); // blocage ici */
 		return (false);
 	}
-	/* printf("%d la\n", simulation->data.id); // blocage ici */
-	if (simulation->data.nb_philos % 2 != 0)
-	{
-			/* printf("%d : ici\n", simulation->data.id); */
-		exit_code = accurate_sleep(simulation, simulation->data.time.eat);
-
-		if (exit_code > 0)
-		{
-
-			return (true);
-		}
-		else 
-			return (false); 
-	}
-	else
-	{
-		//ici soit un pete 4 410 200 200 / soit 4 310 200 100
-		if (accurate_sleep(simulation, simulation->data.time.eat * 2 - simulation->data.time.sleep) < 0)
-			return (false);
-		/* usleep(500); */
-	}
-
+  if (simulation->data.nb_philos % 2 != 0)
+    think_time = simulation->data.time.eat;
+  else
+    think_time = simulation->data.time.eat / 2;
+  if (think_time > time_until_starvation - 10)
+      think_time = time_until_starvation - 10;
+  if (think_time > 1)
+  {
+      if (accurate_sleep(simulation, think_time) < 0)
+          return false;
+  }
+  else
+      usleep(500);
 	return (true);
 }
 
@@ -141,7 +137,7 @@ bool am_i_starving(t_simulation *simulation)
   	/* printf("%ld %d died !\n", get_time() - simulation->data.time.start, simulation->data.id); */
 		simulation->data.exit_code = get_time() - simulation->data.time.start;
 		/* printf("%ld %d ici\n", get_time() - simulation->data.time.start, simulation->data.id); */
-			printf("%d philo constat dying = %ld\n", simulation->data.id, get_time() - simulation->data.time.start);
+			/* printf("%d philo constat dying = %ld\n", simulation->data.id, get_time() - simulation->data.time.start); */
 		sem_post(simulation->sems.death);
 		/* printf("ici\n"); */
 		return (true);
