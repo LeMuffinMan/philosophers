@@ -33,7 +33,7 @@ bool	print_log(t_data **data, t_philosopher *philosopher, char *msg,
 		pthread_mutex_unlock(&philosopher->data->time_mutex);
 		return (false);
 	}
-	time = get_time(data);
+	time = get_time();
 	if (is_simulation_over(philosopher))
 	{
 		pthread_mutex_unlock(&philosopher->data->time_mutex);

@@ -137,7 +137,7 @@ bool							set_last_meal(t_philosopher *philosopher,
 									pthread_mutex_t *mutex);
 
 // time.c
-long int						get_time(t_data **data);
+long int						get_time();
 bool							is_simulation_over(t_philosopher *philosopher);
 long int						is_time_started(t_philosopher *philosopher);
 int								accurate_sleep(t_data **data,

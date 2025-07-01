@@ -14,7 +14,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 
-long int	get_time()
+long int	get_time(void)
 {
 	struct timeval	tv;
 
@@ -51,8 +51,8 @@ int	accurate_sleep(t_data **data, int time_to_sleep)
 	int			ret_val;
 	long int	start_time;
 
-	start_time = get_time(data);
-	ret_val = get_time(data);
+	start_time = get_time();
+	ret_val = get_time();
 	while (ret_val < time_to_sleep)
 	{
 		pthread_mutex_lock(&(*data)->end_mutex);
@@ -63,7 +63,7 @@ int	accurate_sleep(t_data **data, int time_to_sleep)
 		}
 		pthread_mutex_unlock(&(*data)->end_mutex);
 		usleep(100);
-		ret_val = get_time(data) - start_time;
+		ret_val = get_time() - start_time;
 	}
 	return (ret_val);
 }

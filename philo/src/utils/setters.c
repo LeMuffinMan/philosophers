@@ -36,7 +36,7 @@ void	set_fed(t_philosopher *philosopher, pthread_mutex_t *mutex)
 bool	set_last_meal(t_philosopher *philosopher, pthread_mutex_t *mutex)
 {
 	pthread_mutex_lock(mutex);
-	philosopher->last_meal = get_time(&philosopher->data)
+	philosopher->last_meal = get_time()
 		- philosopher->start_time;
 	pthread_mutex_unlock(mutex);
 	return (true);
