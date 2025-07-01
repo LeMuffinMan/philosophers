@@ -60,5 +60,5 @@ int	main(int ac, char **av)
 	exit_code = monitor_simulation(&simulation);
 	if (exit_code)
 		return (exit_code);
-	return (simulation_cleanup(&simulation, 0));
+	return (close_unlink_free(&simulation, 0));
 }

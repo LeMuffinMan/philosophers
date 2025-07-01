@@ -13,16 +13,10 @@
 #include "philo_bonus.h"
 #include <fcntl.h>
 
-static int	init_semaphores_close_sim_end(t_simulation *simulation)
+static int	init_semaphores_close_start(t_simulation *simulation)
 {
-	sem_close(simulation->sems.simulation_end);
+	sem_close(simulation->sems.start);
 	return (init_semaphores_close_fed(simulation));
-}
-
-int	init_semaphores_close_proc_end(t_simulation *simulation)
-{
-	sem_close(simulation->sems.proc_end);
-	return (init_semaphores_close_sim_end(simulation));
 }
 
 int init_binary_semaphores(t_simulation *simulation)
@@ -31,6 +25,10 @@ int init_binary_semaphores(t_simulation *simulation)
 			1);
 	if (simulation->sems.print == SEM_FAILED)
 		return (init_semaphores_close_forks(simulation));
+	simulation->sems.proc_end = sem_open("/philo_proc_end", O_CREAT | O_EXCL,
+			0644, 1);
+	if (simulation->sems.proc_end == SEM_FAILED)
+		return (init_semaphores_close_print(simulation));
 	return (0);
 }
 
@@ -39,7 +37,7 @@ int init_blocking_semaphores(t_simulation *simulation)
 	simulation->sems.death = sem_open("/philo_death", O_CREAT | O_EXCL, 0644,
 			0);
 	if (simulation->sems.death == SEM_FAILED)
-		return (init_semaphores_close_print(simulation));
+		return (init_semaphores_close_proc_end(simulation));
 	simulation->sems.fed = sem_open("/philo_fed", O_CREAT | O_EXCL, 0644, 0);
 	if (simulation->sems.fed == SEM_FAILED)
 		return (init_semaphores_close_death(simulation));
@@ -50,11 +48,7 @@ int init_blocking_semaphores(t_simulation *simulation)
 	simulation->sems.simulation_end = sem_open("/philo_simulation_end",
 			O_CREAT | O_EXCL, 0644, 0);
 	if (simulation->sems.simulation_end == SEM_FAILED)
-		return (init_semaphores_close_sim_end(simulation));
-	simulation->sems.proc_end = sem_open("/philo_proc_end", O_CREAT | O_EXCL,
-			0644, 1);
-	if (simulation->sems.proc_end == SEM_FAILED)
-		return (init_semaphores_close_proc_end(simulation));
+		return (init_semaphores_close_start(simulation));
 	return (0);
 }
 

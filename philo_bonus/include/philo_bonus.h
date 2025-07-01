@@ -68,8 +68,8 @@ typedef struct s_simulation
 // bool				should_i_stop(t_simulation *simulation);
 
 /* ------------------------ Utils ----------------------- */
-// cleanup.c
-int					simulation_cleanup(t_simulation *simulation, int exit_code);
+// close_unlink_free.c
+int close_unlink_free(t_simulation *simulation, int exit_code);
 
 // getters_setters.c
 bool				get_proc_end(t_simulation *simulation);
@@ -118,7 +118,7 @@ int					init_user_inputs(t_simulation *simulation, char **av);
 int	init_simulation(t_simulation *simulation, char **av);
 
 // init_bonus_semaphores.c
-void				unlink_shared_semaphores(void);
+void				unlink_semaphores(void);
 int					init_semaphores(t_simulation *simulation);
 
 // philo_bonus.c

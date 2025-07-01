@@ -75,7 +75,7 @@ int	init_processes(t_simulation *simulation)
 {
 	simulation->philos = malloc(sizeof(pid_t) * simulation->data.nb_philos);
 	if (!simulation->philos)
-		return (simulation_cleanup(simulation, MALLOC_ERROR));
+		return (close_unlink_free(simulation, MALLOC_ERROR));
 	simulation->data.id = 1;
 	simulation->data.end = false;
 	simulation->data.exit_code = 0;

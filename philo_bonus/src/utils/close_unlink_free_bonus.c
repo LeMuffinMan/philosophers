@@ -13,7 +13,18 @@
 #include "philo_bonus.h"
 #include <stdlib.h>
 
-int close_unlink_semaphores(t_sems sems)
+void	unlink_semaphores(void)
+{
+	sem_unlink("/philo_forks");
+	sem_unlink("/philo_print");
+	sem_unlink("/philo_death");
+	sem_unlink("/philo_fed");
+	sem_unlink("/philo_start");
+	sem_unlink("/philo_simulation_end");
+	sem_unlink("/philo_proc_end");
+}
+
+int close_semaphores(t_sems sems)
 {
   sem_close(sems.forks);
   sem_close(sems.print);
@@ -22,21 +33,13 @@ int close_unlink_semaphores(t_sems sems)
   sem_close(sems.start);
   sem_close(sems.simulation_end);
   sem_close(sems.proc_end);
-  sem_close(sems.can_i_eat);
-	sem_unlink("/philo_forks");
-	sem_unlink("/philo_print");
-	sem_unlink("/philo_death");
-	sem_unlink("/philo_fed");
-	sem_unlink("/philo_start");
-	sem_unlink("/philo_simulation_end");
-	sem_unlink("/philo_proc_end");
-	sem_unlink("/philo_can_i_eat");
 	return (0);
 }
 
-int simulation_cleanup(t_simulation *simulation, int exit_code)
+int close_unlink_free(t_simulation *simulation, int exit_code)
 {
-  close_unlink_semaphores(simulation->sems);
+  close_semaphores(simulation->sems);
+  unlink_semaphores();
   free(simulation->philos);
   return (exit_code);
 }

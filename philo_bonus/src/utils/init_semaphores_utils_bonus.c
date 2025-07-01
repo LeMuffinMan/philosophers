@@ -1,17 +1,5 @@
 #include "philo_bonus.h"
 
-void	unlink_semaphores(void)
-{
-	sem_unlink("/philo_forks");
-	sem_unlink("/philo_print");
-	sem_unlink("/philo_death");
-	sem_unlink("/philo_fed");
-	sem_unlink("/philo_start");
-	sem_unlink("/philo_simulation_end");
-	sem_unlink("/philo_proc_end");
-	sem_unlink("/philo_can_i_eat");
-}
-
 int	init_semaphores_close_forks(t_simulation *simulation)
 {
 	sem_close(simulation->sems.forks);
@@ -38,4 +26,9 @@ int	init_semaphores_close_fed(t_simulation *simulation)
 	return (init_semaphores_close_death(simulation));
 }
 
+int	init_semaphores_close_proc_end(t_simulation *simulation)
+{
+	sem_close(simulation->sems.proc_end);
+	return (init_semaphores_close_print(simulation));
+}
 
