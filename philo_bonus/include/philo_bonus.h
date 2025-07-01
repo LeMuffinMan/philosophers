@@ -64,7 +64,7 @@ typedef struct s_simulation
 
 /* ------------------------ Utils ----------------------- */
 // close_unlink_free.c
-int close_unlink_free(t_simulation *simulation, int exit_code);
+int close_unlink_free(t_simulation *simulation, int exit_code, bool unlink);
 
 // getters_setters.c
 bool				get_proc_end(t_simulation *simulation);

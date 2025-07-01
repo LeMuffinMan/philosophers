@@ -36,10 +36,11 @@ int close_semaphores(t_sems sems)
 	return (0);
 }
 
-int close_unlink_free(t_simulation *simulation, int exit_code)
+int close_unlink_free(t_simulation *simulation, int exit_code, bool unlink)
 {
   close_semaphores(simulation->sems);
-  unlink_semaphores();
+  if (unlink)
+    unlink_semaphores();
   free(simulation->philos);
   return (exit_code);
 }
