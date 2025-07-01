@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:27 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 19:54:35 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 20:14:09 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # define THREAD_ERROR -3
 # define SIMULATION_END -4
 # define FORK_ERROR -5
-# define WAITPID_ERROR -6
 
 typedef struct s_time
 {
@@ -63,34 +62,53 @@ typedef struct s_simulation
 	struct s_sems	sems;
 }					t_simulation;
 
-int					init_simulation(t_simulation *simulation, char **av);
-int					init_user_inputs(t_simulation *simulation, char **av);
-int					init_shared_semaphores(t_simulation *simulation);
 void				unlink_semaphores(void);
 void				unlink_shared_semaphores(void);
 int					philo_process_routine(t_simulation *simulation);
 bool				should_i_stop(t_simulation *simulation);
-int					set_proc_end(t_simulation *simulation);
-bool				am_i_starving(t_simulation *simulation);
-bool				get_proc_end(t_simulation *simulation);
 
-// Utils
-long int			get_time(void);
-long int			accurate_sleep(t_simulation *simulation, int time_to_sleep);
+/* ------------------------ Utils ----------------------- */
+// cleanup.c
 int					simulation_cleanup(t_simulation *simulation, int exit_code);
 
-// str_utils
+// getters_setters.c
+bool				get_proc_end(t_simulation *simulation);
+int					set_proc_end(t_simulation *simulation);
+
+// time_bonus.c
+long int			get_time(void);
+long int			accurate_sleep(t_simulation *simulation, int time_to_sleep);
+bool				am_i_starving(t_simulation *simulation);
+
+// str_utils_bonus.c
 int					are_valids_args(char **av);
 int					ft_atoi(const char *nptr);
 bool				print_log(char *msg, int id, t_simulation *simulation);
 int					print_error_and_free(char *msg, int exit_code,
 						t_simulation *simulation);
 
+/* ------------------------ SRC ----------------------- */
+
+// forks.c
+int					one_fork_case(t_simulation *simulation);
+int					take_two_fork(t_simulation *simulation);
+int					release_forks(sem_t *forks, int forks_in_hand);
+
 // init_bonus.c
 bool				check_user_inputs(int ac);
 int					init_semaphores(t_data **data);
 int					init_processes_monitor_thread(t_simulation *simulation);
 int					init_processes(t_simulation *simulation);
+int					init_user_inputs(t_simulation *simulation, char **av);
+int					init_simulation(t_simulation *simulation, char **av);
+int					init_shared_semaphores(t_simulation *simulation);
+
+// init_bonus_semaphores.c
+void				unlink_shared_semaphores(void);
+int					init_shared_semaphores(t_simulation *simulation);
+
+// philo_bonus.c
+int					monitor_simulation(t_simulation *simulation);
 
 // threads.c
 void				*philo_monitor_thread(void *args);
@@ -98,14 +116,7 @@ void				*simulation_death_monitor_thread(void *args);
 void				*simulation_fed_monitor_thread(void *args);
 
 // philo_process
-bool				eating(t_simulation *simulation);
-bool				is_simulation_over(t_simulation *simulation);
 int					philo_process_routine(t_simulation *simulation);
 int					philo_process_life(t_simulation *simulation);
-
-// philo_process
-int one_fork_case(t_simulation *simulation);
-int take_two_fork(t_simulation *simulation);
-int release_forks(sem_t *forks, int forks_in_hand);
 
 #endif
