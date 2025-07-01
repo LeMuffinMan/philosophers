@@ -16,19 +16,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-bool	check_user_inputs(int ac)
-{
-	if (ac < 5 || ac > 6)
-	{
-		printf("Usage :\n./philo <number_of_philosophers> "
-				"<time_to_die time_to_eat> "
-				"<time_to_sleep> "
-				"(optionnaly : <number_of_times_each_philosopher_must_eat>)\n");
-		return (true);
-	}
-	return (false);
-}
-
 static int	init_meals_limit(t_simulation *simulation, char **av)
 {
 	simulation->data.meals_limit = ft_atoi(av[5]);
@@ -94,20 +81,6 @@ int	init_processes(t_simulation *simulation)
 	simulation->data.exit_code = 0;
 	simulation->data.time.start = get_time();
 	simulation->data.time.last_meal = simulation->data.time.start;
-	while (simulation->data.id <= simulation->data.nb_philos)
-	{
-		simulation->philos[simulation->data.id - 1] = fork();
-		if (simulation->philos[simulation->data.id - 1] != 0)
-			if (simulation->philos[simulation->data.id - 1] < 0)
-				return (FORK_ERROR);
-		if (simulation->philos[simulation->data.id - 1] == 0)
-			exit(philo_process_life(simulation));
-		simulation->data.id++;
-	}
-	while (simulation->data.id >= 1)
-	{
-		sem_post(simulation->sems.start);
-		simulation->data.id--;
-	}
 	return (0);
 }
+
