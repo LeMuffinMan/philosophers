@@ -5,26 +5,6 @@
 #include <pthread.h>
 #include <unistd.h>
 
-bool get_proc_end(t_simulation *simulation)
-{
-	int exit_code;
-
-  sem_wait(simulation->sems.proc_end);
-  exit_code = simulation->data.end;
-  /* if (exit_code != 0) */
-		/* print_log("found end bool true\n", simulation->data.id, simulation); */
-  sem_post(simulation->sems.proc_end);
-	return (exit_code);
-}
-
-int set_proc_end(t_simulation *simulation)
-{
-	sem_wait(simulation->sems.proc_end);
-	simulation->data.end = true;
-  sem_post(simulation->sems.proc_end);
-  return (0);
-}
-
 int release_forks(t_simulation *simulation, sem_t *forks, int forks_in_hand)
 {
 	while (forks_in_hand > 0)
