@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:21 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 19:52:52 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 20:24:35 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,41 +61,42 @@ int	are_valids_args(char **av)
 	return (0);
 }
 
-int print_error_and_free(char *msg, int exit_code, t_simulation *simulation)
+int	print_error_and_free(char *msg, int exit_code, t_simulation *simulation)
 {
-  if (simulation)
-    free(simulation);
-  printf("%s", msg);
-  return (exit_code);
+	if (simulation)
+		free(simulation);
+	printf("%s", msg);
+	return (exit_code);
 }
 
-bool print_log(char *msg, int id, t_simulation *simulation)
+bool	print_log(char *msg, int id, t_simulation *simulation)
 {
-  long int time;
+	long int	time;
 
 	if (am_i_starving(simulation))
 		return (false);
-  sem_wait(simulation->sems.print);
-  time = get_time() - simulation->data.time.start;
-  if (get_proc_end(simulation))
-  {
-  	sem_post(simulation->sems.print);
-  	return (false);
-  }
-	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
-  {
-  	simulation->data.exit_code = 1;
+	sem_wait(simulation->sems.print);
+	time = get_time() - simulation->data.time.start;
+	if (get_proc_end(simulation))
+	{
+		sem_post(simulation->sems.print);
+		return (false);
+	}
+	if ((get_time()
+			- simulation->data.time.last_meal) > simulation->data.time.die)
+	{
+		simulation->data.exit_code = 1;
 		sem_post(simulation->sems.death);
-  	if (get_proc_end(simulation))
-  	{
-  		sem_post(simulation->sems.print);
-  		return (false);
-  	}
+		if (get_proc_end(simulation))
+		{
+			sem_post(simulation->sems.print);
+			return (false);
+		}
 		set_proc_end(simulation);
 		sem_post(simulation->sems.print);
-  	return (false);
-  }
-  printf("%ld %d %s", time, id, msg);
-  sem_post(simulation->sems.print);
-  return (true);
+		return (false);
+	}
+	printf("%ld %d %s", time, id, msg);
+	sem_post(simulation->sems.print);
+	return (true);
 }
