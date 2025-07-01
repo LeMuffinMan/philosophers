@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:12:39 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 18:48:32 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:44:45 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	print_death(t_data **data, int id)
 
 	exit_code = 1;
 	if (!print_log(data, &(*data)->philosophers[id], "died", true))
-		exit_code = GETTIMEOFDAY_ERROR;
+		exit_code = SIMULATION_END;
 	return (exit_code);
 }
 
@@ -59,19 +59,19 @@ static int	are_philo_starving(t_data **data)
 
 int	main_thread_monitoring(t_data **data)
 {
-	int	exit_code;
+	int exit_code;
 
 	while (1)
 	{
 		exit_code = are_philo_fed(data);
 		if (exit_code != 0)
-			return (0);
+			return (exit_code);
 		exit_code = are_philo_starving(data);
 		if (exit_code != 0)
-			return (0);
-		exit_code = accurate_sleep(data, 5);
-		if (exit_code == GETTIMEOFDAY_ERROR)
 			return (exit_code);
+		exit_code = accurate_sleep(data, 5);
+		/* if (exit_code == SIMULATION_END) */
+		/* 	return (exit_code); */
 	}
-	return (0);
+	return (exit_code);
 }

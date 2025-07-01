@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/01 18:56:22 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 18:42:42 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:40:44 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,6 @@ int	init_threads(t_data **data)
 		i++;
 	}
 	(*data)->start_time = get_time(data);
-	if ((*data)->start_time == GETTIMEOFDAY_ERROR)
-	{
-		simulation_end_destroy_and_free(data, GETTIMEOFDAY_ERROR);
-		pthread_mutex_unlock(&(*data)->time_mutex);
-		return (GETTIMEOFDAY_ERROR);
-	}
 	pthread_mutex_unlock(&(*data)->time_mutex);
 	return (0);
 }

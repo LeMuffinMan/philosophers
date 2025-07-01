@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/14 18:13:15 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 18:49:21 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:42:46 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static bool	thinking(t_philosopher *philosopher)
 	{
 		exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_eat
 				* 2 - philosopher->time_to_sleep);
-		if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
+		if (exit_code == SIMULATION_END)
 			return (false);
 	}
 	if (is_simulation_over(philosopher))
@@ -45,7 +45,7 @@ static bool	eating(t_philosopher *philosopher)
 	if (is_simulation_over(philosopher))
 		return (false);
 	exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_eat);
-	if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
+	if (exit_code == SIMULATION_END)
 		return (false);
 	philosopher->nb_meals_eaten++;
 	if (philosopher->nb_meals_eaten == philosopher->meals_limit)
@@ -62,7 +62,7 @@ static bool	sleeping(t_philosopher *philosopher)
 	if (!print_log(&philosopher->data, philosopher, "is sleeping", false))
 		return (false);
 	exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_sleep);
-	if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
+	if (exit_code == SIMULATION_END)
 		return (false);
 	if (is_simulation_over(philosopher))
 		return (false);
@@ -88,7 +88,7 @@ static bool	sync_threads_start(t_philosopher *philosopher)
 			return (false);
 		exit_code = accurate_sleep(&philosopher->data,
 				philosopher->time_to_eat);
-		if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END)
+		if (exit_code == SIMULATION_END)
 			return (false);
 	}
 	if (is_simulation_over(philosopher))

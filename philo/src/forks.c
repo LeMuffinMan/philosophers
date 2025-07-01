@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:10:01 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/23 19:33:19 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:42:54 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ bool	only_one_fork_case(t_philosopher *philosopher)
 	int	exit_code;
 
 	exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_die);
-	if (exit_code == GETTIMEOFDAY_ERROR || exit_code == SIMULATION_END
+	if (exit_code == SIMULATION_END
 		|| is_simulation_over(philosopher))
 		return (false);
 	return (false);
