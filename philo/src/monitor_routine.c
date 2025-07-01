@@ -27,18 +27,6 @@ static bool	are_philo_fed(t_data **data)
 	return (true);
 }
 
-static bool	is_philo_eating(t_data **data, int id)
-{
-	if (id == (id + 1) % (*data)->nb_philo)
-		return (false);
-	if (!get_fork_state(&(*data)->philosophers[id], id)
-		&& !get_fork_state(&(*data)->philosophers[id], (id + 1)
-			% (*data)->nb_philo))
-		return (true);
-	else
-		return (false);
-}
-
 static int	print_death(t_data **data, int id)
 {
 	int	exit_code;

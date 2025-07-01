@@ -11,9 +11,7 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <pthread.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 void	destroy_forks_mutex(t_data **data, int last_mutex)
 {

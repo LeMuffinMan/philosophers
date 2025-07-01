@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdio.h>
 
 void	set_fork(t_philosopher *philosopher, int fork, bool state)
 {
@@ -36,11 +35,11 @@ void	set_fed(t_philosopher *philosopher, pthread_mutex_t *mutex)
 
 bool	set_last_meal(t_philosopher *philosopher, pthread_mutex_t *mutex)
 {
-	pthread_mutex_lock(&philosopher->last_meal_mutex);
+	pthread_mutex_lock(mutex);
 	philosopher->last_meal = get_time(&philosopher->data)
 		- philosopher->start_time;
 	if (philosopher->last_meal == GETTIMEOFDAY_ERROR)
 		return (false);
-	pthread_mutex_unlock(&philosopher->last_meal_mutex);
+	pthread_mutex_unlock(mutex);
 	return (true);
 }

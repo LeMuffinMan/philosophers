@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdio.h>
 #include <unistd.h>
 
 bool	only_one_fork_case(t_philosopher *philosopher)
@@ -54,7 +53,6 @@ bool	take_two_forks(t_philosopher *philosopher)
 {
 	int	left;
 	int	right;
-	int	exit_code;
 
 	left = philosopher->id - 1;
 	right = philosopher->id % philosopher->nb_philo;
@@ -79,7 +77,6 @@ bool	release_forks(t_philosopher *philosopher)
 {
 	int		left;
 	int		right;
-	bool	exit_code;
 
 	left = philosopher->id - 1;
 	right = (philosopher->id) % philosopher->nb_philo;

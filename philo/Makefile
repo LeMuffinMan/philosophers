@@ -31,8 +31,6 @@ FLAGS = -Wall -Werror -Wextra #-g3 -lpthread
 NAME = philo
 INC = include
 
-# gdb : au blocage : thread apply all bt
-
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 OBJ_DIR = .objs
 
@@ -41,24 +39,23 @@ RESET = \033[0m
 
 all: $(NAME)
 
-$(NAME): $(OBJ) Makefile include/philo.h $(SRC)
+$(NAME): $(OBJ) Makefile
 	mkdir -p bin
 	$(CC) $(FLAGS) $(OBJ) -I $(INC) -o bin/$(NAME)
 	@echo 
 	@echo "$(GREEN)compilation successful ✅ $(NAME)$(RESET)"
 	@echo 
-	
-$(OBJ_DIR)/%.o: %.c
+
+$(OBJ_DIR)/%.o: %.c include/philo.h
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -I $(INC) -c $< -o $@
+	$(CC) $(FLAGS) -I $(INC) -c $< -o $@
 
 clean: 
 	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	rm -rf $(NAME)
+	rm -rf bin
 
-re : fclean all
+re: fclean all
 
-# FORCE:
 .PHONY: all re clean fclean

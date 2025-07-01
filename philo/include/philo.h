@@ -38,11 +38,11 @@ typedef struct s_data
 	long int					start_time;
 	pthread_mutex_t				end_mutex;
 	bool						end;
-	//a virer ???
+	// a virer ???
 	pthread_mutex_t				meals_limit_mutex;
 	int							meals_limit;
 	pthread_t					*threads;
-	//a virer ?
+	// a virer ?
 	pthread_t					monitor;
 	pthread_mutex_t				write_mutex;
 	t_philosopher				*philosophers;
@@ -74,7 +74,7 @@ bool							release_forks(t_philosopher *philosopher);
 // monitor_routine.c
 int								main_thread_monitoring(t_data **data);
 
-//philosophers_routine.c
+// philosophers_routine.c
 void							*philosophers_routine(void *arg);
 
 // ---------------------------------- INIT --------------------------------//
@@ -124,7 +124,8 @@ int								print_error_and_free(char *msg, int exit_code,
 int								init_data_print_error_and_free(char *msg,
 									int exit_code, t_data **data);
 bool							print_log(t_data **data,
-									t_philosopher *philosopher, char *msg, bool end);
+									t_philosopher *philosopher, char *msg,
+									bool end);
 
 // setters
 void							set_end(t_data **data, pthread_mutex_t *mutex);
@@ -132,7 +133,8 @@ void							set_fed(t_philosopher *philosopher,
 									pthread_mutex_t *mutex);
 void							set_fork(t_philosopher *philosopher, int fork,
 									bool state);
-bool 							set_last_meal(t_philosopher *philosopher, pthread_mutex_t *mutex);
+bool							set_last_meal(t_philosopher *philosopher,
+									pthread_mutex_t *mutex);
 
 // time.c
 long int						get_time(t_data **data);
