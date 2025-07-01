@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:05 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 19:51:45 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:53:14 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,7 @@ int	init_simulation(t_simulation *simulation, char **av)
 int init_processes_monitor_thread(t_simulation *simulation)
 {
   if (pthread_create(&simulation->monitor, NULL, philo_monitor_thread, simulation) != 0)
-  {
-    //revoir le retrun
-    /* return (wait_close_unlink_free(simulation, 0, simulation->data.id, THREAD_ERROR)); */
     return (THREAD_ERROR);
-  }
   return (0);
 }
 
@@ -105,12 +101,8 @@ int init_processes(t_simulation *simulation)
   {
     simulation->philos[simulation->data.id - 1] = fork();
     if (simulation->philos[simulation->data.id - 1] != 0)
-    	/* printf("philo %d = pid %d\n", simulation->data.id, simulation->philos[simulation->data.id  - 1]); */
     if (simulation->philos[simulation->data.id - 1] < 0)
-    {
-      /* return (wait_close_unlink_free(data, 0, simulation->data.id, FORK_ERROR)); */
       return (FORK_ERROR);
-    }
     if (simulation->philos[simulation->data.id - 1] == 0)
       exit (philo_process_life(simulation));
     simulation->data.id++;

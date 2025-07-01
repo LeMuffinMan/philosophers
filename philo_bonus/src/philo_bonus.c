@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:55:38 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/27 18:55:39 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:53:53 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,7 @@ int monitor_simulation(t_simulation *simulation)
       sem_post(simulation->sems.death);
     }
   }
-  /* printf("waiting parent monitor\n"); */
   pthread_join(simulation->monitor, NULL);
-  /* printf("END set to TRUE\n"); */
   return (0);
 }
 
@@ -78,8 +76,3 @@ int main (int ac, char **av)
   return (simulation_cleanup(&simulation, 0));
 }
 
-//1 800 200 200
-//5 800 200 200
-//5 800 200 200 7
-//4 410 200 200
-//4 310 200 100

@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:27 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 19:46:41 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:54:35 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define THREAD_ERROR -3
 # define SIMULATION_END -4
 # define FORK_ERROR -5
+# define WAITPID_ERROR -6
 
 typedef struct s_time
 {
@@ -101,5 +102,10 @@ bool				eating(t_simulation *simulation);
 bool				is_simulation_over(t_simulation *simulation);
 int					philo_process_routine(t_simulation *simulation);
 int					philo_process_life(t_simulation *simulation);
+
+// philo_process
+int one_fork_case(t_simulation *simulation);
+int take_two_fork(t_simulation *simulation);
+int release_forks(sem_t *forks, int forks_in_hand);
 
 #endif
