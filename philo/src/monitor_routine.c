@@ -70,8 +70,6 @@ int	main_thread_monitoring(t_data *data)
 		if (exit_code != 0)
 			return (exit_code);
 		exit_code = accurate_sleep(data, 5);
-		/* if (exit_code == SIMULATION_END) */
-		/* 	return (exit_code); */
 	}
 	return (exit_code);
 }

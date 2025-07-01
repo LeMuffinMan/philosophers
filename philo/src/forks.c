@@ -13,7 +13,7 @@
 #include "philo.h"
 #include <unistd.h>
 
-bool	only_one_fork_case(t_philosopher *philosopher)
+static bool	only_one_fork_case(t_philosopher *philosopher)
 {
 	int	exit_code;
 
@@ -24,7 +24,7 @@ bool	only_one_fork_case(t_philosopher *philosopher)
 	return (false);
 }
 
-bool	take_one_fork(t_philosopher *philosopher, int fork, int fork_in_hand)
+static bool	take_one_fork(t_philosopher *philosopher, int fork, int fork_in_hand)
 {
 	if (fork == fork_in_hand)
 		return (only_one_fork_case(philosopher));
