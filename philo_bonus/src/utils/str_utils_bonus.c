@@ -48,8 +48,10 @@ static bool	is_only_digits(char *str)
 	return (true);
 }
 
-int	are_valids_args(char **av)
+int	are_valids_args(int ac, char **av)
 {
+	if (!check_user_inputs(ac))
+		return (INVALID_ARG);
 	if (!is_only_digits(av[1]) || av[1][0] == '-' || !is_only_digits(av[2])
 		|| av[2][0] == '-' || !is_only_digits(av[3]) || av[3][0] == '-'
 		|| !is_only_digits(av[4]) || av[4][0] == '-' || (av[5]
@@ -61,42 +63,15 @@ int	are_valids_args(char **av)
 	return (0);
 }
 
-int	print_error_and_free(char *msg, int exit_code, t_simulation *simulation)
+bool	check_user_inputs(int ac)
 {
-	if (simulation)
-		free(simulation);
-	printf("%s", msg);
-	return (exit_code);
-}
-
-bool	print_log(char *msg, int id, t_simulation *simulation)
-{
-	long int	time;
-
-	if (am_i_starving(simulation))
-		return (false);
-	sem_wait(simulation->sems.print);
-	time = get_time() - simulation->data.time.start;
-	if (get_proc_end(simulation))
+	if (ac < 5 || ac > 6)
 	{
-		sem_post(simulation->sems.print);
+		printf("Usage :\n./philo <number_of_philosophers> "
+				"<time_to_die time_to_eat> "
+				"<time_to_sleep> "
+				"(optionnaly : <number_of_times_each_philosopher_must_eat>)\n");
 		return (false);
 	}
-	if ((get_time()
-			- simulation->data.time.last_meal) > simulation->data.time.die)
-	{
-		simulation->data.exit_code = 1;
-		sem_post(simulation->sems.death);
-		if (get_proc_end(simulation))
-		{
-			sem_post(simulation->sems.print);
-			return (false);
-		}
-		set_proc_end(simulation);
-		sem_post(simulation->sems.print);
-		return (false);
-	}
-	printf("%ld %d %s", time, id, msg);
-	sem_post(simulation->sems.print);
 	return (true);
 }

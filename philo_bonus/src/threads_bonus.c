@@ -13,29 +13,9 @@
 #include "philo_bonus.h"
 #include <stdio.h>
 #include <sys/wait.h>
+#include <pthread.h>
 
-void	*philo_monitor_thread(void *args)
-{
-	t_simulation	*simulation;
-
-	simulation = (t_simulation *)args;
-	sem_wait(simulation->sems.simulation_end);
-	sem_wait(simulation->sems.proc_end);
-	simulation->data.end = true;
-	sem_post(simulation->sems.proc_end);
-	return (0);
-}
-
-int	print_death(t_simulation *simulation, int id, long int death_time)
-{
-	sem_wait(simulation->sems.print);
-	printf("%ld %d died\n", death_time, id + 1);
-	sem_post(simulation->sems.fed);
-	sem_post(simulation->sems.print);
-	return (0);
-}
-
-int	wait_children(t_simulation *simulation, long int death_time)
+static int	wait_children(t_simulation *simulation, long int death_time)
 {
 	int	status;
 	int	exit_code;
@@ -52,6 +32,30 @@ int	wait_children(t_simulation *simulation, long int death_time)
 				return (print_death(simulation, i, death_time));
 		}
 		i++;
+	}
+	return (0);
+}
+
+int unlock_fed_monitor(t_simulation *simulation)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (simulation->data.meals_limit > 0 && i < simulation->data.nb_philos)
+	{
+		sem_wait(simulation->sems.fed);
+		i++;
+		if (i == simulation->data.nb_philos)
+		{
+			j = 0;
+			while (j < simulation->data.nb_philos)
+			{
+				sem_post(simulation->sems.simulation_end);
+				j++;
+			}
+			sem_post(simulation->sems.death);
+		}
 	}
 	return (0);
 }
@@ -80,3 +84,29 @@ void	*simulation_death_monitor_thread(void *args)
 	}
 	return (NULL);
 }
+
+int	monitor_simulation(t_simulation *simulation)
+{
+	if (pthread_create(&simulation->monitor, NULL,
+			simulation_death_monitor_thread, simulation) != 0)
+	{
+		// error
+		return (THREAD_ERROR);
+	}
+	unlock_fed_monitor(simulation);
+	pthread_join(simulation->monitor, NULL);
+	return (0);
+}
+
+void	*philo_monitor_thread(void *args)
+{
+	t_simulation	*simulation;
+
+	simulation = (t_simulation *)args;
+	sem_wait(simulation->sems.simulation_end);
+	sem_wait(simulation->sems.proc_end);
+	simulation->data.end = true;
+	sem_post(simulation->sems.proc_end);
+	return (0);
+}
+

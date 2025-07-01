@@ -11,15 +11,18 @@
 # **************************************************************************** #
 
 SRC = src/philo_bonus.c \
-      src/threads.c \
-      src/philo_process.c \
+      src/threads_bonus.c \
+      src/philo_process_bonus.c \
+      src/forks_bonus.c \
       src/utils/str_utils_bonus.c \
-      src/forks.c \
       src/utils/time_bonus.c \
-      src/utils/cleanup.c \
-      src/utils/getters_setters.c \
-      src/init_bonus.c \
-      src/init_semaphores_bonus.c
+      src/utils/prints_bonus.c \
+      src/utils/philo_routine_utils.c \
+      src/utils/init_semaphores_utils_bonus.c \
+      src/utils/cleanup_bonus.c \
+      src/utils/getters_setters_bonus.c \
+      src/init/init_bonus.c \
+      src/init/init_semaphores_bonus.c
 
 CC = cc
 FLAGS = -Wall -Werror -Wextra #-g3 -lpthread

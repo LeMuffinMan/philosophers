@@ -24,20 +24,11 @@ static bool	eating(t_simulation *simulation)
 	if (forks_in_hand <= 0)
 	{
 		release_forks(simulation->sems.forks, forks_in_hand * -1);
-		sem_post(simulation->sems.can_i_eat);
 		return (false);
 	}
 	simulation->data.time.last_meal = get_time();
-	if (!print_log("is eating\n", simulation->data.id, simulation))
-	{
-		release_forks(simulation->sems.forks, forks_in_hand);
+	if (!print_eat_and_sleep(simulation, forks_in_hand))
 		return (false);
-	}
-	if (accurate_sleep(simulation, simulation->data.time.eat) < 0)
-	{
-		release_forks(simulation->sems.forks, forks_in_hand);
-		return (false);
-	}
 	release_forks(simulation->sems.forks, forks_in_hand);
 	simulation->data.meals_limit--;
 	if (simulation->data.meals_limit == 0)
@@ -47,44 +38,14 @@ static bool	eating(t_simulation *simulation)
 
 static bool	thinking(t_simulation *simulation)
 {
-	long int	last_meal_time_elapsed;
-	long int	time_until_starvation;
-	long int	think_time;
-
-	last_meal_time_elapsed = get_time() - simulation->data.time.last_meal;
-	time_until_starvation = simulation->data.time.die - last_meal_time_elapsed;
 	if (!print_log("is thinking\n", simulation->data.id, simulation))
 	{
 		return (false);
 	}
 	if (simulation->data.nb_philos % 2 != 0)
-	{
-		think_time = simulation->data.time.eat;
-		if (simulation->data.time.sleep < simulation->data.time.eat
-			&& simulation->data.time.eat * 2
-			- simulation->data.time.sleep > time_until_starvation
-			&& simulation->data.time.sleep
-			+ simulation->data.time.eat < simulation->data.time.die)
-		{
-			think_time = simulation->data.time.die;
-			if (accurate_sleep(simulation, think_time) < 0)
-				return (false);
-		}
-	}
+		return (odd_philo_thinking_time(simulation));
 	else
-	{
-		think_time = simulation->data.time.eat / 2;
-		if (simulation->data.time.sleep < simulation->data.time.eat
-			&& simulation->data.time.eat
-			- simulation->data.time.sleep > time_until_starvation
-			&& simulation->data.time.sleep
-			+ simulation->data.time.eat < simulation->data.time.die)
-		{
-			think_time = simulation->data.time.die;
-			if (accurate_sleep(simulation, think_time) < 0)
-				return (false);
-		}
-	}
+		return (even_philo_thinking_time(simulation));
 	return (true);
 }
 
@@ -97,7 +58,7 @@ static bool	sleeping(t_simulation *simulation)
 	return (true);
 }
 
-int	philo_process_routine(t_simulation *simulation)
+static int	philo_process_routine(t_simulation *simulation)
 {
 	sem_wait(simulation->sems.start);
 	if (simulation->data.id % 2 != 0)
@@ -123,7 +84,7 @@ int	philo_process_routine(t_simulation *simulation)
 	return (0);
 }
 
-int	philo_process_life(t_simulation *simulation)
+int	philo_process(t_simulation *simulation)
 {
 	init_processes_monitor_thread(simulation);
 	philo_process_routine(simulation);

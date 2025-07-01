@@ -62,10 +62,10 @@ typedef struct s_simulation
 	struct s_sems	sems;
 }					t_simulation;
 
-void				unlink_semaphores(void);
-void				unlink_shared_semaphores(void);
-int					philo_process_routine(t_simulation *simulation);
-bool				should_i_stop(t_simulation *simulation);
+// void				unlink_semaphores(void);
+// void				unlink_shared_semaphores(void);
+// int					philo_process_routine(t_simulation *simulation);
+// bool				should_i_stop(t_simulation *simulation);
 
 /* ------------------------ Utils ----------------------- */
 // cleanup.c
@@ -81,11 +81,27 @@ long int			accurate_sleep(t_simulation *simulation, int time_to_sleep);
 bool				am_i_starving(t_simulation *simulation);
 
 // str_utils_bonus.c
-int					are_valids_args(char **av);
+int					are_valids_args(int ac, char **av);
 int					ft_atoi(const char *nptr);
 bool				print_log(char *msg, int id, t_simulation *simulation);
 int					print_error_and_free(char *msg, int exit_code,
 						t_simulation *simulation);
+
+// philo_routine_utils.c
+bool odd_philo_thinking_time(t_simulation *simulation);
+bool even_philo_thinking_time(t_simulation *simulation);
+
+// prints.c
+int	print_death(t_simulation *simulation, int id, long int death_time);
+int print_eat_and_sleep(t_simulation *simulation, int forks_in_hand);
+
+//init_semaphores_utils_bonus.c
+int	init_semaphores_close_fed(t_simulation *simulation);
+int	init_semaphores_close_death(t_simulation *simulation);
+int	init_semaphores_close_print(t_simulation *simulation);
+int	init_semaphores_close_forks(t_simulation *simulation);
+int	init_semaphores_close_proc_end(t_simulation *simulation);
+void	unlink_semaphores(void);
 
 /* ------------------------ SRC ----------------------- */
 
@@ -96,16 +112,14 @@ int					release_forks(sem_t *forks, int forks_in_hand);
 
 // init_bonus.c
 bool				check_user_inputs(int ac);
-int					init_semaphores(t_data **data);
 int					init_processes_monitor_thread(t_simulation *simulation);
 int					init_processes(t_simulation *simulation);
 int					init_user_inputs(t_simulation *simulation, char **av);
-int					init_simulation(t_simulation *simulation, char **av);
-int					init_shared_semaphores(t_simulation *simulation);
+int	init_simulation(t_simulation *simulation, char **av);
 
 // init_bonus_semaphores.c
 void				unlink_shared_semaphores(void);
-int					init_shared_semaphores(t_simulation *simulation);
+int					init_semaphores(t_simulation *simulation);
 
 // philo_bonus.c
 int					monitor_simulation(t_simulation *simulation);
@@ -116,7 +130,6 @@ void				*simulation_death_monitor_thread(void *args);
 void				*simulation_fed_monitor_thread(void *args);
 
 // philo_process
-int					philo_process_routine(t_simulation *simulation);
-int					philo_process_life(t_simulation *simulation);
+int					philo_process(t_simulation *simulation);
 
 #endif
