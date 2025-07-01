@@ -30,10 +30,11 @@ SRC = src/philo_bonus.c \
 			# src/monitor_routine.c
 
 CC = cc
-FLAGS = -Wall -Werror -Wextra -g3 #-lpthread -fsanitize=thread
+FLAGS = -Wall -Werror -Wextra #-g3 -lpthread
 NAME = philo_bonus
 INC = include
 
+# make re && valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --show-reachable=yes ./bin/philo_bonus 5 800 200 200 7
 # gdb : au blocage : thread apply all bt
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
