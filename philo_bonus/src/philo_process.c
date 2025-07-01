@@ -43,6 +43,7 @@ int take_two_fork(t_simulation *simulation)
   sem_wait(simulation->sems.forks);
   if (!print_log("has taken a fork\n", simulation->data.id, simulation) || get_proc_end(simulation) || am_i_starving(simulation))
   	return (-1);
+  usleep(100);
   sem_wait(simulation->sems.forks);
   if (!print_log("has taken a fork\n", simulation->data.id, simulation) || get_proc_end(simulation) || am_i_starving(simulation))
   	return (-2);
@@ -67,7 +68,7 @@ bool eating(t_simulation *simulation)
 
   if (simulation->data.nb_philos == 1)
 		return (one_fork_case(simulation));
-	sem_wait(simulation->sems.can_i_eat);
+	/* sem_wait(simulation->sems.can_i_eat); */
 	/* printf("can i eat -1\n"); */
 	forks_in_hand = take_two_fork(simulation);
 	if (forks_in_hand <= 0)
@@ -79,17 +80,17 @@ bool eating(t_simulation *simulation)
 	simulation->data.time.last_meal = get_time();
 	if (!print_log("is eating\n", simulation->data.id, simulation))
 	{
-		sem_post(simulation->sems.can_i_eat);
+		/* sem_post(simulation->sems.can_i_eat); */
 		release_forks(simulation, simulation->sems.forks, forks_in_hand);
 		return (false);
 	}
 	if (accurate_sleep(simulation, simulation->data.time.eat) < 0)
 	{
-		sem_post(simulation->sems.can_i_eat);
+		/* sem_post(simulation->sems.can_i_eat); */
 		release_forks(simulation, simulation->sems.forks, forks_in_hand);
 		return (false);
 	}
-	sem_post(simulation->sems.can_i_eat);
+	/* sem_post(simulation->sems.can_i_eat); */
 	/* printf("can i eat +1\n"); */
 	release_forks(simulation, simulation->sems.forks, forks_in_hand);
 	simulation->data.meals_limit--; 
@@ -113,30 +114,28 @@ bool thinking(t_simulation *simulation)
 		return (false);
 	}
   if (simulation->data.nb_philos % 2 != 0)
-    think_time = simulation->data.time.eat;
-  else
-    think_time = simulation->data.time.eat / 2;
-  if (think_time > time_until_starvation - 10)
-      think_time = time_until_starvation - 10;
-  if (think_time > 1)
   {
-    if (accurate_sleep(simulation, think_time) < 0)
-      return (false);
-  }
-  else
-	{
-		/* printf("%d ici\n", simulation->data.id); */
-		//si quand il se reveille, les fourchettes ne seront pas dispo dans le temps de survie restante
+    think_time = simulation->data.time.eat;
 		if (simulation->data.time.sleep < simulation->data.time.eat &&
+			simulation->data.time.eat * 2 - simulation->data.time.sleep > time_until_starvation &&
 			simulation->data.time.sleep + simulation->data.time.eat < simulation->data.time.die)
 		{
 			think_time = simulation->data.time.die;
   		if (accurate_sleep(simulation, think_time) < 0)
     		return (false);
-		}
-		//Les faire penser 1ms ? ou on skip le think et on les lance sur les fourchettes ?
-		/* if (simulation->data.id == 2) */
-		/* 	printf("time = %ld | think_time = %ld\n", get_time() - simulation->data.time.start, think_time); */
+  	}
+	}
+  else
+  {
+    think_time = simulation->data.time.eat / 2;
+		if (simulation->data.time.sleep < simulation->data.time.eat &&
+			simulation->data.time.eat - simulation->data.time.sleep > time_until_starvation &&
+			simulation->data.time.sleep + simulation->data.time.eat < simulation->data.time.die)
+		{
+			think_time = simulation->data.time.die;
+  		if (accurate_sleep(simulation, think_time) < 0)
+    		return (false);
+  	}
 	}
 	return (true);
 }
