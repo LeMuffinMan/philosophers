@@ -19,10 +19,10 @@ void	set_fork(t_philosopher *philosopher, int fork, bool state)
 	pthread_mutex_unlock(&philosopher->data->forks_mutex[fork]);
 }
 
-void	set_end(t_data **data, pthread_mutex_t *mutex)
+void	set_end(t_data *data, pthread_mutex_t *mutex)
 {
 	pthread_mutex_lock(mutex);
-	(*data)->end = true;
+	data->end = true;
 	pthread_mutex_unlock(mutex);
 }
 

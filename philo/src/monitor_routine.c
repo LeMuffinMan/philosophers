@@ -12,32 +12,32 @@
 
 #include "philo.h"
 
-static bool	are_philo_fed(t_data **data)
+static bool	are_philo_fed(t_data *data)
 {
 	int	i;
 
 	i = 0;
-	while (i < (*data)->nb_philo)
+	while (i < data->nb_philo)
 	{
-		if (!get_fed_state(&(*data)->philosophers[i]))
+		if (!get_fed_state(&data->philosophers[i]))
 			return (false);
 		i++;
 	}
-	set_end(data, &(*data)->end_mutex);
+	set_end(data, &data->end_mutex);
 	return (true);
 }
 
-static int	print_death(t_data **data, int id)
+static int	print_death(t_data *data, int id)
 {
 	int	exit_code;
 
 	exit_code = 1;
-	if (!print_log(data, &(*data)->philosophers[id], "died", true))
+	if (!print_log(data, &data->philosophers[id], "died", true))
 		exit_code = SIMULATION_END;
 	return (exit_code);
 }
 
-static int	are_philo_starving(t_data **data)
+static int	are_philo_starving(t_data *data)
 {
 	int			i;
 	long int	time_elapsed;
@@ -46,18 +46,18 @@ static int	are_philo_starving(t_data **data)
 
 	i = 0;
 	exit_code = 0;
-	while (i < (*data)->nb_philo)
+	while (i < data->nb_philo)
 	{
-		last_meal_time = get_last_meal_time(&(*data)->philosophers[i]);
+		last_meal_time = get_last_meal_time(&data->philosophers[i]);
 		time_elapsed = get_elapsed_time_since_last_meal(data, last_meal_time);
-		if (last_meal_time >= 0 && time_elapsed > (*data)->time_to_die)
+		if (last_meal_time >= 0 && time_elapsed > data->time_to_die)
 			return (print_death(data, i));
 		i++;
 	}
 	return (exit_code);
 }
 
-int	main_thread_monitoring(t_data **data)
+int	main_thread_monitoring(t_data *data)
 {
 	int exit_code;
 

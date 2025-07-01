@@ -17,7 +17,7 @@ bool	only_one_fork_case(t_philosopher *philosopher)
 {
 	int	exit_code;
 
-	exit_code = accurate_sleep(&philosopher->data, philosopher->time_to_die);
+	exit_code = accurate_sleep(philosopher->data, philosopher->time_to_die);
 	if (exit_code == SIMULATION_END
 		|| is_simulation_over(philosopher))
 		return (false);
@@ -44,7 +44,7 @@ bool	take_one_fork(t_philosopher *philosopher, int fork, int fork_in_hand)
 	}
 	philosopher->data->forks[fork] = false;
 	pthread_mutex_unlock(&philosopher->data->forks_mutex[fork]);
-	if (!print_log(&philosopher->data, philosopher, "has taken a fork", false))
+	if (!print_log(philosopher->data, philosopher, "has taken a fork", false))
 		return (false);
 	return (true);
 }

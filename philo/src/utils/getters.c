@@ -47,13 +47,13 @@ bool	get_fork_state(t_philosopher *philosopher, int i)
 	return (exit_code);
 }
 
-long int	get_elapsed_time_since_last_meal(t_data **data,
+long int	get_elapsed_time_since_last_meal(t_data *data,
 		long int last_meal_time)
 {
 	long int	time_elapsed;
 
-	pthread_mutex_lock(&(*data)->time_mutex);
-	time_elapsed = get_time() - (*data)->start_time - last_meal_time;
-	pthread_mutex_unlock(&(*data)->time_mutex);
+	pthread_mutex_lock(&data->time_mutex);
+	time_elapsed = get_time() - data->start_time - last_meal_time;
+	pthread_mutex_unlock(&data->time_mutex);
 	return (time_elapsed);
 }

@@ -13,23 +13,19 @@
 #include "philo.h"
 #include <stdlib.h>
 
-int	init_data(t_data **data, char **av)
+int	init_data(t_data *data, char **av)
 {
 	int	exit_code;
 
-	*data = malloc(sizeof(t_data));
-	if (!*data)
-		return (init_data_print_error_and_free("Data struct mem_alloc failed\n",
-				MALLOC_ERROR, data));
 	exit_code = init_user_inputs(data, av);
 	if (exit_code)
 		return (exit_code);
-	(*data)->end = false;
-	(*data)->start_time = -1;
+	data->end = false;
+	data->start_time = -1;
 	return (0);
 }
 
-int	init_mutex(t_data **data)
+int	init_mutex(t_data *data)
 {
 	int	exit_code;
 
@@ -51,16 +47,16 @@ int	init_mutex(t_data **data)
 	return (0);
 }
 
-static int	create_philosopher(t_data **data, int id)
+static int	create_philosopher(t_data *data, int id)
 {
-	if (pthread_create(&(*data)->threads[id], NULL, philosophers_routine,
-			&(*data)->philosophers[id]) != 0)
+	if (pthread_create(&data->threads[id], NULL, philosophers_routine,
+			&data->philosophers[id]) != 0)
 	{
 		if (id > 0)
 		{
 			while (id >= 0)
 			{
-				pthread_join((*data)->threads[id], NULL);
+				pthread_join(data->threads[id], NULL);
 				id--;
 			}
 		}
@@ -70,25 +66,25 @@ static int	create_philosopher(t_data **data, int id)
 	return (0);
 }
 
-int	init_threads(t_data **data)
+int	init_threads(t_data *data)
 {
 	int	i;
 
-	(*data)->threads = malloc(sizeof(pthread_t) * (*data)->nb_philo);
-	if (!(*data)->threads)
+	data->threads = malloc(sizeof(pthread_t) * data->nb_philo);
+	if (!data->threads)
 		return (destroy_all_data_mutex_and_free(data));
-	(*data)->philosophers = malloc(sizeof(t_philosopher) * (*data)->nb_philo);
-	if (!(*data)->philosophers)
+	data->philosophers = malloc(sizeof(t_philosopher) * data->nb_philo);
+	if (!data->philosophers)
 		return (destroy_all_data_mutex_and_free(data));
-	pthread_mutex_lock(&(*data)->time_mutex);
+	pthread_mutex_lock(&data->time_mutex);
 	i = 0;
-	while (i < (*data)->nb_philo)
+	while (i < data->nb_philo)
 	{
 		init_philo_struct(data, i);
 		create_philosopher(data, i);
 		i++;
 	}
-	(*data)->start_time = get_time();
-	pthread_mutex_unlock(&(*data)->time_mutex);
+	data->start_time = get_time();
+	pthread_mutex_unlock(&data->time_mutex);
 	return (0);
 }
