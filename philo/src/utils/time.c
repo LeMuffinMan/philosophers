@@ -46,7 +46,7 @@ long int	is_time_started(t_philosopher *philosopher)
 	return (start_time);
 }
 
-int	accurate_sleep(t_data **data, int time_to_sleep)
+int	accurate_sleep(t_data *data, int time_to_sleep)
 {
 	int			ret_val;
 	long int	start_time;
@@ -55,13 +55,13 @@ int	accurate_sleep(t_data **data, int time_to_sleep)
 	ret_val = get_time();
 	while (ret_val < time_to_sleep)
 	{
-		pthread_mutex_lock(&(*data)->end_mutex);
-		if ((*data)->end)
+		pthread_mutex_lock(&data->end_mutex);
+		if (data->end)
 		{
-			pthread_mutex_unlock(&(*data)->end_mutex);
+			pthread_mutex_unlock(&data->end_mutex);
 			return (SIMULATION_END);
 		}
-		pthread_mutex_unlock(&(*data)->end_mutex);
+		pthread_mutex_unlock(&data->end_mutex);
 		usleep(100);
 		ret_val = get_time() - start_time;
 	}

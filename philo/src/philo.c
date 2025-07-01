@@ -28,10 +28,9 @@ static bool	check_user_inputs(int ac)
 
 int	main(int ac, char **av)
 {
-	t_data	*data;
+	t_data	data;
 	int		exit_code;
 
-	data = NULL;
 	if (check_user_inputs(ac))
 		return (INVALID_ARG);
 	exit_code = are_valids_args(av);
