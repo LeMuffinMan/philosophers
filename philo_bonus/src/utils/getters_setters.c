@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 19:32:30 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 19:33:32 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:52:46 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ bool get_proc_end(t_simulation *simulation)
 
   sem_wait(simulation->sems.proc_end);
   exit_code = simulation->data.end;
-  /* if (exit_code != 0) */
-		/* print_log("found end bool true\n", simulation->data.id, simulation); */
   sem_post(simulation->sems.proc_end);
 	return (exit_code);
 }

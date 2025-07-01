@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:55:57 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/06/27 18:55:58 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 19:53:39 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,5 @@ int init_shared_semaphores(t_simulation *simulation)
 	simulation->sems.can_i_eat = sem_open("/philo_can_i_eat", O_CREAT | O_EXCL, 0644, (simulation->data.nb_philos - 1));
 	if (simulation->sems.can_i_eat == SEM_FAILED)
 		return (init_semaphores_close_can_i_eat(simulation));
-	/* printf("can i eat = %d\n", simulation->data.nb_philos - 1); */
 	return (0);
 }
