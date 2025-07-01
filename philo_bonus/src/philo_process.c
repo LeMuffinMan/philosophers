@@ -55,7 +55,7 @@ int one_fork_case(t_simulation *simulation)
 	sem_wait(simulation->sems.forks);
   print_log("has taken a fork\n", simulation->data.id, simulation);
   while(!am_i_starving(simulation))
-  	usleep(500);
+  	usleep(100);
   /* print_log("died\n", simulation->data.id, simulation); */
   simulation->data.exit_code = 1;
   sem_post(simulation->sems.death);
@@ -189,7 +189,7 @@ int philo_process_routine(t_simulation *simulation)
 			break ;
 		if (!thinking(simulation) || get_proc_end(simulation) || am_i_starving(simulation))
 			break ;
-		usleep(500);
+		usleep(100);
 	}
   /* printf("proc %d leaving philo process routine\n", simulation->data.id); */
 	return (0);
