@@ -120,11 +120,21 @@ bool thinking(t_simulation *simulation)
       think_time = time_until_starvation - 10;
   if (think_time > 1)
   {
-      if (accurate_sleep(simulation, think_time) < 0)
-          return false;
+    if (accurate_sleep(simulation, think_time) < 0)
+      return (false);
   }
   else
-      usleep(500);
+	{
+		/* printf("%d ici\n", simulation->data.id); */
+		if (simulation->data.time.sleep < simulation->data.time.eat && simulation->data.time.sleep + simulation->data.time.eat < simulation->data.time.die)
+			think_time = simulation->data.time.die;
+		else
+			think_time = 5;
+		/* if (simulation->data.id == 2) */
+		/* 	printf("time = %ld | think_time = %ld\n", get_time() - simulation->data.time.start, think_time); */
+    if (accurate_sleep(simulation, think_time) < 0)
+      return (false);
+	}
 	return (true);
 }
 
@@ -132,6 +142,8 @@ bool am_i_starving(t_simulation *simulation)
 {
 	int exit_code;
 
+	/* if (simulation->data.id == 2) */
+	/* 	printf("%ld | time_since_last_meal = %ld | simulation->data.time.die = %ld\n", get_time() - simulation->data.time.start, get_time() - simulation->data.time.last_meal, simulation->data.time.die); */
 	if ((get_time() - simulation->data.time.last_meal) > simulation->data.time.die)
 	{
   	/* printf("%ld %d died !\n", get_time() - simulation->data.time.start, simulation->data.id); */
