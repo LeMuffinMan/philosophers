@@ -15,16 +15,34 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+int fork_error_handler(t_simulation *simulation, int last_fork_started)
+{
+	int tmp;
+
+	sem_post(simulation->sems.simulation_end);
+	usleep(100);
+	tmp = last_fork_started;
+	while (last_fork_started >= 0)
+	{
+		sem_post(simulation->sems.start);
+		last_fork_started--;
+	}
+	last_fork_started = tmp;
+	while (last_fork_started >= 0)	
+	{
+		waitpid(simulation->philos[last_fork_started - 1]);
+		last_fork_started--;
+	}
+	return (close_unlink_free(simulation, FORK_ERROR));
+}
+
 int launch_simulation(t_simulation *simulation)
 {
 	while (simulation->data.id <= simulation->data.nb_philos)
 	{
 		simulation->philos[simulation->data.id - 1] = fork();
 		if (simulation->philos[simulation->data.id - 1] < 0)
-		{
-
-			return (FORK_ERROR);
-		}
+			return (fork_error_handler(simulation, simulation->data.id - 2));
 		if (simulation->philos[simulation->data.id - 1] == 0)
 			exit(philo_process(simulation));
 		simulation->data.id++;
@@ -34,6 +52,19 @@ int launch_simulation(t_simulation *simulation)
 		sem_post(simulation->sems.start);
 		simulation->data.id--;
 	}
+	return (0);
+}
+
+int	monitor_simulation(t_simulation *simulation)
+{
+	if (pthread_create(&simulation->monitor, NULL,
+			simulation_death_monitor_thread, simulation) != 0)
+	{
+		// error
+		return (THREAD_ERROR);
+	}
+	unlock_fed_monitor(simulation);
+	pthread_join(simulation->monitor, NULL);
 	return (0);
 }
 
