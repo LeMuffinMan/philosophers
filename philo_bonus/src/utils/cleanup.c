@@ -6,13 +6,12 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 19:32:09 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 20:15:37 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 20:25:40 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 #include <stdlib.h>
-#include <sys/wait.h>
 
 int close_unlink_semaphores(t_sems sems)
 {

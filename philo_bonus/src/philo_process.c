@@ -6,14 +6,12 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 20:24:13 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 20:24:14 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 20:27:47 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 #include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 
 static bool	eating(t_simulation *simulation)

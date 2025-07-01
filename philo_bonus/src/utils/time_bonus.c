@@ -6,12 +6,11 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:13 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 20:24:31 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 20:26:16 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-#include <stdio.h>
 #include <sys/time.h>
 #include <unistd.h>
 

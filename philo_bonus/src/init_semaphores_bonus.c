@@ -6,13 +6,12 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:55:57 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 20:23:30 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/01 20:27:16 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 #include <fcntl.h>
-#include <stdio.h>
 
 static int	init_semaphores_close_forks(t_simulation *simulation)
 {
