@@ -28,7 +28,6 @@ int	destroy_all_data_mutex_and_free(t_data **data)
 	pthread_mutex_destroy(&(*data)->write_mutex);
 	pthread_mutex_destroy(&(*data)->time_mutex);
 	pthread_mutex_destroy(&(*data)->end_mutex);
-	pthread_mutex_destroy(&(*data)->meals_limit_mutex);
 	return (print_error_and_free("Threads init failed\n", THREAD_ERROR, data));
 }
 
@@ -72,7 +71,6 @@ int	simulation_end_destroy_and_free(t_data **data, int exit_code)
 	pthread_mutex_destroy(&(*data)->write_mutex);
 	pthread_mutex_destroy(&(*data)->time_mutex);
 	pthread_mutex_destroy(&(*data)->end_mutex);
-	pthread_mutex_destroy(&(*data)->meals_limit_mutex);
 	free_allocated_memory(data);
 	return (exit_code);
 }

@@ -48,9 +48,6 @@ int	init_mutex(t_data **data)
 	exit_code = init_mutex_write_mutex(data);
 	if (exit_code != 0)
 		return (exit_code);
-	exit_code = init_mutex_meals_limit_mutex(data);
-	if (exit_code != 0)
-		return (exit_code);
 	return (0);
 }
 
