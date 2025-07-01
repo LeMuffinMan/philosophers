@@ -53,7 +53,7 @@ long int	get_elapsed_time_since_last_meal(t_data **data,
 	long int	time_elapsed;
 
 	pthread_mutex_lock(&(*data)->time_mutex);
-	time_elapsed = get_time(data) - (*data)->start_time - last_meal_time;
+	time_elapsed = get_time() - (*data)->start_time - last_meal_time;
 	pthread_mutex_unlock(&(*data)->time_mutex);
 	return (time_elapsed);
 }

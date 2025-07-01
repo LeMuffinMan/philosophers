@@ -91,7 +91,7 @@ int	init_threads(t_data **data)
 		create_philosopher(data, i);
 		i++;
 	}
-	(*data)->start_time = get_time(data);
+	(*data)->start_time = get_time();
 	pthread_mutex_unlock(&(*data)->time_mutex);
 	return (0);
 }
