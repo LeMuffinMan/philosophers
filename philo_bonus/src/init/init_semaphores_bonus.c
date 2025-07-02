@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:55:57 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 20:27:16 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/02 06:43:44 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	init_semaphores_close_start(t_simulation *simulation)
 	return (init_semaphores_close_fed(simulation));
 }
 
-int init_binary_semaphores(t_simulation *simulation)
+int	init_binary_semaphores(t_simulation *simulation)
 {
 	simulation->sems.print = sem_open("/philo_print", O_CREAT | O_EXCL, 0644,
 			1);
@@ -32,7 +32,7 @@ int init_binary_semaphores(t_simulation *simulation)
 	return (0);
 }
 
-int init_blocking_semaphores(t_simulation *simulation)
+int	init_blocking_semaphores(t_simulation *simulation)
 {
 	simulation->sems.death = sem_open("/philo_death", O_CREAT | O_EXCL, 0644,
 			0);
@@ -54,9 +54,9 @@ int init_blocking_semaphores(t_simulation *simulation)
 
 int	init_semaphores(t_simulation *simulation)
 {
-	unlink_semaphores();
-	int exit_code;
+	int	exit_code;
 
+	unlink_semaphores();
 	simulation->sems.forks = sem_open("/philo_forks", O_CREAT | O_EXCL, 0644,
 			simulation->data.nb_philos);
 	if (simulation->sems.forks == SEM_FAILED)

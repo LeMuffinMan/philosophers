@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+#include <pthread.h>
 #include <stdio.h>
 #include <sys/wait.h>
-#include <pthread.h>
 
 static int	wait_children(t_simulation *simulation, long int death_time)
 {
@@ -36,7 +36,7 @@ static int	wait_children(t_simulation *simulation, long int death_time)
 	return (0);
 }
 
-int unlock_fed_monitor(t_simulation *simulation)
+int	unlock_fed_monitor(t_simulation *simulation)
 {
 	int	i;
 	int	j;
@@ -96,4 +96,3 @@ void	*philo_monitor_thread(void *args)
 	sem_post(simulation->sems.proc_end);
 	return (0);
 }
-

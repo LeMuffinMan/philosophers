@@ -24,25 +24,23 @@ void	unlink_semaphores(void)
 	sem_unlink("/philo_proc_end");
 }
 
-int close_semaphores(t_sems sems)
+int	close_semaphores(t_sems sems)
 {
-  sem_close(sems.forks);
-  sem_close(sems.print);
-  sem_close(sems.death);
-  sem_close(sems.fed);
-  sem_close(sems.start);
-  sem_close(sems.simulation_end);
-  sem_close(sems.proc_end);
+	sem_close(sems.forks);
+	sem_close(sems.print);
+	sem_close(sems.death);
+	sem_close(sems.fed);
+	sem_close(sems.start);
+	sem_close(sems.simulation_end);
+	sem_close(sems.proc_end);
 	return (0);
 }
 
-int close_unlink_free(t_simulation *simulation, int exit_code, bool unlink)
+int	close_unlink_free(t_simulation *simulation, int exit_code, bool unlink)
 {
-  close_semaphores(simulation->sems);
-  if (unlink)
-    unlink_semaphores();
-  free(simulation->philos);
-  return (exit_code);
+	close_semaphores(simulation->sems);
+	if (unlink)
+		unlink_semaphores();
+	free(simulation->philos);
+	return (exit_code);
 }
-
-
