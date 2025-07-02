@@ -6,55 +6,61 @@
 #    By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/01 18:18:26 by oelleaum          #+#    #+#              #
-#    Updated: 2025/06/01 19:40:43 by oelleaum         ###   ########lyon.fr    #
+#    Updated: 2025/07/02 06:58:56 by oelleaum         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
-SRC = src/philo.c \
-			src/init/init_mutex_utils.c \
-			src/init/init_forks.c \
-			src/init/init.c \
-			src/init/init_data_utils.c \
-			src/init/init_philo_struct.c \
-			src/utils/prints.c \
-			src/utils/str_utils.c \
-			src/utils/free_destroy_utils.c \
-			src/utils/time.c \
-			src/utils/getters.c \
-			src/utils/setters.c \
-			src/philosophers_routine.c \
-			src/forks.c \
-			src/monitor_routine.c
-
 CC = cc
-FLAGS = -Wall -Werror -Wextra #-g3 -lpthread
+CFLAGS = -Wall -Werror -Wextra -I$(INC) # -g3
+LDFLAGS = -lpthread
+
+SRC = src/philo.c \
+      src/init/init_mutex_utils.c \
+      src/init/init_forks.c \
+      src/init/init.c \
+      src/init/init_data_utils.c \
+      src/init/init_philo_struct.c \
+      src/utils/prints.c \
+      src/utils/str_utils.c \
+      src/utils/free_destroy_utils.c \
+      src/utils/time.c \
+      src/utils/getters.c \
+      src/utils/setters.c \
+      src/philosophers_routine.c \
+      src/forks.c \
+      src/monitor_routine.c
+
 NAME = philo
 INC = include
+OBJ_DIR = .objs
+BIN_DIR = bin
 
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
-OBJ_DIR = .objs
 
 GREEN = \033[0;32m
 RESET = \033[0m
 
-all: $(NAME)
+all: $(BIN_DIR)/$(NAME)
 
-$(NAME): $(OBJ) Makefile
-	mkdir -p bin
-	$(CC) $(FLAGS) $(OBJ) -I $(INC) -o bin/$(NAME)
-	@echo 
-	@echo "$(GREEN)compilation successful ✅ $(NAME)$(RESET)"
-	@echo 
+$(BIN_DIR)/$(NAME): $(OBJ) | $(BIN_DIR)
+	$(CC) $(CFLAGS) $(OBJ) $(LDFLAGS) -o $@
+	@echo "\n$(GREEN)Compilation successful ✅ $(NAME)$(RESET)\n"
 
-$(OBJ_DIR)/%.o: %.c include/philo.h
+$(OBJ_DIR)/%.o: %.c include/philo.h | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
-	$(CC) $(FLAGS) -I $(INC) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
-clean: 
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+clean:
 	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	rm -rf bin
+	rm -rf $(BIN_DIR)
 
 re: fclean all
 
