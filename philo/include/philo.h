@@ -27,118 +27,112 @@ typedef struct s_philosopher							t_philosopher;
 
 typedef struct s_data
 {
-	int							nb_philo;
-	int							time_to_die;
-	int							time_to_eat;
-	int							time_to_sleep;
-	pthread_mutex_t				*forks_mutex;
-	bool						*forks;
-	pthread_mutex_t				time_mutex;
-	long int					start_time;
-	pthread_mutex_t				end_mutex;
-	bool						end;
-	int							meals_limit;
-	pthread_t					*threads;
-	pthread_mutex_t				write_mutex;
-	t_philosopher				*philosophers;
-}								t_data;
+	int				nb_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	pthread_mutex_t	*forks_mutex;
+	bool			*forks;
+	pthread_mutex_t	time_mutex;
+	long int		start_time;
+	pthread_mutex_t	end_mutex;
+	bool			end;
+	int				meals_limit;
+	pthread_t		*threads;
+	pthread_mutex_t	write_mutex;
+	t_philosopher	*philosophers;
+}					t_data;
 
 typedef struct s_philosopher
 {
-	int							nb_philo;
-	int							time_to_die;
-	int							time_to_eat;
-	int							time_to_sleep;
-	int							meals_limit;
-	int							id;
-	long int					start_time;
-	pthread_mutex_t				last_meal_mutex;
-	long int					last_meal;
-	int							nb_meals_eaten;
-	pthread_mutex_t				fed_mutex;
-	bool						fed;
-	t_data						*data;
-}								t_philosopher;
+	int				nb_philo;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				meals_limit;
+	int				id;
+	long int		start_time;
+	pthread_mutex_t	last_meal_mutex;
+	long int		last_meal;
+	int				nb_meals_eaten;
+	pthread_mutex_t	fed_mutex;
+	bool			fed;
+	t_data			*data;
+}					t_philosopher;
 
 // ---------------------------------- SRC/ --------------------------------//
 
 // forks.c
-bool							take_two_forks(t_philosopher *philosopher);
-bool							release_forks(t_philosopher *philosopher);
+bool				take_two_forks(t_philosopher *philosopher);
+bool				release_forks(t_philosopher *philosopher);
 
 // monitor_routine.c
-int								main_thread_monitoring(t_data *data);
+int					main_thread_monitoring(t_data *data);
 
 // philosophers_routine.c
-void							*philosophers_routine(void *arg);
+void				*philosophers_routine(void *arg);
 
 // ---------------------------------- INIT --------------------------------//
 // init.c
-int								init_data(t_data *data, char **av);
-int								init_mutex(t_data *data);
-int								init_threads(t_data *data);
+int					init_data(t_data *data, char **av);
+int					init_mutex(t_data *data);
+int					init_threads(t_data *data);
 
 // init_data_utils.c
-int								init_user_inputs(t_data *data, char **av);
+int					init_user_inputs(t_data *data, char **av);
 
 // init_forks.c
-int								init_mutex_forks_bool(t_data *data);
-int								init_mutex_forks_mutex(t_data *data);
+int					init_mutex_forks_bool(t_data *data);
+int					init_mutex_forks_mutex(t_data *data);
 
 // init_mutex_utils.c
-int								init_mutex_time_mutex(t_data *data);
-int								init_mutex_end_mutex(t_data *data);
-int								init_mutex_write_mutex(t_data *data);
-int								init_mutex_meals_limit_mutex(t_data *data);
+int					init_mutex_time_mutex(t_data *data);
+int					init_mutex_end_mutex(t_data *data);
+int					init_mutex_write_mutex(t_data *data);
+int					init_mutex_meals_limit_mutex(t_data *data);
 
 // init_philo_struct.c
-int								init_philo_struct(t_data *data, int i);
+int					init_philo_struct(t_data *data, int i);
 
 // ---------------------------------- UTILS --------------------------------//
 
 // free_destroy_utils.c
-void							destroy_forks_mutex(t_data *data,
-									int last_mutex);
-int								destroy_all_data_mutex_and_free(t_data *data);
-void							destroy_all_philo_mutex(t_data *data, int i);
-void							free_allocated_memory(t_data *data);
-int								simulation_end_destroy_and_free(t_data *data,
-									int exit_code);
+void				destroy_forks_mutex(t_data *data, int last_mutex);
+int					destroy_all_data_mutex_and_free(t_data *data);
+void				destroy_all_philo_mutex(t_data *data, int i);
+void				free_allocated_memory(t_data *data);
+int					simulation_end_destroy_and_free(t_data *data,
+						int exit_code);
 
 // getters
-bool							get_fed_state(t_philosopher *philosopher);
-long int						get_last_meal_time(t_philosopher *philosopher);
-bool							get_fork_state(t_philosopher *philosopher,
-									int i);
-long int						get_elapsed_time_since_last_meal(t_data *data,
-									long int last_meal_time);
+bool				get_fed_state(t_philosopher *philosopher);
+long int			get_last_meal_time(t_philosopher *philosopher);
+bool				get_fork_state(t_philosopher *philosopher, int i);
+long int			get_elapsed_time_since_last_meal(t_data *data,
+						long int last_meal_time);
 
 // prints
-int								print_error_and_free(char *msg, int exit_code,
-									t_data *data);
-int								init_data_print_error(char *msg, int exit_code);
-bool							print_log(t_data *data,
-									t_philosopher *philosopher, char *msg,
-									bool end);
+int					print_error_and_free(char *msg, int exit_code,
+						t_data *data);
+int					init_data_print_error(char *msg, int exit_code);
+bool				print_log(t_data *data, t_philosopher *philosopher,
+						char *msg, bool end);
 
 // setters
-void							set_end(t_data *data, pthread_mutex_t *mutex);
-void							set_fed(t_philosopher *philosopher,
-									pthread_mutex_t *mutex);
-void							set_fork(t_philosopher *philosopher, int fork,
-									bool state);
-bool							set_last_meal(t_philosopher *philosopher,
-									pthread_mutex_t *mutex);
+void				set_end(t_data *data, pthread_mutex_t *mutex);
+void				set_fed(t_philosopher *philosopher, pthread_mutex_t *mutex);
+void				set_fork(t_philosopher *philosopher, int fork, bool state);
+bool				set_last_meal(t_philosopher *philosopher,
+						pthread_mutex_t *mutex);
 
 // time.c
-long int						get_time();
-bool							is_simulation_over(t_philosopher *philosopher);
-long int						is_time_started(t_philosopher *philosopher);
-int								accurate_sleep(t_data *data,
-									int time_to_sleep);
+long int			get_time(void);
+bool				is_simulation_over(t_philosopher *philosopher);
+long int			is_time_started(t_philosopher *philosopher);
+int					accurate_sleep(t_data *data, int time_to_sleep);
 
 // str_utils
-int								are_valids_args(char **av);
-int								ft_atoi(const char *nptr);
+int					are_valids_args(char **av);
+int					ft_atoi(const char *nptr);
 
 #endif
