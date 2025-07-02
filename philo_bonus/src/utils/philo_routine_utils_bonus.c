@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_routine_utils_bonus.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/07/02 06:42:08 by oelleaum          #+#    #+#             */
+/*   Updated: 2025/07/02 06:42:10 by oelleaum         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-bool odd_philo_thinking_time(t_simulation *simulation)
+bool	odd_philo_thinking_time(t_simulation *simulation)
 {
 	long int	think_time;
 	long int	last_meal_time_elapsed;
@@ -23,7 +34,7 @@ bool odd_philo_thinking_time(t_simulation *simulation)
 	return (true);
 }
 
-bool even_philo_thinking_time(t_simulation *simulation)
+bool	even_philo_thinking_time(t_simulation *simulation)
 {
 	long int	think_time;
 	long int	last_meal_time_elapsed;

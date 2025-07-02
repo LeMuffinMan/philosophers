@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:21 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 20:25:56 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/02 06:42:48 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ bool	check_user_inputs(int ac)
 	if (ac < 5 || ac > 6)
 	{
 		printf("Usage :\n./philo <number_of_philosophers> "
-				"<time_to_die time_to_eat> "
-				"<time_to_sleep> "
-				"(optionnaly : <number_of_times_each_philosopher_must_eat>)\n");
+			"<time_to_die time_to_eat> "
+			"<time_to_sleep> "
+			"(optionnaly : <number_of_times_each_philosopher_must_eat>)\n");
 		return (false);
 	}
 	return (true);

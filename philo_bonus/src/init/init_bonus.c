@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:56:05 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 20:27:04 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/02 06:43:37 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ static int	init_meals_limit(t_simulation *simulation, char **av)
 {
 	simulation->data.meals_limit = ft_atoi(av[5]);
 	if (simulation->data.meals_limit <= 0)
-		return (print_error_and_free("Incorrect number of times each philosopher must eat\n",
+		return (print_error_and_free(
+				"Incorrect number of times each philosopher must eat\n",
 				INVALID_ARG, simulation));
 	return (0);
 }
@@ -68,7 +69,7 @@ int	init_processes_monitor_thread(t_simulation *simulation)
 	if (pthread_create(&simulation->monitor, NULL, philo_monitor_thread,
 			simulation) != 0)
 	{
-		while(simulation->data.nb_philos > 0)
+		while (simulation->data.nb_philos > 0)
 		{
 			sem_post(simulation->sems.fed);
 			simulation->data.nb_philos--;
@@ -90,4 +91,3 @@ int	init_processes(t_simulation *simulation)
 	simulation->data.time.last_meal = simulation->data.time.start;
 	return (0);
 }
-

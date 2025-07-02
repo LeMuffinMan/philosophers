@@ -13,12 +13,12 @@
 #include "philo_bonus.h"
 #include <pthread.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/wait.h>
+#include <unistd.h>
 
-int fork_error_handler(t_simulation *simulation, int last_fork_started)
+int	fork_error_handler(t_simulation *simulation, int last_fork_started)
 {
-	int tmp;
+	int	tmp;
 
 	sem_post(simulation->sems.simulation_end);
 	usleep(100);
@@ -30,7 +30,7 @@ int fork_error_handler(t_simulation *simulation, int last_fork_started)
 		last_fork_started--;
 	}
 	last_fork_started = tmp;
-	while (last_fork_started >= 0)	
+	while (last_fork_started >= 0)
 	{
 		waitpid(simulation->philos[last_fork_started - 1], NULL, 0);
 		last_fork_started--;
@@ -38,7 +38,7 @@ int fork_error_handler(t_simulation *simulation, int last_fork_started)
 	return (close_unlink_free(simulation, FORK_ERROR, true));
 }
 
-int launch_simulation(t_simulation *simulation)
+int	launch_simulation(t_simulation *simulation)
 {
 	while (simulation->data.id <= simulation->data.nb_philos)
 	{
