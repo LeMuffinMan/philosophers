@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:12:39 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/02 07:02:58 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/02 07:04:02 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	main_thread_monitoring(t_data *data)
 		exit_code = are_philo_starving(data);
 		if (exit_code != 0)
 			return (exit_code);
-		exit_code = accurate_sleep(data, 5);
 		usleep(100);
 	}
 	return (exit_code);
