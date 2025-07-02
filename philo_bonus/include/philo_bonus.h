@@ -125,7 +125,7 @@ int					monitor_simulation(t_simulation *simulation);
 // threads.c
 void				*philo_monitor_thread(void *args);
 void				*simulation_death_monitor_thread(void *args);
-void				*simulation_fed_monitor_thread(void *args);
+int					simulation_fed_monitor_thread(t_simulation *simulation);
 int					unlock_fed_monitor(t_simulation *simulation);
 
 // philo_process

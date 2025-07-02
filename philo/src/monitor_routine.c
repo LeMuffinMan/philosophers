@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/23 17:12:39 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/02 07:04:02 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/02 07:04:27 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ static int	are_philo_starving(t_data *data)
 		if (last_meal_time >= 0 && time_elapsed > data->time_to_die)
 			return (print_death(data, i));
 		i++;
-		usleep(100);
 	}
 	return (exit_code);
 }
