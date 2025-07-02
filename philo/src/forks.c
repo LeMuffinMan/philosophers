@@ -18,13 +18,13 @@ static bool	only_one_fork_case(t_philosopher *philosopher)
 	int	exit_code;
 
 	exit_code = accurate_sleep(philosopher->data, philosopher->time_to_die);
-	if (exit_code == SIMULATION_END
-		|| is_simulation_over(philosopher))
+	if (exit_code == SIMULATION_END || is_simulation_over(philosopher))
 		return (false);
 	return (false);
 }
 
-static bool	take_one_fork(t_philosopher *philosopher, int fork, int fork_in_hand)
+static bool	take_one_fork(t_philosopher *philosopher, int fork,
+		int fork_in_hand)
 {
 	if (fork == fork_in_hand)
 		return (only_one_fork_case(philosopher));
@@ -75,8 +75,8 @@ bool	take_two_forks(t_philosopher *philosopher)
 
 bool	release_forks(t_philosopher *philosopher)
 {
-	int		left;
-	int		right;
+	int	left;
+	int	right;
 
 	left = philosopher->id - 1;
 	right = (philosopher->id) % philosopher->nb_philo;

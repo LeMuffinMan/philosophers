@@ -59,7 +59,7 @@ static int	are_philo_starving(t_data *data)
 
 int	main_thread_monitoring(t_data *data)
 {
-	int exit_code;
+	int	exit_code;
 
 	while (1)
 	{
