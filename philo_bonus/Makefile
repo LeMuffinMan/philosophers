@@ -6,13 +6,13 @@
 #    By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/27 18:55:50 by oelleaum          #+#    #+#              #
-#    Updated: 2025/07/02 06:55:35 by oelleaum         ###   ########lyon.fr    #
+#    Updated: 2025/07/02 08:28:40 by oelleaum         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -I$(INC) # -g3
+CFLAGS = -Wall -Werror -Wextra -I$(INC) # -g3 
 LDFLAGS = -lpthread
 
 INC = include
