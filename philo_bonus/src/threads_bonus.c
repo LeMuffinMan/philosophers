@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   threads.c                                          :+:      :+:    :+:   */
+/*   threads_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 19:54:58 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 20:28:13 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/02 07:28:30 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	wait_children(t_simulation *simulation, long int death_time)
 		if (WIFEXITED(status))
 		{
 			exit_code = WEXITSTATUS(status);
-			if (exit_code == 1)
+			if (exit_code > 0)
 				return (print_death(simulation, i, death_time));
 		}
 		i++;
@@ -36,13 +36,13 @@ static int	wait_children(t_simulation *simulation, long int death_time)
 	return (0);
 }
 
-int	unlock_fed_monitor(t_simulation *simulation)
+int	simulation_fed_monitor_thread(t_simulation *simulation)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (simulation->data.meals_limit > 0 && i < simulation->data.nb_philos)
+	while (i < simulation->data.nb_philos)
 	{
 		sem_wait(simulation->sems.fed);
 		i++;
@@ -57,6 +57,7 @@ int	unlock_fed_monitor(t_simulation *simulation)
 			sem_post(simulation->sems.death);
 		}
 	}
+	printf("fed\n");
 	return (0);
 }
 

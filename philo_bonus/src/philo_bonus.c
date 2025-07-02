@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 18:55:38 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/01 20:27:32 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/02 07:26:18 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,8 @@ int	monitor_simulation(t_simulation *simulation)
 	if (pthread_create(&simulation->monitor, NULL,
 			simulation_death_monitor_thread, simulation) != 0)
 		return (fork_error_handler(simulation, simulation->data.id - 1));
-	unlock_fed_monitor(simulation);
+	if (simulation->data.meals_limit > 0)
+		simulation_fed_monitor_thread(simulation);
 	pthread_join(simulation->monitor, NULL);
 	return (0);
 }
