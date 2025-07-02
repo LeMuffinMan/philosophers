@@ -6,7 +6,7 @@
 /*   By: oelleaum <oelleaum@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/01 19:54:58 by oelleaum          #+#    #+#             */
-/*   Updated: 2025/07/02 07:28:30 by oelleaum         ###   ########lyon.fr   */
+/*   Updated: 2025/07/02 07:38:52 by oelleaum         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	simulation_fed_monitor_thread(t_simulation *simulation)
 			sem_post(simulation->sems.death);
 		}
 	}
-	printf("fed\n");
 	return (0);
 }
 
